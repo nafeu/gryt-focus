@@ -5,16 +5,56 @@ _***Early work in progress, currently in prototyping phase and being used to tes
 Socket.IO and jQuery based "deep focus" timer built to run as dedicated instance on a Raspberry Pi
 
 ### Requirements
-...
+
+OSX/Linux, Node.js, Raspberry Pi (optional)
 
 ### Installation
-...
 
-### Usage
-...
+```
+git clone https://github.com/nafeu/gryt-focus.git
+cd gryt-focus
+npm install
+```
+
+### Basic Usage
+
+```
+node server.js
+```
+
+Open `http://localhost:8000` in a web browser.
 
 ### Development
-...
+
+*Recommended* : Run `server.js` with [nodemon](https://nodemon.io/)
+
+```
+npm install -g nodemon
+nodemon server.js
+```
+
+#### Testing the API
+
+Run `mv sample-config.js config.js`
+Modify the `local_app_url` and `remote_app_url` inside `config.js` accordingly.
+
+- `local_app_url` should point to your app url running locally
+- `remote_app_url` should point to your app running on your Raspberry Pi
+  (Your remote\_app\_url must be accessible publicly or privately on LAN)
+
+Test the api using `api-test.js` as follows:
+
+```
+node api-test.js \[ENV\] \[ENDPOINT\] \[QUERY KEY\] \[QUERY VALUE\]
+```
+
+For example:
+
+```
+node api-test.js local update message "Display this on the screen."
+```
+
+Use this to observe changes to the screen
 
 ### License
 
