@@ -2,17 +2,14 @@ body {
   font-family: 'Raleway', sans-serif;
   background-color: #1F3A93;
   padding: 75px;
+  font-size: 3em;
+  font-weight: 200;
+  color: white;
 }
 
 p, h1, h2, h3, h4, div, ul, li, a {
   padding: 0;
   margin: 0;
-}
-
-#intro {
-  font-size: 4em;
-  color: white;
-  font-weight: 200;
 }
 
 .flex-grid {
@@ -22,11 +19,15 @@ p, h1, h2, h3, h4, div, ul, li, a {
   flex: 1;
 }
 
-.flex-grid-thirds {
+.flex-grid-thirds, .flex-grid-halves {
   display: flex;
   justify-content: space-between;
 }
 
 .flex-grid-thirds .col {
   width: 32%;
+}
+
+.flex-grid-halves .col {
+  width: 50%;
 }
