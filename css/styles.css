@@ -1,5 +1,5 @@
 body {
-  font-family: 'Roboto Mono', monospace;
+  font-family: 'Raleway', sans-serif;
   background-color: #1F3A93;
   padding: 75px;
 }
@@ -10,8 +10,9 @@ p, h1, h2, h3, h4, div, ul, li, a {
 }
 
 #intro {
-  font-size: 40px;
+  font-size: 4em;
   color: white;
+  font-weight: 200;
 }
 
 .flex-grid {
@@ -25,6 +26,7 @@ p, h1, h2, h3, h4, div, ul, li, a {
   display: flex;
   justify-content: space-between;
 }
+
 .flex-grid-thirds .col {
   width: 32%;
 }
