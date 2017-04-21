@@ -45,3 +45,18 @@ io.on('connection', function(socket){
   });
 
 });
+
+// ---------------------------------------------------------------------------
+// Express API
+// ---------------------------------------------------------------------------
+
+app.get('/api/update', function(req, res){
+  console.log(req.query);
+  if (req.query.message) {
+    var msg = req.query.message;
+    io.emit('update', msg);
+    res.status(200).send('Message has been updated to: ' + msg);
+  } else {
+    res.status(400).send('Invalid query vars.');
+  }
+});
