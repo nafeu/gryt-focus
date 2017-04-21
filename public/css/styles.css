@@ -5,6 +5,7 @@ body {
   font-size: 5em;
   font-weight: 200;
   color: white;
+  transition: 2s ease-in-out background-color;
 }
 
 p, h1, h2, h3, h4, div, ul, li, a {
