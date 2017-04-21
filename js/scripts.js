@@ -3,5 +3,20 @@ var socket = io({
 });
 
 $(document).ready(function(){
-  console.log("Document is ready captain!");
+
+  // DOM Selectors
+  main = $("#main");
+
+  main.hide();
+  main.fadeIn();
+
+  // Socket Events
+  socket.on("update", function(data){
+    main.fadeOut();
+    setTimeout(function () {
+      main.text(data);
+      main.fadeIn();
+    }, 500);
+  });
+
 });
