@@ -6,7 +6,7 @@ Socket.IO and jQuery based "deep focus" timer built to run as dedicated instance
 
 ### Requirements
 
-OSX/Linux, Node.js, Raspberry Pi (optional)
+OSX/Linux, Node.js, Raspberry Pi (optional) with Raspbian Jessie
 
 ### Installation
 
@@ -14,6 +14,13 @@ OSX/Linux, Node.js, Raspberry Pi (optional)
 git clone https://github.com/nafeu/gryt-focus.git
 cd gryt-focus
 npm install
+```
+
+#### Updgrading Node.js on Raspberry Pi
+
+```
+curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+sudo apt-get install -y nodejs
 ```
 
 ### Basic Usage
@@ -35,7 +42,7 @@ nodemon server.js
 
 #### Testing the API
 
-Run `mv sample-config.js config.js`
+Run `cp sample-config.js config.js`
 Modify the `local_app_url` and `remote_app_url` inside `config.js` accordingly.
 
 - `local_app_url` should point to your app url running locally
@@ -45,13 +52,13 @@ Modify the `local_app_url` and `remote_app_url` inside `config.js` accordingly.
 Test the api using `api-test.js` as follows:
 
 ```
-node api-test.js \[ENV\] \[ENDPOINT\] \[QUERY KEY\] \[QUERY VALUE\]
+node api-test.js <ENV> <ENDPOINT> <QUERY KEY> <QUERY VALUE>
 ```
 
 For example:
 
 ```
-node api-test.js local update message "Display this on the screen."
+node api-test.js local background color "red"
 ```
 
 Use this to observe changes to the screen
