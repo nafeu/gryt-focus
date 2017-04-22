@@ -52,10 +52,10 @@ io.on('connection', function(socket){
 
 app.get('/api/message', function(req, res){
   console.log(req.query);
-  if (req.query.message) {
-    var msg = req.query.message;
-    io.emit('message', msg);
-    res.status(200).send('Message has been updated to: ' + msg);
+  if (req.query.text) {
+    var text = req.query.text;
+    io.emit('message', text);
+    res.status(200).send('Message has been updated to: ' + text);
   } else {
     res.status(400).send('Invalid query vars.');
   }
