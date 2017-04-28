@@ -1,11 +1,11 @@
 body {
   font-family: 'Roboto Mono', sans-serif;
-  background-color: #1F3A93;
+  background-color: white;
   padding: 75px;
   font-size: 4em;
   font-weight: 200;
   color: white;
-  transition: 2s ease-in-out background-color;
+  transition: 4s ease-in-out background-color;
 }
 
 p, h1, h2, h3, h4, div, ul, li, a {
