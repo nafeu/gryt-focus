@@ -44,6 +44,13 @@ io.on('connection', function(socket){
     console.log(socket.id + " disconnected...");
   });
 
+  socket.on('timer', function(data){
+    console.log("Timer event triggered: ", data);
+    if (data.action) {
+      executeTimerAction(data.action);
+    }
+  });
+
 });
 
 // ---------------------------------------------------------------------------
@@ -71,3 +78,56 @@ app.get('/api/background', function(req, res){
     res.status(400).send('Invalid query vars.');
   }
 });
+
+app.get('/api/timer', function(req, res){
+  console.log(req.query);
+  if (req.query.action) {
+    executeTimerAction(req.query.action);
+    res.status(200).send('Performing action: "' + req.query.action + '"');
+  } else {
+    res.status(400).send('Invalid query vars.');
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Application Logic
+// ---------------------------------------------------------------------------
+
+var t, seconds = 0;
+
+function incrementTimer() {
+  seconds++;
+  io.emit('seconds', seconds);
+}
+
+function startTimer() {
+  t = setInterval(incrementTimer, 1000);
+  io.emit('timer-status', { status: true });
+}
+
+function resetTimer() {
+  seconds = 0;
+  io.emit('seconds', seconds);
+}
+
+function stopTimer() {
+  clearInterval(t);
+  io.emit('timer-status', { status: false });
+}
+
+function executeTimerAction(action) {
+  switch(action) {
+    case "start":
+      startTimer();
+      break;
+    case "stop":
+      stopTimer();
+      break;
+    case "reset":
+      resetTimer();
+      break;
+    default:
+      console.log("Unrecognized action: '" + action + "'");
+      break;
+  }
+}
