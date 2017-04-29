@@ -34,7 +34,7 @@ p, h1, h2, h3, h4, div, ul, li, a {
 }
 
 #timer {
-  font-size: 5em;
+  font-size: 4em;
   text-align: center;
 }
 
@@ -48,6 +48,7 @@ p, h1, h2, h3, h4, div, ul, li, a {
   margin: 0px 20px 0px 20px;
   border: 2px solid white;
   border-radius: 20px;
+  border-bottom-width: 10px;
   cursor: pointer;
-
+  transition: 300ms ease-in-out border-bottom-width;
 }
