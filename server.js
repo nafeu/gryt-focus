@@ -44,10 +44,10 @@ io.on('connection', function(socket){
     console.log(socket.id + " disconnected...");
   });
 
-  socket.on('timer', function(data){
-    console.log("Timer event triggered: ", data);
-    if (data.action) {
-      executeTimerAction(data.action);
+  socket.on('interaction', function(data){
+    console.log("Interaction: ", data);
+    if (data.component == "timer") {
+      handleTimerAction(data.action);
     }
   });
 
@@ -79,11 +79,13 @@ app.get('/api/background', function(req, res){
   }
 });
 
-app.get('/api/timer', function(req, res){
-  console.log(req.query);
-  if (req.query.action) {
-    executeTimerAction(req.query.action);
-    res.status(200).send('Performing action: "' + req.query.action + '"');
+app.get('/api/interact', function(req, res){
+  console.log("Interaction: ", req.query);
+  if (req.query.component && req.query.action) {
+    if (req.query.compontent == "timer") {
+      handleTimerAction(req.query.action);
+    }
+    res.status(200).send('Handling interaction: "' + req.query + '"');
   } else {
     res.status(400).send('Invalid query vars.');
   }
@@ -93,41 +95,89 @@ app.get('/api/timer', function(req, res){
 // Application Logic
 // ---------------------------------------------------------------------------
 
-var t, seconds = 0;
+var t,
+    active = false,
+    seconds = 0,
+    date = new Date(null);
 
 function incrementTimer() {
   seconds++;
-  io.emit('seconds', seconds);
+  date.setSeconds(seconds);
+  updateUi([
+    {
+      "sel": "#timer",
+      "props": {
+        "text": date.toISOString().substr(11, 8)
+      }
+    }
+  ]);
 }
 
 function startTimer() {
   t = setInterval(incrementTimer, 1000);
-  io.emit('timer-status', { status: true });
+  updateUi([
+    {
+      "sel": "#toggle-btn",
+      "props": {
+        "text": "pause"
+      }
+    }
+  ]);
+  active = true;
 }
 
 function resetTimer() {
   seconds = 0;
-  io.emit('seconds', seconds);
-}
-
-function stopTimer() {
+  date.setSeconds(seconds);
   clearInterval(t);
-  io.emit('timer-status', { status: false });
+  updateUi([
+    {
+      "sel": "#timer",
+      "props": {
+        "text": date.toISOString().substr(11, 8)
+      }
+    },
+    {
+      "sel": "#toggle-btn",
+      "props": {
+        "text": "start"
+      }
+    }
+  ]);
+  active = false;
 }
 
-function executeTimerAction(action) {
+function pauseTimer() {
+  clearInterval(t);
+  updateUi([
+    {
+      "sel": "#toggle-btn",
+      "props": {
+        "text": "continue"
+      }
+    }
+  ]);
+  active = false;
+}
+
+function handleTimerAction(action) {
   switch(action) {
-    case "start":
-      startTimer();
-      break;
-    case "stop":
-      stopTimer();
-      break;
     case "reset":
       resetTimer();
+      break;
+    case "toggle":
+      if (active) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
       break;
     default:
       console.log("Unrecognized action: '" + action + "'");
       break;
   }
+}
+
+function updateUi(objects){
+  io.emit('update-ui', objects);
 }

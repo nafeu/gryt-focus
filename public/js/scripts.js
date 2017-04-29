@@ -10,7 +10,7 @@ $(document).ready(function(){
   body = $("body");
   main = $("#main");
   timer = $("#timer");
-  startBtn = $("#start-btn");
+  toggleBtn = $("#toggle-btn");
   resetBtn = $("#reset-btn");
 
   body.fadeIn();
@@ -35,46 +35,37 @@ $(document).ready(function(){
       }
     }
   };
-
   body.css("background-color", backgroundStyleSettings.getColor());
   backgroundCycle = setInterval(function(){
     body.css("background-color", backgroundStyleSettings.getColor());
   }, 10000);
 
   // Click Events
-  startBtn.on("click", function(){
-    if (timerStatus) {
-      socket.emit('timer', { action: "stop" });
-      startBtn.text("start");
-    } else {
-      socket.emit('timer', { action: "start" });
-      startBtn.text("stop");
-    }
+  toggleBtn.on("click", function(){
+    socket.emit('interaction', {
+      component: "timer",
+      action: "toggle"
+    });
   });
 
   resetBtn.on("click", function(){
-    socket.emit('timer', { action: "reset" });
+    socket.emit('interaction', {
+      component: "timer",
+      action: "reset"
+    });
   });
 
-  // Socket Events
-  socket.on("message", function(data){
-    main.fadeOut();
-    setTimeout(function () {
-      main.text(data);
-      main.fadeIn();
-    }, 500);
-  });
-
-  socket.on("background", function(data){
-    body.css("background-color", data);
-  });
-
-  socket.on("timer-status", function(data){
-    timerStatus = data.status;
-  });
-
-  socket.on("seconds", function(data){
-    timer.text(data);
+  socket.on("update-ui", function(data){
+    data.forEach(function(element){
+      var props = Object.keys(element.props);
+      props.forEach(function(prop){
+        if (prop == "text") {
+          $(element.sel).text(element.props[prop]);
+        } else {
+          $(element.sel).prop(prop, element.props[prop]);
+        }
+      });
+    });
   });
 
 });
