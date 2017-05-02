@@ -2,8 +2,6 @@ var socket = io({
   'reconnection': false
 });
 
-var timerStatus = false;
-
 $(document).ready(function(){
 
   // DOM Selectors

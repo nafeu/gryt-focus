@@ -4,6 +4,8 @@ var http = require('http');
 var server = require('http').Server(app);
 var bodyParser = require('body-parser');
 var io = require('socket.io')(server);
+var moment = require('moment');
+moment().format();
 
 try {
   var config = require('./config');
@@ -82,7 +84,7 @@ app.get('/api/background', function(req, res){
 app.get('/api/interact', function(req, res){
   console.log("Interaction: ", req.query);
   if (req.query.component && req.query.action) {
-    if (req.query.compontent == "timer") {
+    if (req.query.component == "timer") {
       handleTimerAction(req.query.action);
     }
     res.status(200).send('Handling interaction: "' + req.query + '"');
@@ -95,26 +97,28 @@ app.get('/api/interact', function(req, res){
 // Application Logic
 // ---------------------------------------------------------------------------
 
-var t,
+var timer,
+    startingMoment,
     active = false,
-    seconds = 0,
-    date = new Date(null);
+    updateIntervalMs = config["update-interval-ms"] || 1000;
 
 function incrementTimer() {
-  seconds++;
-  date.setSeconds(seconds);
+  var text = moment(startingMoment).fromNow();
+  console.log("[ timer ] : ", text);
   updateUi([
     {
       "sel": "#timer",
       "props": {
-        "text": date.toISOString().substr(11, 8)
+        "text": text
       }
     }
   ]);
 }
 
 function startTimer() {
-  t = setInterval(incrementTimer, 1000);
+  startingMoment = moment();
+  timer = setInterval(incrementTimer,
+                      updateIntervalMs);
   updateUi([
     {
       "sel": "#toggle-btn",
@@ -123,18 +127,15 @@ function startTimer() {
       }
     }
   ]);
-  active = true;
+  activateTimer();
 }
 
 function resetTimer() {
-  seconds = 0;
-  date.setSeconds(seconds);
-  clearInterval(t);
   updateUi([
     {
       "sel": "#timer",
       "props": {
-        "text": date.toISOString().substr(11, 8)
+        "text": "focus"
       }
     },
     {
@@ -144,11 +145,10 @@ function resetTimer() {
       }
     }
   ]);
-  active = false;
+  deactivateTimer(timer);
 }
 
 function pauseTimer() {
-  clearInterval(t);
   updateUi([
     {
       "sel": "#toggle-btn",
@@ -157,6 +157,15 @@ function pauseTimer() {
       }
     }
   ]);
+  deactivateTimer(timer);
+}
+
+function activateTimer() {
+  active = true;
+}
+
+function deactivateTimer(interval) {
+  clearInterval(interval);
   active = false;
 }
 
