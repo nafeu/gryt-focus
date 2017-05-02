@@ -52,13 +52,13 @@ Modify the `local_app_url` and `remote_app_url` inside `config.js` accordingly.
 Test the api using `api-test.js` as follows:
 
 ```
-node api-test.js <ENV> <ENDPOINT> <QUERY KEY> <QUERY VALUE>
+node api-test.js <ENV> <ENDPOINT> <QUERY KEY>=<QUERY VALUE> ...
 ```
 
-For example:
+For example, for the endpoint `api/interact`, to toggle the `timer` component:
 
 ```
-node api-test.js local background color "red"
+node api-test.js local interact component=timer action=toggle
 ```
 
 Use this to observe changes to the screen

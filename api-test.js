@@ -11,7 +11,7 @@ catch(err) {
 
 var appUrl;
 
-if (config) {
+if (config && process.argv.length > 5) {
 
   var env = process.argv[2];
 
@@ -30,9 +30,17 @@ if (config) {
 
     var requestUrl = appUrl + apiPath + endpoint;
 
-    var param = process.argv[4];
     var propertiesObject = {};
-    propertiesObject[param] = process.argv[5];
+
+    for (var i = 4; i < process.argv.length; i++) {
+      try {
+        var arg = process.argv[i];
+        propertiesObject[arg.split('=', 1)[0]] = arg.slice(arg.indexOf('=') + 1);
+      }
+      catch(err) {
+        console.log("Invalid arguments");
+      }
+    }
 
     console.log("Making request to: " + requestUrl);
     console.log("With query vars: ", propertiesObject);
@@ -46,4 +54,6 @@ if (config) {
     console.log("Missing appUrl for " + env + " in config.js");
   }
 
+} else {
+  console.log("Invalid arguments");
 }

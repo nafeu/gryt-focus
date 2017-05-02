@@ -59,28 +59,6 @@ io.on('connection', function(socket){
 // Express API
 // ---------------------------------------------------------------------------
 
-app.get('/api/message', function(req, res){
-  console.log(req.query);
-  if (req.query.text) {
-    var text = req.query.text;
-    io.emit('message', text);
-    res.status(200).send('Message has been updated to: ' + text);
-  } else {
-    res.status(400).send('Invalid query vars.');
-  }
-});
-
-app.get('/api/background', function(req, res){
-  console.log(req.query);
-  if (req.query.color) {
-    var color = req.query.color;
-    io.emit('background', color);
-    res.status(200).send('Background color has been updated to: ' + color);
-  } else {
-    res.status(400).send('Invalid query vars.');
-  }
-});
-
 app.get('/api/interact', function(req, res){
   console.log("Interaction: ", req.query);
   if (req.query.component && req.query.action) {
