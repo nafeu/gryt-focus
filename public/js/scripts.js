@@ -13,14 +13,10 @@ $(document).ready(function(){
 
   body.fadeIn();
 
-  backgroundStyleSettings = {
+  bg = {
     colors: [
-      '#2980b9',
-      '#16a085',
-      '#27ae60',
-      '#f39c12',
-      '#d35400',
-      '#c0392b',
+      '#2980b9', '#16a085', '#27ae60',
+      '#f39c12', '#d35400', '#c0392b',
       '#8e44ad'
     ],
     currentColorIdx: 0,
@@ -31,11 +27,16 @@ $(document).ready(function(){
       } else {
         return this.colors[this.currentColorIdx++];
       }
+    },
+    cycleColor: function() {
+      body.css("background-color", this.getColor());
     }
   };
-  body.css("background-color", backgroundStyleSettings.getColor());
-  backgroundCycle = setInterval(function(){
-    body.css("background-color", backgroundStyleSettings.getColor());
+
+  // Cycle background color
+  bg.cycleColor();
+  setInterval(function(){
+    bg.cycleColor();
   }, 10000);
 
   // Click Events
