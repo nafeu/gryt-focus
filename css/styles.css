@@ -13,17 +13,43 @@ html, body {
 
 hr {
   border-style: none;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid;
+  border-color: inherit;
 }
 
 #section-a, #section-b, #section-c {
-  transition: 4s ease-in-out background-color;
+  transition: 4s all ease-in-out;
   padding: 20px;
 }
 
+#section-a {
+  padding-top: 5%;
+}
+
 .title {
-  font-size: 3em;
+  font-size: 5vmin;
   font-weight: 100;
+}
+
+.header {
+  font-size: 4vmin;
+  font-weight: 700;
+  padding-top: 10px;
+}
+
+.stat {
+  font-size: 12vmin;
+  text-align: center;
+}
+
+.desc {
+  font-size: 5vmin;
+  font-weight: 400;
+}
+
+.jumbo {
+  font-size: 8vmin;
+  font-weight: 700;
 }
 
 
@@ -83,4 +109,8 @@ p, h1, h2, h3, h4, div, ul, li, a {
   border-bottom-width: 10px;
   cursor: pointer;
   transition: 300ms ease-in-out border-bottom-width;
+}
+
+.text-center {
+  text-align: center;
 }
