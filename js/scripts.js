@@ -6,6 +6,9 @@ $(document).ready(function(){
 
   // DOM Selectors
   body = $("body");
+  sectionA = $("#section-a");
+  sectionB = $("#section-b");
+  sectionC = $("#section-c");
   main = $("#main");
   timer = $("#timer");
   toggleBtn = $("#toggle-btn");
@@ -15,13 +18,18 @@ $(document).ready(function(){
 
   bg = {
     colors: [
-      '#2980b9', '#16a085', '#27ae60',
-      '#f39c12', '#d35400', '#c0392b',
-      '#8e44ad'
+      ['#d32f2f', '#ff6659', '#9a0007'],
+      ['#7b1fa2', '#ae52d4', '#4a0072'],
+      ['#303f9f', '#666ad1', '#001970'],
+      ['#0288d1', '#5eb8ff', '#005b9f'],
+      ['#00796b', '#48a999', '#004c40'],
+      ['#689f38', '#99d066', '#387002'],
+      ['#f57c00', '#ffad42', '#bb4d00'],
+      ['#455a64', '#718792', '#1c313a'],
     ],
     currentColorIdx: 0,
     getColor: function(){
-      if (this.currentColorIdx == this.colors.length - 1) {
+      if (this.currentColorIdx == this.colors.length) {
         this.currentColorIdx = 0;
         return this.colors[this.currentColorIdx];
       } else {
@@ -29,7 +37,10 @@ $(document).ready(function(){
       }
     },
     cycleColor: function() {
-      body.css("background-color", this.getColor());
+      var pallette = this.getColor();
+      sectionA.css("background-color", pallette[0]);
+      sectionB.css("background-color", pallette[1]);
+      sectionC.css("background-color", pallette[2]);
     }
   };
 
