@@ -39,7 +39,7 @@ $(document).ready(function(){
     cycleColor: function() {
       var pallette = this.getColor();
       sectionA.css("background-color", pallette[0]);
-      sectionB.css("background-color", pallette[1]);
+      sectionB.css({"background-color": pallette[1], "color": pallette[2]});
       sectionC.css("background-color", pallette[2]);
     }
   };
@@ -79,3 +79,24 @@ $(document).ready(function(){
   });
 
 });
+
+var uiRenderer = {
+  getWidget: function(data){
+    return $("<div>")
+      .append($("<div>", {class: "title"}).text(data.title))
+      .append(function(){
+        if (data.hr) return "<hr>";
+        return "";
+      })
+      .append($("<div>", {class: "content"}).text(data.content));
+  }
+};
+
+function testRenderer() {
+  var testData = {
+    "target": "#section-a",
+    "title": "Test title:",
+    "content": "Here is some content"
+  };
+  $(testData.target).html(uiRenderer.getWidget(testData).html());
+}
