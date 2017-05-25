@@ -5,21 +5,28 @@ var remoteStatus = false;
 if ($.url().param("remote")) remoteStatus = true;
 
 if (remoteStatus) {
+
+  console.log("Remote status is active...");
+
   socket = io({
     'reconnection': false
   });
-  socket.on("update-ui", function(data){
-    data.forEach(function(element){
-      var props = Object.keys(element.props);
-      props.forEach(function(prop){
-        if (prop == "text") {
-          $(element.sel).text(element.props[prop]);
-        } else {
-          $(element.sel).prop(prop, element.props[prop]);
-        }
-      });
-    });
+
+  socket.on("set-task", function(data){
+    console.log("[ socket ] set-task : ", data);
+    appState.setTask(data);
   });
+
+  socket.on("toggle-timer", function(){
+    console.log("[ socket ] toggle-timer");
+    appState.toggleTimer();
+  });
+
+  socket.on("reset", function() {
+    console.log("[ socket ] reset");
+    appState.reset();
+  });
+
 }
 
 $(document).ready(function(){
@@ -52,7 +59,7 @@ $(document).ready(function(){
       contentTime.text("...");
       contentFocus.text("...");
       contentInterrupts.text("0");
-      bg.StopCycle();
+      bg.stopCycle();
     },
 
     toggleTimer: function() {
@@ -87,6 +94,10 @@ $(document).ready(function(){
 
     incrementSession: function() {
       contentSession.text(parseInt(contentSession.text()) + 1);
+    },
+
+    setTask: function(task) {
+      contentTask.text(task);
     }
 
   };
@@ -121,6 +132,7 @@ $(document).ready(function(){
       sectionC.css("background-color", pallette[2]);
     },
     startCycle: function() {
+      bg.cycleColor();
       this.interval = setInterval(function(){
         bg.cycleColor();
       }, 10000);
@@ -157,7 +169,5 @@ $(document).ready(function(){
   contentInterrupts.on("click", function(){
     appState.interrupt();
   });
-
-
 
 });
