@@ -31,6 +31,14 @@ node server.js
 
 Open `http://localhost:8000` in a web browser.
 
+### Raspberry Pi Kiosk Usage
+
+```
+sh runkiosk.sh
+```
+
+* Note that `chromium-browser` must be properly installed on your rpi
+
 ### Development
 
 *Recommended* : Run `server.js` with [nodemon](https://nodemon.io/)
