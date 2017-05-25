@@ -161,24 +161,3 @@ $(document).ready(function(){
 
 
 });
-
-var uiRenderer = {
-  getWidget: function(data){
-    return $("<div>")
-      .append($("<div>", {class: "title"}).text(data.title))
-      .append(function(){
-        if (data.hr) return "<hr>";
-        return "";
-      })
-      .append($("<div>", {class: "content"}).text(data.content));
-  }
-};
-
-function testRenderer() {
-  var testData = {
-    "target": "#section-a",
-    "title": "Test title:",
-    "content": "Here is some content"
-  };
-  $(testData.target).html(uiRenderer.getWidget(testData).html());
-}
