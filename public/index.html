@@ -9,28 +9,31 @@
     src="https://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
     crossorigin="anonymous"></script>
-  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-url-parser/2.3.1/purl.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+  <script src="js/jquery.plugins.js"></script>
 </head>
 <body>
 
 <div class="flex-grid grid-height-50">
   <div class="col" id="section-a">
     <div class="title">Task:</div>
-    <div class="jumbo">Build the task completer</div>
+    <div class="jumbo" contenteditable="true" id="content-task">...</div>
   </div>
 </div>
 <div class="flex-grid grid-height-50">
   <div class="col" id="section-b">
-    <div class="title">Status:</div>
+    <div class="title" id="toggle">Status:</div>
     <hr>
     <div class="flex-grid">
       <div class="col">
         <div class="header">Session</div>
-        <div class="stat">3</div>
+        <div class="stat" id="content-session">0</div>
       </div>
       <div class="col">
-        <div class="header">Active Since</div>
-        <div class="desc">a moment ago...</div>
+        <div class="header" id="content-active">Inactive</div>
+        <div class="desc" id="content-time">...</div>
       </div>
     </div>
   </div>
@@ -40,11 +43,11 @@
     <div class="flex-grid">
       <div class="col">
         <div class="header">Interrupts</div>
-        <div class="stat">10</div>
+        <div class="stat" id="content-interrupts">0</div>
       </div>
       <div class="col">
         <div class="header">Focus</div>
-        <div class="stat">58%</div>
+        <div class="stat" id="content-focus">...</div>
       </div>
     </div>
   </div>

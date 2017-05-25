@@ -5,6 +5,10 @@ body {
   margin: 0;
 }
 
+textarea:focus, input:focus{
+    outline: none;
+}
+
 html, body {
   padding:0;
   margin:0;
@@ -26,6 +30,15 @@ hr {
   padding-top: 5%;
 }
 
+#section-b {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .title {
   font-size: 5vmin;
   font-weight: 100;
@@ -43,13 +56,18 @@ hr {
 }
 
 .desc {
-  font-size: 5vmin;
+  font-size: 6vmin;
   font-weight: 400;
 }
 
 .jumbo {
   font-size: 8vmin;
   font-weight: 700;
+  outline: none;
+}
+
+#toggle, #content-session, #content-interrupts {
+  cursor: pointer;
 }
 
 

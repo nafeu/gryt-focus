@@ -1,6 +1,23 @@
-var socket = io({
-  'reconnection': false
-});
+var socket, appState;
+moment().format();
+
+if ($.url().param("remote")) {
+  socket = io({
+    'reconnection': false
+  });
+  socket.on("update-ui", function(data){
+    data.forEach(function(element){
+      var props = Object.keys(element.props);
+      props.forEach(function(prop){
+        if (prop == "text") {
+          $(element.sel).text(element.props[prop]);
+        } else {
+          $(element.sel).prop(prop, element.props[prop]);
+        }
+      });
+    });
+  });
+}
 
 $(document).ready(function(){
 
@@ -9,23 +26,75 @@ $(document).ready(function(){
   sectionA = $("#section-a");
   sectionB = $("#section-b");
   sectionC = $("#section-c");
-  main = $("#main");
-  timer = $("#timer");
-  toggleBtn = $("#toggle-btn");
-  resetBtn = $("#reset-btn");
+  contentSession = $("#content-session");
+  contentTime = $("#content-time");
+  contentInterrupts = $("#content-interrupts");
+  contentFocus = $("#content-focus");
+  contentTask = $("#content-task");
+  contentActive = $("#content-active");
+  toggle = $("#toggle");
+
+  appState = {
+    interrupts: 0,
+    seconds: 0,
+    active: false,
+    interval: null,
+
+    reset: function(){
+      appState.interrupts = 0;
+      appState.seconds = 0;
+      clearInterval(appState.interval);
+      contentActive.text("Inactive");
+      contentTime.text("...");
+
+    },
+
+    toggleTimer: function() {
+      if (!appState.active) {
+        appState.active = true;
+        contentActive.text("Active");
+        appState.interval = setInterval(function(){
+          appState.seconds++;
+          contentTime.text(moment.utc(appState.seconds*1000).format('HH:mm:ss'));
+          contentFocus.text(function(){
+            var focus = Math.round((1 - (appState.interrupts / (appState.seconds/60)))*100);
+            if (focus > 0) {
+              return focus + "%";
+            } else {
+              return "---";
+            }
+          });
+        }, 1000);
+      } else {
+        clearInterval(appState.interval);
+        appState.active = false;
+        contentActive.text("Paused");
+      }
+    },
+
+    interrupt: function() {
+      contentInterrupts.text(parseInt(contentInterrupts.text()) + 1);
+      appState.interrupts++;
+    },
+
+    incrementSession: function() {
+      contentSession.text(parseInt(contentSession.text()) + 1);
+    }
+
+  };
 
   body.fadeIn();
 
   bg = {
     colors: [
-      ['#d32f2f', '#ff6659', '#9a0007'],
-      ['#7b1fa2', '#ae52d4', '#4a0072'],
-      ['#303f9f', '#666ad1', '#001970'],
-      ['#0288d1', '#5eb8ff', '#005b9f'],
-      ['#00796b', '#48a999', '#004c40'],
-      ['#689f38', '#99d066', '#387002'],
-      ['#f57c00', '#ffad42', '#bb4d00'],
-      ['#455a64', '#718792', '#1c313a'],
+      ['#455a64', '#718792', '#1c313a'], // Grey
+      ['#d32f2f', '#ff6659', '#9a0007'], // Red
+      ['#7b1fa2', '#ae52d4', '#4a0072'], // Purple
+      ['#303f9f', '#666ad1', '#001970'], // Indigo
+      ['#0288d1', '#5eb8ff', '#005b9f'], // Blue
+      ['#00796b', '#48a999', '#004c40'], // Teal
+      ['#4caf50', '#80e27e', '#087f23'], // Ugly Green
+      ['#f57c00', '#ffad42', '#bb4d00'], // Orange
     ],
     currentColorIdx: 0,
     getColor: function(){
@@ -48,35 +117,32 @@ $(document).ready(function(){
   bg.cycleColor();
   setInterval(function(){
     bg.cycleColor();
-  }, 10000);
+  }, 60000);
 
-  // Click Events
-  toggleBtn.on("click", function(){
-    socket.emit('interaction', {
-      component: "timer",
-      action: "toggle"
-    });
+  // Keyboard/Click Events
+  toggle.dblclick(function(){
+    appState.toggleTimer();
   });
 
-  resetBtn.on("click", function(){
-    socket.emit('interaction', {
-      component: "timer",
-      action: "reset"
-    });
+  toggle.longpress(function(){
+    appState.reset();
   });
 
-  socket.on("update-ui", function(data){
-    data.forEach(function(element){
-      var props = Object.keys(element.props);
-      props.forEach(function(prop){
-        if (prop == "text") {
-          $(element.sel).text(element.props[prop]);
-        } else {
-          $(element.sel).prop(prop, element.props[prop]);
-        }
-      });
-    });
+  contentTask.keypress(function(e) {
+    if(e.which == 13) {
+      appState.toggleTimer();
+    }
   });
+
+  contentSession.on("click", function(){
+    appState.incrementSession();
+  });
+
+  contentInterrupts.on("click", function(){
+    appState.interrupt();
+  });
+
+
 
 });
 
