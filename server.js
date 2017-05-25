@@ -4,8 +4,6 @@ var http = require('http');
 var server = require('http').Server(app);
 var bodyParser = require('body-parser');
 var io = require('socket.io')(server);
-var moment = require('moment');
-moment().format();
 
 try {
   var config = require('./config');
@@ -46,13 +44,6 @@ io.on('connection', function(socket){
     console.log(socket.id + " disconnected...");
   });
 
-  socket.on('interaction', function(data){
-    console.log("Interaction: ", data);
-    if (data.component == "timer") {
-      handleTimerAction(data.action);
-    }
-  });
-
 });
 
 // ---------------------------------------------------------------------------
@@ -61,9 +52,26 @@ io.on('connection', function(socket){
 
 app.get('/api/interact', function(req, res){
   console.log("Interaction: ", req.query);
-  if (req.query.component && req.query.action) {
-    if (req.query.component == "timer") {
-      handleTimerAction(req.query.action);
+  if (req.query.action) {
+    switch(req.query.action) {
+      case "set-task":
+        if (req.query.data) {
+          console.log("Emit 'set-task' action...");
+          io.emit("set-task", req.query.data);
+        } else {
+          res.status(400).send('Invalid query vars.');
+        }
+        break;
+      case "toggle-timer":
+        console.log("Emit 'toggle-timer' action...");
+        io.emit("toggle-timer");
+        break;
+      case "reset":
+        console.log("Emit 'reset' action...");
+        io.emit("reset");
+        break;
+      default:
+        break;
     }
     res.status(200).send('Handling interaction: "' + req.query + '"');
   } else {
@@ -75,96 +83,4 @@ app.get('/api/interact', function(req, res){
 // Application Logic
 // ---------------------------------------------------------------------------
 
-var timer,
-    startingMoment,
-    active = false,
-    updateIntervalMs = config["update-interval-ms"] || 1000;
-
-function incrementTimer() {
-  var text = moment(startingMoment).fromNow();
-  console.log("[ timer ] : ", text);
-  updateUi([
-    {
-      "sel": "#timer",
-      "props": {
-        "text": text
-      }
-    }
-  ]);
-}
-
-function startTimer() {
-  startingMoment = moment();
-  timer = setInterval(incrementTimer,
-                      updateIntervalMs);
-  updateUi([
-    {
-      "sel": "#toggle-btn",
-      "props": {
-        "text": "pause"
-      }
-    }
-  ]);
-  activateTimer();
-}
-
-function resetTimer() {
-  updateUi([
-    {
-      "sel": "#timer",
-      "props": {
-        "text": "focus"
-      }
-    },
-    {
-      "sel": "#toggle-btn",
-      "props": {
-        "text": "start"
-      }
-    }
-  ]);
-  deactivateTimer(timer);
-}
-
-function pauseTimer() {
-  updateUi([
-    {
-      "sel": "#toggle-btn",
-      "props": {
-        "text": "continue"
-      }
-    }
-  ]);
-  deactivateTimer(timer);
-}
-
-function activateTimer() {
-  active = true;
-}
-
-function deactivateTimer(interval) {
-  clearInterval(interval);
-  active = false;
-}
-
-function handleTimerAction(action) {
-  switch(action) {
-    case "reset":
-      resetTimer();
-      break;
-    case "toggle":
-      if (active) {
-        pauseTimer();
-      } else {
-        startTimer();
-      }
-      break;
-    default:
-      console.log("Unrecognized action: '" + action + "'");
-      break;
-  }
-}
-
-function updateUi(objects){
-  io.emit('update-ui', objects);
-}
+// ...

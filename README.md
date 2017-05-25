@@ -55,10 +55,10 @@ Test the api using `api-test.js` as follows:
 node api-test.js <ENV> <ENDPOINT> <QUERY KEY>=<QUERY VALUE> ...
 ```
 
-For example, for the endpoint `api/interact`, to toggle the `timer` component:
+For example, for the endpoint `api/interact`, to update the task name use:
 
 ```
-node api-test.js local interact component=timer action=toggle
+node api-test.js local interact action=set-task data=taskname
 ```
 
 Use this to observe changes to the screen
