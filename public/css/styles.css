@@ -23,7 +23,7 @@ hr {
 
 #section-a, #section-b, #section-c {
   transition: 4s all ease-in-out;
-  padding: 20px;
+  padding: 2%;
 }
 
 #section-a {
