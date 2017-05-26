@@ -70,6 +70,10 @@ app.get('/api/interact', function(req, res){
         console.log("Emit 'reset' action...");
         io.emit("reset");
         break;
+      case "interrupt":
+        console.log("Emit 'interrupt' action...");
+        io.emit("interrupt");
+        break;
       default:
         break;
     }
