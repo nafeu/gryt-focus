@@ -27,6 +27,11 @@ if (remoteStatus) {
     appState.reset();
   });
 
+  socket.on("interrupt", function() {
+    console.log("[ socket ] interrupt");
+    appState.interrupt();
+  });
+
 }
 
 $(document).ready(function(){
