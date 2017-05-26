@@ -25,12 +25,8 @@ if (config && process.argv.length > 2) {
     propertiesObject.action = process.argv[2];
     if (process.argv[3]) propertiesObject.data = process.argv[3];
 
-    console.log("Making request to: " + requestUrl);
-    console.log("With query vars: ", propertiesObject);
-
     request({url:requestUrl, qs:propertiesObject}, function(err, response, body) {
       if(err) { console.log(err); return; }
-      console.log("Response: " + response);
     });
 
   } else {

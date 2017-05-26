@@ -12,12 +12,12 @@ if (remoteStatus) {
     'reconnection': false
   });
 
-  socket.on("set-task", function(data){
+  socket.on("task", function(data){
     console.log("[ socket ] set-task : ", data);
     appState.setTask(data);
   });
 
-  socket.on("toggle-timer", function(){
+  socket.on("toggle", function(){
     console.log("[ socket ] toggle-timer");
     appState.toggleTimer();
   });

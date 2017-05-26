@@ -54,17 +54,17 @@ app.get('/api/interact', function(req, res){
   console.log("Interaction: ", req.query);
   if (req.query.action) {
     switch(req.query.action) {
-      case "set-task":
+      case "task":
         if (req.query.data) {
-          console.log("Emit 'set-task' action...");
-          io.emit("set-task", req.query.data);
+          console.log("Emit 'task' action...");
+          io.emit("task", req.query.data);
         } else {
           res.status(400).send('Invalid query vars.');
         }
         break;
-      case "toggle-timer":
-        console.log("Emit 'toggle-timer' action...");
-        io.emit("toggle-timer");
+      case "toggle":
+        console.log("Emit 'toggle' action...");
+        io.emit("toggle");
         break;
       case "reset":
         console.log("Emit 'reset' action...");
@@ -77,7 +77,7 @@ app.get('/api/interact', function(req, res){
       default:
         break;
     }
-    res.status(200).send('Handling interaction: "' + req.query + '"');
+    res.status(200).send('Handling interaction: "' + JSON.stringify(req.query) + '"');
   } else {
     res.status(400).send('Invalid query vars.');
   }
