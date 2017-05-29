@@ -51,40 +51,31 @@ io.on('connection', function(socket){
 // ---------------------------------------------------------------------------
 
 app.get('/api/interact', function(req, res){
-  console.log("Interaction: ", req.query);
   if (req.query.action) {
     switch(req.query.action) {
       case "task":
         if (req.query.data) {
-          console.log("Emit 'task' action...");
           io.emit("task", req.query.data);
         } else {
           res.status(400).send('Invalid query vars.');
         }
         break;
       case "toggle":
-        console.log("Emit 'toggle' action...");
         io.emit("toggle");
         break;
       case "reset":
-        console.log("Emit 'reset' action...");
         io.emit("reset");
         break;
       case "interrupt":
-        console.log("Emit 'interrupt' action...");
         io.emit("interrupt");
         break;
       default:
         break;
     }
-    res.status(200).send('Handling interaction: "' + JSON.stringify(req.query) + '"');
+    res.status(200).send('Handling interaction: ' + JSON.stringify(req.query));
   } else {
     res.status(400).send('Invalid query vars.');
   }
 });
 
-// ---------------------------------------------------------------------------
-// Application Logic
-// ---------------------------------------------------------------------------
-
-// ...
+module.exports = app;
