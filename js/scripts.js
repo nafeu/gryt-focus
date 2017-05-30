@@ -47,6 +47,8 @@ $(document).ready(function(){
   contentFocus = $("#content-focus");
   contentTask = $("#content-task");
   contentActive = $("#content-active");
+  contentLog = $("#content-log");
+  logTable = $("#log-table");
   toggle = $("#toggle");
 
   appState = {
@@ -56,6 +58,18 @@ $(document).ready(function(){
     interval: null,
 
     reset: function(){
+
+      var tr = $("<tr>")
+        .append('<td class="table-col-small">' + Math.round(appState.seconds/60) + '</td>')
+        .append('<td class="table-col-small">' + contentInterrupts.text() + '</td>')
+        .append('<td class="table-col-small">' + contentFocus.text() + '</td>')
+        .append('<td class="table-desc">' + contentTask.text() + '</td>');
+
+      if (contentSession.text() === "1") {
+        logTable.empty();
+      }
+      logTable.append(tr);
+
       appState.interrupts = 0;
       appState.seconds = 0;
       appState.incrementSession();

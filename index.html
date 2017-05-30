@@ -4,6 +4,7 @@
   <title>gryt - focus | Deep focus logger</title>
   <link rel="stylesheet" type="text/css" href="css/styles.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:100,400,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-96x96.png">
   <script
     src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -31,7 +32,7 @@
         <div class="header" id="content-active">Inactive</div>
         <div class="desc" id="content-time">...</div>
         <div class="header">Session</div>
-        <div class="stat" id="content-session">0</div>
+        <div class="stat" id="content-session">1</div>
       </div>
     </div>
   </div>
@@ -50,16 +51,18 @@
           <table>
             <thead>
               <tr>
-                <th>Time (mins)</th>
-                <th>Focus</th>
-                <th>Task</th>
+                <th><i class="fa fa-clock-o" aria-hidden="true"></i></th>
+                <th><i class="fa fa-exclamation" aria-hidden="true"></i></th>
+                <th><i class="fa fa-bolt" aria-hidden="true"></i></th>
+                <th><i class="fa fa-sticky-note-o" aria-hidden="true"></i></th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="log-table">
               <tr>
-                <td>43</td>
-                <td>80%</td>
-                <td>Create this thing</td>
+                <td class="table-col-small">...</td>
+                <td class="table-col-small">...</td>
+                <td class="table-col-small">...</td>
+                <td class="table-desc">...</td>
               </tr>
             </tbody>
           </table>
