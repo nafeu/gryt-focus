@@ -116,3 +116,29 @@ p, h1, h2, h3, h4, div, ul, li, a {
 .text-center {
   text-align: center;
 }
+
+#content-log {
+  text-align: left;
+  padding: 10px 0px 10px 10px;
+}
+
+table {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+}
+
+th {
+  font-weight: 100;
+  font-size: 3vmin;
+}
+
+.table-col-small {
+  width: 10%;
+  font-weight: 700;
+}
+
+td {
+  font-size: 2vmin;
+  vertical-align: top;
+}
