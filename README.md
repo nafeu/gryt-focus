@@ -42,6 +42,12 @@ sh runkiosk.sh
 
 * Note that `chromium-browser` must be properly installed on your rpi
 
+If you want to run the script on startup login, open your `~/.bashrc` file in your home directory using your preferred text editor and append the following line at the bottom:
+
+```
+sh /home/pi/Development/gryt-focus/runkiosk.sh
+```
+
 ### Control Raspberry Pi Kiosk Remotely
 
 On your local machine, run `cp sample-config.js config.js`
