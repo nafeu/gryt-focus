@@ -10,5 +10,7 @@ activate_kiosk(){
   chromium-browser --kiosk http://localhost:8000?remote=true
 }
 
+BASEDIR=$(dirname "$0")
+
 activate_kiosk &
-node server.js
+node $BASEDIR/server.js
