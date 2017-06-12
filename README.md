@@ -42,10 +42,18 @@ sh runkiosk.sh
 
 * Note that `chromium-browser` must be properly installed on your rpi
 
-If you want to run the script on startup login, open your `~/.bashrc` file in your home directory using your preferred text editor and append the following line at the bottom:
+If you want to run the script on startup login, open your `~/.bashrc` file in your home directory using your preferred text editor and append the following lines at the bottom:
 
 ```
 sh /home/pi/Development/gryt-focus/runkiosk.sh
+```
+
+#### Prevent your Raspberry Pi from sleeping
+
+Open the `lightdm.conf` file at `/etc/lightdm/lightdm.conf` in your preferred text editor (you may have to prepend `sudo` to the command) and append the following line in the `[SeatDefaults]` section
+
+```
+xserver-command=X -s 0 -dpms
 ```
 
 ### Control Raspberry Pi Kiosk Remotely
