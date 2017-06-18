@@ -76,6 +76,7 @@ $(document).ready(function(){
       clearInterval(appState.interval);
       contentActive.text("Inactive");
       contentTime.text("...");
+      contentTask.text("...");
       contentFocus.text("...");
       contentInterrupts.text("0");
       bg.stopCycle();
