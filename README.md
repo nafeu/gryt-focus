@@ -1,8 +1,10 @@
-# gryt - focus
+# GRYT Focus
 
 Socket.IO and jQuery based "deep focus" timer built to run as dedicated instance on a Raspberry Pi
 
 [![Build Status](https://travis-ci.org/nafeu/gryt-focus.svg?branch=master)](https://travis-ci.org/nafeu/gryt-focus)
+
+<img alt="GRYT Focus Screenshot" src="http://phrakture.com/images/github/gryt-focus-screenshot.png" width="500" valign="middle"/>
 
 ### Requirements
 
