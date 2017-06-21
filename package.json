@@ -4,7 +4,8 @@
   "description": "rpi compatible work focus timer app",
   "main": "server.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "start": "node server.js"
   },
   "keywords": [
     "raspberry-pi",
