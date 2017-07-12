@@ -2,6 +2,14 @@
 
 Socket.IO and jQuery based "deep focus" timer built to run as dedicated instance on a Raspberry Pi
 
+Check out a live preview at: [nafeu.com/gryt-focus](http://nafeu.com/gryt-focus)
+
+### Preview Controls
+
+- Click on the task name to edit it
+- Double click on the `Status` area to toggle the timer
+- Long press the `Status` area to reset the timer
+
 [![Build Status](https://travis-ci.org/nafeu/gryt-focus.svg?branch=master)](https://travis-ci.org/nafeu/gryt-focus)
 
 <img alt="GRYT Focus Screenshot" src="http://phrakture.com/images/github/gryt-focus-screenshot.png" width="500" valign="middle"/>
