@@ -1,8 +1,9 @@
-var socket, appState, bg;
+var socket, appState, bg, theme;
 moment().format();
 
 var remoteStatus = false;
 if ($.url().param("remote")) remoteStatus = true;
+if ($.url().param("theme")) theme = $.url().param("theme").split(",");
 
 if (remoteStatus) {
 
@@ -126,7 +127,7 @@ $(document).ready(function(){
 
   bg = {
     interval: null,
-    colors: [
+    themeColors: [
       ['#455a64', '#718792', '#1c313a'], // Grey
       ['#d32f2f', '#ff6659', '#9a0007'], // Red
       ['#7b1fa2', '#ae52d4', '#4a0072'], // Purple
@@ -137,16 +138,25 @@ $(document).ready(function(){
       ['#f57c00', '#ffad42', '#bb4d00'], // Orange
     ],
     currentColorIdx: 0,
-    getColor: function(){
-      if (this.currentColorIdx == this.colors.length) {
+    getNextColor: function(){
+      if (this.currentColorIdx == this.themeColors.length) {
         this.currentColorIdx = 0;
-        return this.colors[this.currentColorIdx];
+        return this.themeColors[this.currentColorIdx];
       } else {
-        return this.colors[this.currentColorIdx++];
+        return this.themeColors[this.currentColorIdx++];
       }
     },
     cycleColor: function() {
-      var pallette = this.getColor();
+      var pallette;
+      if (theme) {
+        pallette = theme;
+        var textColorIndex = 3;
+        if (pallette[textColorIndex]) {
+          body.css("color", pallette[textColorIndex]);
+        }
+      } else {
+        pallette = this.getNextColor();
+      }
       sectionA.css("background-color", pallette[0]);
       sectionB.css({"background-color": pallette[1], "color": pallette[2]});
       sectionC.css("background-color", pallette[2]);
