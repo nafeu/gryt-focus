@@ -1,4 +1,4 @@
-var socket, appState, bg, theme;
+var socket, appState, bg, theme, defaultLengthInMin = 1;
 moment().format();
 
 var remoteStatus = false;
@@ -33,6 +33,11 @@ if (remoteStatus) {
     appState.interrupt();
   });
 
+  socket.on("length", function(data) {
+    console.log("[ socket ] length");
+    appState.setLength(parseInt(data) || 0);
+  });
+
 }
 
 $(document).ready(function(){
@@ -43,6 +48,7 @@ $(document).ready(function(){
   sectionB = $("#section-b");
   sectionC = $("#section-c");
   contentSession = $("#content-session");
+  contentLength = $("#content-length");
   contentTime = $("#content-time");
   contentInterrupts = $("#content-interrupts");
   contentFocus = $("#content-focus");
@@ -55,6 +61,7 @@ $(document).ready(function(){
   appState = {
     interrupts: 0,
     seconds: 0,
+    length: defaultLengthInMin * 60,
     active: false,
     interval: null,
 
@@ -90,7 +97,9 @@ $(document).ready(function(){
         contentActive.text("Active");
         appState.interval = setInterval(function(){
           appState.seconds++;
+          appState.length--;
           contentTime.text(moment.utc(appState.seconds*1000).format('HH:mm:ss'));
+          contentLength.text(Math.ceil(appState.length / 60));
           contentFocus.text(function(){
             var focus = Math.round((1 - (appState.interrupts / (appState.seconds/60)))*100);
             if ((focus < 0) || appState.seconds < 60) {
@@ -99,6 +108,10 @@ $(document).ready(function(){
               return focus + "%";
             }
           });
+          if (appState.length < 1) {
+            appState.toggleTimer();
+            appState.length = defaultLengthInMin * 60;
+          }
         }, 1000);
       } else {
         bg.stopCycle();
@@ -119,11 +132,18 @@ $(document).ready(function(){
 
     setTask: function(task) {
       contentTask.text(task);
+    },
+
+    setLength: function(length) {
+      contentLength.text(length);
+      appState.length = length * 60;
+      defaultLengthInMin = length;
     }
 
   };
 
   body.fadeIn();
+  contentLength.text(defaultLengthInMin);
 
   bg = {
     interval: null,
