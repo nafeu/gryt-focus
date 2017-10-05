@@ -111,6 +111,7 @@ $(document).ready(function(){
           if (appState.length < 1) {
             appState.toggleTimer();
             appState.length = defaultLengthInMin * 60;
+            contentLength.text(defaultLengthInMin);
           }
         }, 1000);
       } else {
@@ -135,6 +136,9 @@ $(document).ready(function(){
     },
 
     setLength: function(length) {
+      if (appState.active) {
+        appState.toggleTimer();
+      }
       contentLength.text(length);
       appState.length = length * 60;
       defaultLengthInMin = length;
