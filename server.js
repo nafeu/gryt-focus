@@ -60,6 +60,13 @@ app.get('/api/interact', function(req, res){
           res.status(400).send('Invalid query vars.');
         }
         break;
+      case "length":
+        if (req.query.data) {
+          io.emit("length", req.query.data);
+        } else {
+          res.status(400).send('Invalid query vars.');
+        }
+        break;
       case "toggle":
         io.emit("toggle");
         break;
