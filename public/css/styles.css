@@ -3,6 +3,8 @@ body {
   background-color: white;
   color: white;
   margin: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 textarea:focus, input:focus{
@@ -141,4 +143,21 @@ th {
 td {
   font-size: 2vmin;
   vertical-align: top;
+}
+
+#alarm {
+  position: absolute;
+  width: 100%;
+  background-color: white;
+  z-index: 1;
+  color: black;
+  font-size: 300px;
+  text-align: center;
+  display: none;
+}
+
+.alarm-completion-icon {
+  position: relative;
+  top: 40%;
+  transform: translateY(-50%);
 }

@@ -83,6 +83,7 @@ node remote.js task "Work on a specific task"
 node remote.js toggle
 node remote.js interrupt
 node remote.js reset
+node remote.js snooze
 ```
 
 ### Development

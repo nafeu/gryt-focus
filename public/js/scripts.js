@@ -1,4 +1,4 @@
-var socket, appState, bg, theme, defaultLengthInMin = 1;
+var socket, appState, bg, theme, defaultLengthInMin = 25;
 moment().format();
 
 var remoteStatus = false;
@@ -16,26 +16,36 @@ if (remoteStatus) {
   socket.on("task", function(data){
     console.log("[ socket ] set-task : ", data);
     appState.setTask(data);
+    appState.stopAlarm();
   });
 
   socket.on("toggle", function(){
     console.log("[ socket ] toggle-timer");
     appState.toggleTimer();
+    appState.stopAlarm();
   });
 
   socket.on("reset", function() {
     console.log("[ socket ] reset");
     appState.reset();
+    appState.stopAlarm();
   });
 
   socket.on("interrupt", function() {
     console.log("[ socket ] interrupt");
     appState.interrupt();
+    appState.stopAlarm();
   });
 
   socket.on("length", function(data) {
     console.log("[ socket ] length");
     appState.setLength(parseInt(data) || 0);
+    appState.stopAlarm();
+  });
+
+  socket.on("snooze", function(data) {
+    console.log("[ socket ] snooze");
+    appState.stopAlarm();
   });
 
 }
@@ -47,6 +57,7 @@ $(document).ready(function(){
   sectionA = $("#section-a");
   sectionB = $("#section-b");
   sectionC = $("#section-c");
+  alarm = $("#alarm");
   contentSession = $("#content-session");
   contentLength = $("#content-length");
   contentTime = $("#content-time");
@@ -63,7 +74,10 @@ $(document).ready(function(){
     seconds: 0,
     length: defaultLengthInMin * 60,
     active: false,
-    interval: null,
+    stopwatchInterval: null,
+    alarmStatus: false,
+    alarmFlashStatus: false,
+    alarmInterval: null,
 
     reset: function(){
 
@@ -81,7 +95,7 @@ $(document).ready(function(){
       appState.interrupts = 0;
       appState.seconds = 0;
       appState.incrementSession();
-      clearInterval(appState.interval);
+      clearInterval(appState.stopwatchInterval);
       contentActive.text("Inactive");
       contentTime.text("...");
       contentTask.text("...");
@@ -95,7 +109,7 @@ $(document).ready(function(){
         bg.startCycle();
         appState.active = true;
         contentActive.text("Active");
-        appState.interval = setInterval(function(){
+        appState.stopwatchInterval = setInterval(function(){
           appState.seconds++;
           appState.length--;
           contentTime.text(moment.utc(appState.seconds*1000).format('HH:mm:ss'));
@@ -110,13 +124,12 @@ $(document).ready(function(){
           });
           if (appState.length < 1) {
             appState.toggleTimer();
-            appState.length = defaultLengthInMin * 60;
-            contentLength.text(defaultLengthInMin);
+            appState.startAlarm();
           }
         }, 1000);
       } else {
         bg.stopCycle();
-        clearInterval(appState.interval);
+        clearInterval(appState.stopwatchInterval);
         appState.active = false;
         contentActive.text("Paused");
       }
@@ -142,12 +155,42 @@ $(document).ready(function(){
       contentLength.text(length);
       appState.length = length * 60;
       defaultLengthInMin = length;
+    },
+
+    startAlarm: function(){
+      alarm.show();
+      appState.alarmInterval = setInterval(function(){
+        if (appState.alarmFlashStatus) {
+          alarm.css({
+            "color": "black",
+            "background-color": "white"
+          });
+        } else {
+          alarm.css({
+            "color": "white",
+            "background-color": "black"
+          });
+        }
+        appState.alarmFlashStatus = !appState.alarmFlashStatus;
+      }, 500);
+    },
+
+    stopAlarm: function() {
+      clearInterval(appState.alarmInterval);
+      appState.length = defaultLengthInMin * 60;
+      contentLength.text(defaultLengthInMin);
+      alarm.hide();
     }
 
   };
 
   body.fadeIn();
   contentLength.text(defaultLengthInMin);
+  alarm.css('height', $(window).height());
+
+  $(window).resize(function(){
+    alarm.css('height', $(window).height());
+  });
 
   bg = {
     interval: null,
@@ -222,6 +265,10 @@ $(document).ready(function(){
 
   contentInterrupts.on("click", function(){
     appState.interrupt();
+  });
+
+  body.mousemove(function(){
+    appState.stopAlarm();
   });
 
 });

@@ -76,6 +76,9 @@ app.get('/api/interact', function(req, res){
       case "interrupt":
         io.emit("interrupt");
         break;
+      case "snooze":
+        io.emit("snooze");
+        break;
       default:
         break;
     }
