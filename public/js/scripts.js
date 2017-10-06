@@ -5,7 +5,8 @@ var socket,
     mode,
     defaultLengthInMin = 25,
     defaultDarkTone = '#1C2021',
-    defaultMode = 'night';
+    defaultMode = 'night',
+    alarmChord = new Audio('assets/alarm-chord.wav');
 
 moment().format();
 
@@ -181,12 +182,14 @@ $(document).ready(function(){
 
     startAlarm: function(){
       alarm.show();
+      alarmChord.play();
       appState.alarmInterval = setInterval(function(){
         if (appState.alarmFlashStatus) {
           alarm.css({
             "color": "black",
             "background-color": "white"
           });
+          alarmChord.play();
         } else {
           alarm.css({
             "color": "white",
