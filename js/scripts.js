@@ -93,6 +93,7 @@ $(document).ready(function(){
   activeButton = $("#active-button");
   resetButton = $("#reset-button");
   interruptButton = $("#interrupt-button");
+  modeButton = $("#mode-button");
 
   appState = {
     interrupts: 0,
@@ -222,8 +223,10 @@ $(document).ready(function(){
 
     toggleMode: function() {
       if (appState.mode === 'night') {
+        modeButton.removeClass("fa-moon-o").addClass("fa-sun-o");
         appState.mode = 'day';
       } else {
+        modeButton.removeClass("fa-sun-o").addClass("fa-moon-o");
         appState.mode = 'night';
       }
     },
@@ -314,6 +317,10 @@ $(document).ready(function(){
     appState.interrupt();
   });
 
+  modeButton.on("click", function(){
+    appState.toggleMode();
+  });
+
   body.mousemove(function(){
     appState.stopAlarm();
   });
@@ -337,6 +344,8 @@ $(document).ready(function(){
       $(this).blur();
     }
   });
+
+
 
 });
 
