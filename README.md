@@ -84,6 +84,7 @@ node remote.js toggle
 node remote.js interrupt
 node remote.js reset
 node remote.js snooze
+node remote.js mode
 ```
 
 ### Development
