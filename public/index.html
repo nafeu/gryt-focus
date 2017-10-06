@@ -21,10 +21,10 @@
   <i class="fa fa-clock-o alarm-completion-icon" aria-hidden="true"></i>
 </div>
 
-<div class="flex-grid grid-height-50">
+<div id="section-a-container" class="flex-grid grid-height-50">
   <div class="col" id="section-a">
-    <div class="title no-select">To work on for <span id="content-length"></span> minute(s):</div>
-    <div class="jumbo" contenteditable="true" id="content-task">...</div>
+    <div class="title no-select">To work on for <div id="content-length"></div> minute(s):</div>
+    <div class="jumbo" onkeypress="return (this.innerText.length <= 90)" contenteditable="true" maxlength="10" id="content-task">...</div>
   </div>
 </div>
 <div class="flex-grid grid-height-50">

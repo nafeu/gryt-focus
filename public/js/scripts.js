@@ -53,7 +53,7 @@ if (remoteStatus) {
 
   socket.on("length", function(data) {
     console.log("[ socket ] length");
-    appState.setLength(parseInt(data) || 0);
+    appState.setLength(data);
     appState.stopAlarm();
   });
 
@@ -76,6 +76,7 @@ $(document).ready(function(){
   sectionA = $("#section-a");
   sectionB = $("#section-b");
   sectionC = $("#section-c");
+  sectionAContainer = $("#section-a-container");
   alarm = $("#alarm");
   contentSession = $("#content-session");
   contentLength = $("#content-length");
@@ -93,6 +94,7 @@ $(document).ready(function(){
     interrupts: 0,
     seconds: 0,
     length: defaultLengthInMin * 60,
+    origLength: null,
     active: false,
     stopwatchInterval: null,
     alarmStatus: false,
@@ -112,10 +114,11 @@ $(document).ready(function(){
       if (contentSession.text() === "1") {
         logTable.empty();
       }
-      logTable.append(tr);
+      logTable.prepend(tr);
 
       appState.interrupts = 0;
       appState.seconds = 0;
+      appState.active = false;
       appState.incrementSession();
       clearInterval(appState.stopwatchInterval);
       contentActive.text("Inactive");
@@ -123,6 +126,7 @@ $(document).ready(function(){
       contentTask.text("...");
       contentFocus.text("...");
       contentInterrupts.text("0");
+      appState.setLength(defaultLengthInMin);
       bg.stopCycle();
     },
 
@@ -172,12 +176,16 @@ $(document).ready(function(){
     },
 
     setLength: function(length) {
+      confirmedLength = parseInt(length) || defaultLengthInMin;
+      if (confirmedLength < 1) {
+        confirmedLength = 1;
+      }
       if (appState.active) {
         appState.toggleTimer();
       }
-      contentLength.text(length);
-      appState.length = length * 60;
-      defaultLengthInMin = length;
+      contentLength.text(confirmedLength);
+      appState.length = confirmedLength * 60;
+      defaultLengthInMin = confirmedLength;
     },
 
     startAlarm: function(){
@@ -252,7 +260,8 @@ $(document).ready(function(){
         primary = defaultDarkTone;
         secondary = chosenColor;
       }
-      sectionA.css({"background-color": secondary, "color": primary});
+      sectionA.css({"color": primary});
+      sectionAContainer.css("background-color", secondary);
       sectionB.css({"background-color": primary, "color": secondary});
       sectionC.css({"background-color": secondary, "color": primary});
       contentLogContainer.css("border-color", primary);
@@ -283,7 +292,7 @@ $(document).ready(function(){
   });
 
   contentTask.keypress(function(e) {
-    if(e.which == 13) {
+    if(e.which == 13 && !e.shiftKey) {
       appState.toggleTimer();
       $(this).blur();
     }
@@ -301,8 +310,24 @@ $(document).ready(function(){
     appState.stopAlarm();
   });
 
-  contentLength.on('click', function(){
+  contentLength.dblclick(function(){
     appState.toggleLength();
+  });
+
+  contentLength.longpress(function(){
+    $(this).attr('contenteditable', 'true');
+    $(this).focus();
+  });
+
+  contentLength.on('blur', function(){
+    $(this).attr('contenteditable', 'false');
+    appState.setLength($(this).text());
+  });
+
+  contentLength.keypress(function(e){
+    if (e.which == 13) {
+      $(this).blur();
+    }
   });
 
 });
