@@ -271,6 +271,7 @@ $(document).ready(function(){
   contentTask.keypress(function(e) {
     if(e.which == 13) {
       appState.toggleTimer();
+      $(this).blur();
     }
   });
 
