@@ -127,6 +127,7 @@ $(document).ready(function(){
     toggleTimer: function() {
       if (!appState.active) {
         bg.startCycle();
+        appState.setLength(defaultLengthInMin);
         appState.active = true;
         contentActive.text("Active");
         appState.stopwatchInterval = setInterval(function(){
@@ -197,8 +198,6 @@ $(document).ready(function(){
 
     stopAlarm: function() {
       clearInterval(appState.alarmInterval);
-      appState.length = defaultLengthInMin * 60;
-      contentLength.text(defaultLengthInMin);
       alarm.hide();
     },
 
