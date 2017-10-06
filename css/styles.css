@@ -126,8 +126,9 @@ p, h1, h2, h3, h4, div, ul, li, a {
 
 table {
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid white;
   padding: 10px;
+  transition: 4s border ease-in-out
 }
 
 th {
