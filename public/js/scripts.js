@@ -66,6 +66,7 @@ $(document).ready(function(){
   contentTask = $("#content-task");
   contentActive = $("#content-active");
   contentLog = $("#content-log");
+  contentLogContainer = $("#content-log table");
   logTable = $("#log-table");
   toggle = $("#toggle");
 
@@ -194,39 +195,21 @@ $(document).ready(function(){
 
   bg = {
     interval: null,
-    themeColors: [
-      ['#455a64', '#718792', '#1c313a'], // Grey
-      ['#d32f2f', '#ff6659', '#9a0007'], // Red
-      ['#7b1fa2', '#ae52d4', '#4a0072'], // Purple
-      ['#303f9f', '#666ad1', '#001970'], // Indigo
-      ['#0288d1', '#5eb8ff', '#005b9f'], // Blue
-      ['#00796b', '#48a999', '#004c40'], // Teal
-      ['#4caf50', '#80e27e', '#087f23'], // Green
-      ['#f57c00', '#ffad42', '#bb4d00'], // Orange
-    ],
-    currentColorIdx: 0,
+    darkTone: '#1C2021',
     getNextColor: function(){
-      if (this.currentColorIdx == this.themeColors.length) {
-        this.currentColorIdx = 0;
-        return this.themeColors[this.currentColorIdx];
-      } else {
-        return this.themeColors[this.currentColorIdx++];
-      }
+      return themeColors[Math.floor(Math.random()*themeColors.length)];
     },
     cycleColor: function() {
       var pallette;
       if (theme) {
-        pallette = theme;
-        var textColorIndex = 3;
-        if (pallette[textColorIndex]) {
-          body.css("color", pallette[textColorIndex]);
-        }
+        chosenColor = theme;
       } else {
-        pallette = this.getNextColor();
+        chosenColor = this.getNextColor();
       }
-      sectionA.css("background-color", pallette[0]);
-      sectionB.css({"background-color": pallette[1], "color": pallette[2]});
-      sectionC.css("background-color", pallette[2]);
+      sectionA.css({"background-color": bg.darkTone, "color": chosenColor});
+      sectionB.css({"background-color": chosenColor, "color": bg.darkTone});
+      sectionC.css({"background-color": bg.darkTone, "color": chosenColor});
+      contentLogContainer.css("border-color", chosenColor);
     },
     startCycle: function() {
       bg.cycleColor();
@@ -238,7 +221,7 @@ $(document).ready(function(){
       this.currentColorIdx = 0;
       bg.cycleColor();
       clearInterval(this.interval);
-    }
+    },
   };
 
   // Cycle background color
@@ -272,3 +255,15 @@ $(document).ready(function(){
   });
 
 });
+
+var themeColors = [
+  '#455a64',
+  '#d32f2f',
+  '#7b1fa2',
+  '#303f9f',
+  '#0288d1',
+  '#00796b',
+  '#4caf50',
+  '#f57c00',
+  '#E66A39',
+];
