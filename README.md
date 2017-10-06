@@ -1,8 +1,8 @@
-# GRYT Focus
+<h1><img src="http://phrakture.com/images/github/gryt-focus-icon.png" width="72" height="72" valign="middle"/>GRYT Focus</h1>
 
-Socket.IO and jQuery based "deep focus" timer built to run as dedicated instance on a Raspberry Pi
+Socket.IO and jQuery based "deep focus" timer built to run in a browser tab or as a dedicated instance on a Raspberry Pi
 
-Check out a live preview at: [nafeu.com/gryt-focus](http://nafeu.com/gryt-focus)
+Check it out at: [nafeu.com/gryt-focus](http://nafeu.com/gryt-focus)
 
 ### Preview Controls
 
