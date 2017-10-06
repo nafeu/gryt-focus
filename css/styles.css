@@ -166,3 +166,7 @@ td {
 #content-length {
   cursor: pointer;
 }
+
+.no-select {
+  user-select: none;
+}
