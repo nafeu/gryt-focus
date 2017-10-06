@@ -71,7 +71,7 @@ hr {
   white-space: normal;
 }
 
-#toggle, #content-session, #content-interrupts {
+#content-session {
   cursor: pointer;
 }
 
@@ -183,4 +183,18 @@ td {
 
 *:focus {
     outline: none;
+}
+
+#action-buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 3vmin;
+  color: white;
+  cursor: pointer;
+  transition: 4s color ease-in-out;
+}
+
+#action-buttons i:hover {
+  opacity: 0.5;
 }

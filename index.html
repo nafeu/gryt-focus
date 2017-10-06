@@ -21,9 +21,16 @@
   <i class="fa fa-clock-o alarm-completion-icon" aria-hidden="true"></i>
 </div>
 
+<div id="action-buttons">
+  <i id="active-button" class="fa fa-hourglass-end" aria-hidden="true"></i>
+  <i id="interrupt-button" class="fa fa-exclamation-circle" aria-hidden="true"></i>
+  <i id="reset-button" class="fa fa-undo" aria-hidden="true"></i>
+</div>
+
 <div id="section-a-container" class="flex-grid grid-height-50">
   <div class="col" id="section-a">
-    <div class="title no-select">To work on for <div id="content-length"></div> minute(s):</div>
+    <div class="title no-select">To work on for <div id="content-length"></div> minute(s):
+    </div>
     <div class="jumbo" onkeypress="return (this.innerText.length <= 90)" contenteditable="true" maxlength="10" id="content-task">...</div>
   </div>
 </div>
