@@ -89,6 +89,10 @@ $(document).ready(function(){
   contentLogContainer = $("#content-log table");
   logTable = $("#log-table");
   toggle = $("#toggle");
+  actionButtons = $("#action-buttons");
+  activeButton = $("#active-button");
+  resetButton = $("#reset-button");
+  interruptButton = $("#interrupt-button");
 
   appState = {
     interrupts: 0,
@@ -127,6 +131,7 @@ $(document).ready(function(){
       contentFocus.text("...");
       contentInterrupts.text("0");
       appState.setLength(defaultLengthInMin);
+      activeButton.removeClass("fa-hourglass-start").addClass("fa-hourglass-end");
       bg.stopCycle();
     },
 
@@ -154,11 +159,13 @@ $(document).ready(function(){
             appState.startAlarm();
           }
         }, 1000);
+        activeButton.removeClass("fa-hourglass-end").addClass("fa-hourglass-start");
       } else {
         bg.stopCycle();
         clearInterval(appState.stopwatchInterval);
         appState.active = false;
         contentActive.text("Paused");
+        activeButton.removeClass("fa-hourglass-start").addClass("fa-hourglass-end");
       }
     },
 
@@ -265,6 +272,7 @@ $(document).ready(function(){
       sectionB.css({"background-color": primary, "color": secondary});
       sectionC.css({"background-color": secondary, "color": primary});
       contentLogContainer.css("border-color", primary);
+      actionButtons.css({"color": primary});
     },
     startCycle: function() {
       bg.cycleColor();
@@ -283,11 +291,11 @@ $(document).ready(function(){
   bg.cycleColor();
 
   // Keyboard/Click Events
-  toggle.dblclick(function(){
+  activeButton.click(function(){
     appState.toggleTimer();
   });
 
-  toggle.longpress(function(){
+  resetButton.longpress(function(){
     appState.reset();
   });
 
@@ -302,7 +310,7 @@ $(document).ready(function(){
     appState.incrementSession();
   });
 
-  contentInterrupts.on("click", function(){
+  interruptButton.on("click", function(){
     appState.interrupt();
   });
 
