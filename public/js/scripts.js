@@ -98,6 +98,7 @@ $(document).ready(function(){
     alarmFlashStatus: false,
     alarmInterval: null,
     mode: mode,
+    lengthOptionIndex: 0,
 
     reset: function(){
 
@@ -207,6 +208,16 @@ $(document).ready(function(){
       } else {
         appState.mode = 'night';
       }
+    },
+
+    toggleLength: function() {
+      var options = [25, 20, 15, 10, 5, 4, 3, 2, 1];
+      if (appState.lengthOptionIndex === options.length - 1) {
+        appState.lengthOptionIndex = 0;
+      } else {
+        appState.lengthOptionIndex++;
+      }
+      appState.setLength(options[appState.lengthOptionIndex]);
     }
 
   };
@@ -285,6 +296,10 @@ $(document).ready(function(){
 
   body.mousemove(function(){
     appState.stopAlarm();
+  });
+
+  contentLength.on('click', function(){
+    appState.toggleLength();
   });
 
 });

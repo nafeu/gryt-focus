@@ -162,3 +162,7 @@ td {
   top: 40%;
   transform: translateY(-50%);
 }
+
+#content-length {
+  cursor: pointer;
+}
