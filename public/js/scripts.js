@@ -96,6 +96,7 @@ $(document).ready(function(){
   interruptButton = $("#interrupt-button");
   modeButton = $("#mode-button");
   randomButton = $("#random-button");
+  clockButton = $("#clock-button");
   colorPicker = $("#color-picker");
 
   appState = {
@@ -158,6 +159,7 @@ $(document).ready(function(){
             }
           });
           if (appState.length < 1) {
+            contentLength.text(defaultLengthInMin);
             appState.toggleTimer();
             appState.startAlarm();
           }
@@ -235,13 +237,19 @@ $(document).ready(function(){
     },
 
     toggleLength: function() {
-      var options = [25, 20, 15, 10, 5, 4, 3, 2, 1];
+      var options = [25, 20, 15, 10, 5, 4, 3, 2, 1, 60, 55, 50, 45, 40, 35, 30];
       if (appState.lengthOptionIndex === options.length - 1) {
         appState.lengthOptionIndex = 0;
       } else {
         appState.lengthOptionIndex++;
       }
       appState.setLength(options[appState.lengthOptionIndex]);
+    },
+
+    pauseTimer: function(){
+      if (appState.active) {
+        appState.toggleTimer();
+      }
     }
 
   };
@@ -347,6 +355,12 @@ $(document).ready(function(){
     }
   });
 
+  contentTask.on('focus', function(){
+    if ($(this).text() === "...") {
+      $(this).text("");
+    }
+  });
+
   contentSession.on("click", function(){
     appState.incrementSession();
   });
@@ -387,11 +401,13 @@ $(document).ready(function(){
     appState.stopAlarm();
   });
 
-  contentLength.dblclick(function(){
+  clockButton.on('click', function(){
+    appState.pauseTimer();
     appState.toggleLength();
   });
 
-  contentLength.longpress(function(){
+  contentLength.on('click', function(){
+    appState.pauseTimer();
     $(this).attr('contenteditable', 'true');
     $(this).focus();
   });
