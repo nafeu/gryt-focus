@@ -94,6 +94,7 @@ $(document).ready(function(){
   resetButton = $("#reset-button");
   interruptButton = $("#interrupt-button");
   modeButton = $("#mode-button");
+  randomButton = $("#random-button");
 
   appState = {
     interrupts: 0,
@@ -229,6 +230,7 @@ $(document).ready(function(){
         modeButton.removeClass("fa-sun-o").addClass("fa-moon-o");
         appState.mode = 'night';
       }
+      bg.invertColor();
     },
 
     toggleLength: function() {
@@ -253,29 +255,29 @@ $(document).ready(function(){
 
   bg = {
     interval: null,
+    allowCycling: true,
+    currentThemeColor: null,
+    currentAccentColor: null,
     getNextColor: function(){
       return themeColors[Math.floor(Math.random()*themeColors.length)];
     },
     cycleColor: function() {
-      var pallette, primary, secondary;
-      if (theme) {
-        chosenColor = theme;
-      } else {
-        chosenColor = this.getNextColor();
+      if (this.allowCycling) {
+        if (appState.mode === 'night') {
+          this.currentThemeColor = theme || this.getNextColor();
+          this.currentAccentColor = defaultDarkTone;
+        } else {
+          this.currentThemeColor = defaultDarkTone;
+          this.currentAccentColor = theme || this.getNextColor();
+        }
+        bg.setAppColors(this.currentThemeColor, this.currentAccentColor);
       }
-      if (appState.mode === 'night') {
-        primary = chosenColor;
-        secondary = defaultDarkTone;
-      } else {
-        primary = defaultDarkTone;
-        secondary = chosenColor;
-      }
-      sectionA.css({"color": primary});
-      sectionAContainer.css("background-color", secondary);
-      sectionB.css({"background-color": primary, "color": secondary});
-      sectionC.css({"background-color": secondary, "color": primary});
-      contentLogContainer.css("border-color", primary);
-      actionButtons.css({"color": primary});
+    },
+    invertColor: function() {
+      var origThemeColor = this.currentThemeColor;
+      this.currentThemeColor = this.currentAccentColor;
+      this.currentAccentColor = origThemeColor;
+      bg.setAppColors(this.currentThemeColor, this.currentAccentColor);
     },
     startCycle: function() {
       bg.cycleColor();
@@ -287,6 +289,22 @@ $(document).ready(function(){
       this.currentColorIdx = 0;
       bg.cycleColor();
       clearInterval(this.interval);
+    },
+    setAppColors: function(theme, accent) {
+      sectionA.css({"color": theme});
+      sectionAContainer.css("background-color", accent);
+      sectionB.css({"background-color": theme, "color": accent});
+      sectionC.css({"background-color": accent, "color": theme});
+      contentLogContainer.css("border-color", theme);
+      actionButtons.css({"color": theme});
+    },
+    toggleColorMode: function(){
+      this.allowCycling = !this.allowCycling;
+      if (this.allowCycling) {
+        randomButton.removeClass("fa-eyedropper").addClass("fa-random");
+      } else {
+        randomButton.removeClass("fa-random").addClass("fa-eyedropper");
+      }
     },
   };
 
@@ -321,6 +339,17 @@ $(document).ready(function(){
     appState.toggleMode();
   });
 
+  randomButton.on('click', function(){
+    bg.cycleColor();
+    if (!bg.allowCycling) {
+
+    }
+  });
+
+  randomButton.longpress(function(){
+    bg.toggleColorMode();
+  });
+
   body.mousemove(function(){
     appState.stopAlarm();
   });
@@ -344,8 +373,6 @@ $(document).ready(function(){
       $(this).blur();
     }
   });
-
-
 
 });
 
