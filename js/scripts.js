@@ -6,6 +6,7 @@ var socket,
     defaultLengthInMin = 25,
     defaultDarkTone = '#1C2021',
     defaultMode = 'night',
+    defaultTransition = '4s';
     alarmChord = new Audio('assets/alarm-chord.wav');
 
 moment().format();
@@ -95,6 +96,7 @@ $(document).ready(function(){
   interruptButton = $("#interrupt-button");
   modeButton = $("#mode-button");
   randomButton = $("#random-button");
+  colorPicker = $("#color-picker");
 
   appState = {
     interrupts: 0,
@@ -110,7 +112,6 @@ $(document).ready(function(){
     lengthOptionIndex: 0,
 
     reset: function(){
-
       var tr = $("<tr>")
         .append('<td class="table-col-small">' + Math.round(appState.seconds/60) + '</td>')
         .append('<td class="table-col-small">' + contentInterrupts.text() + '</td>')
@@ -298,6 +299,14 @@ $(document).ready(function(){
       contentLogContainer.css("border-color", theme);
       actionButtons.css({"color": theme});
     },
+    setPickedColor: function(color) {
+      if (appState.mode === 'night') {
+        this.currentThemeColor = color;
+      } else {
+        this.currentAccentColor = color;
+      }
+      this.setAppColors(this.currentThemeColor, this.currentAccentColor);
+    },
     toggleColorMode: function(){
       this.allowCycling = !this.allowCycling;
       if (this.allowCycling) {
@@ -306,6 +315,17 @@ $(document).ready(function(){
         randomButton.removeClass("fa-random").addClass("fa-eyedropper");
       }
     },
+    updateAppColorTransition: function(transition) {
+      sectionA.css('transition', transition + " all ease-in-out");
+      sectionAContainer.css('transition', transition + " all ease-in-out");
+      sectionB.css('transition', transition + " all ease-in-out");
+      sectionC.css('transition', transition + " all ease-in-out");
+      contentLogContainer.css('transition', transition + " border ease-in-out");
+      actionButtons.css('transition', transition + " all ease-in-out");
+    },
+    resetAppColorTransition: function(){
+      this.updateAppColorTransition(defaultTransition);
+    }
   };
 
   // Cycle background color
@@ -336,18 +356,31 @@ $(document).ready(function(){
   });
 
   modeButton.on("click", function(){
+    bg.updateAppColorTransition("500ms");
     appState.toggleMode();
+    setTimeout(function(){
+        bg.resetAppColorTransition();
+    }, 500);
   });
 
   randomButton.on('click', function(){
-    bg.cycleColor();
+    bg.updateAppColorTransition("500ms");
     if (!bg.allowCycling) {
-
+      colorPicker.click();
+    } else {
+      bg.cycleColor();
+      setTimeout(function(){
+        bg.resetAppColorTransition();
+      }, 500);
     }
   });
 
   randomButton.longpress(function(){
     bg.toggleColorMode();
+  });
+
+  colorPicker.on('change', function(){
+    bg.setPickedColor($(this).val());
   });
 
   body.mousemove(function(){

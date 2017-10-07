@@ -132,7 +132,7 @@ table {
   width: 100%;
   border: 1px solid white;
   padding: 10px;
-  transition: 4s border ease-in-out
+  transition: 4s border ease-in-out;
 }
 
 th {
@@ -197,4 +197,9 @@ td {
 
 #action-buttons i:hover {
   opacity: 0.5;
+}
+
+#color-picker {
+  position: absolute;
+  left: -200px;
 }
