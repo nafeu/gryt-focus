@@ -72,6 +72,9 @@ if (remoteStatus) {
 
 $(document).ready(function(){
 
+  if (Notification.permission !== "denied")
+    Notification.requestPermission();
+
   // DOM Selectors
   body = $("body");
   sectionA = $("#section-a");
@@ -218,11 +221,14 @@ $(document).ready(function(){
         }
         appState.alarmFlashStatus = !appState.alarmFlashStatus;
       }, 500);
+      issueAlarmNotification(contentTask.text());
+      document.title = "Session Complete! | GRYT Focus";
     },
 
     stopAlarm: function() {
       clearInterval(appState.alarmInterval);
       alarm.hide();
+      document.title = "GRYT Focus | Deep focus logger";
     },
 
     toggleMode: function() {
@@ -423,7 +429,31 @@ $(document).ready(function(){
     }
   });
 
+  function issueAlarmNotification(taskName) {
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notifications. Try Chromium.");
+    }
+    else if (Notification.permission === "granted") {
+      var notification = new Notification('Session Complete!', {
+        icon: 'http://nafeu.github.io/gryt-focus/assets/gryt-focus_notification.png',
+        body: taskName,
+      });
+      notification.onclick = function () {
+        appState.stopAlarm();
+        window.focus();
+      };
+    }
+    else if (Notification.permission !== "denied") {
+      Notification.requestPermission(function (permission) {
+        if (permission === "granted") {
+          issueAlarmNotification(taskName);
+        }
+      });
+    }
+  }
+
 });
+
 
 var themeColors = [
   "#455a64",
