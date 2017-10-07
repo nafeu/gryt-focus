@@ -13,17 +13,21 @@ catch(err) {
   console.log("Missing config file, please create config.js following sample-config.js format");
 }
 
-if (config && process.argv.length > 2) {
+if (config && process.argv.length > 3) {
 
-  appUrl = config.remote_app_url;
+  if (process.argv[2] === 'local') {
+    appUrl = config.local_app_url;
+  } else {
+    appUrl = config.remote_app_url;
+  }
 
   if (appUrl) {
 
     requestUrl = appUrl + "/api/interact";
     propertiesObject = {};
 
-    propertiesObject.action = process.argv[2];
-    if (process.argv[3]) propertiesObject.data = process.argv[3];
+    propertiesObject.action = process.argv[3];
+    if (process.argv[4]) propertiesObject.data = process.argv[4];
 
     request({url:requestUrl, qs:propertiesObject}, function(err, response, body) {
       if(err) { console.log(err); return; }

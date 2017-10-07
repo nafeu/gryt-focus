@@ -51,6 +51,7 @@ io.on('connection', function(socket){
 // ---------------------------------------------------------------------------
 
 app.get('/api/interact', function(req, res){
+  console.log(req.query.action);
   if (req.query.action) {
     switch(req.query.action) {
       case "task":
@@ -81,6 +82,9 @@ app.get('/api/interact', function(req, res){
         break;
       case "mode":
         io.emit("mode");
+        break;
+      case "reload":
+        io.emit("reload");
         break;
       default:
         break;

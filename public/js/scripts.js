@@ -68,6 +68,11 @@ if (remoteStatus) {
     appState.toggleMode();
   });
 
+  socket.on("reload", function() {
+    console.log("[ socket ] reload");
+    location.reload();
+  });
+
 }
 
 $(document).ready(function(){
