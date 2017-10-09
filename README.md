@@ -72,19 +72,27 @@ On your local machine, run `cp sample-config.js config.js`
 
 Modify the `local_app_url` and `remote_app_url` inside `config.js` accordingly.
 
-- `local_app_url` should point to your app url running locally
-- `remote_app_url` should point to your app running on your Raspberry Pi
+- `local_app_url` should point to your app url if you run it locally
+- `remote_app_url` should point to your app running anywhere else (ideally your Raspberry Pi)
   (Your remote\_app\_url must be accessible publicly or privately on LAN)
 
-Use `remote.js` to administer commands to the app running remotely:
+Use `send-command.js` to administer commands to the app running remotely or locally in the format:
+
+`node send-command.js [local | remote] [action] [argument]`
 
 ```
-node remote.js task "Work on a specific task"
-node remote.js toggle
-node remote.js interrupt
-node remote.js reset
-node remote.js snooze
-node remote.js mode
+node send-command.js remote task "Work on a specific task"
+node send-command.js remote toggle
+node send-command.js remote interrupt
+node send-command.js remote reset
+node send-command.js remote snooze
+node send-command.js remote mode
+```
+
+I suggest creating an alias like so:
+
+```
+alias gryt="node [PATH TO PROJECT DIRECTORY]/send-command.js remote"
 ```
 
 ### Development
