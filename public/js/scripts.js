@@ -1,464 +1,514 @@
+// -----------------------------------------------------------------------------
+// Globals
+// -----------------------------------------------------------------------------
+
+var DEFAULT_LENGTH_IN_MIN = 25,
+    DEFAULT_ACCENT_COLOR = "#1C2021",
+    DEFAULT_LIGHTING_MODE = "night",
+    DEFAULT_TRANSITION_TIME_IN_SECS = "4s",
+    DEFAULT_TEXT_PLACEHOLDER = "...",
+    DEFAULT_NUMBER_PLACEHOLDER = "---",
+    DEFAULT_DOCUMENT_TITLE = "GRYT Focus | Deep focus logger",
+    DEFAULT_ALARM_TITLE = "Session Complete! | GRYT Focus",
+    DEFAULT_LENGTH_OPTIONS = [25, 20, 15, 10, 5, 4, 3, 2, 1,
+                              60, 55, 50, 45, 40, 35, 30],
+    NOTIFICATION_ICON_URL = "http://nafeu.github.io/gryt-focus/assets/" +
+                            "gryt-focus_notification.png";
+
 var socket,
-    appState,
-    bg,
-    theme,
-    mode,
-    defaultLengthInMin = 25,
-    defaultDarkTone = '#1C2021',
-    defaultMode = 'night',
-    defaultTransition = '4s';
-    alarmChord = new Audio('assets/alarm-chord.wav');
+    app,
+    ui,
+    customTheme,
+    lightingMode,
+    timerLength = DEFAULT_LENGTH_IN_MIN,
+    alarmChord = new Audio("assets/alarm-chord.wav"),
+    remoteStatus = false;
+
+// -----------------------------------------------------------------------------
+// Configurations
+// -----------------------------------------------------------------------------
 
 moment().format();
 
-var remoteStatus = false;
 if ($.url().param("remote")) remoteStatus = true;
-if ($.url().param("theme")) theme = $.url().param("theme");
+if ($.url().param("theme")) customTheme = $.url().param("theme");
 if ($.url().param("mode")) {
-  mode = $.url().param("mode");
+  lightingMode = $.url().param("mode");
 } else {
-  mode = defaultMode;
+  lightingMode = DEFAULT_LIGHTING_MODE;
 }
 
-if (remoteStatus) {
+// -----------------------------------------------------------------------------
+// Socket Events
+// -----------------------------------------------------------------------------
 
-  console.log("Remote status is active...");
+if (remoteStatus) {
 
   socket = io({
     'reconnection': false
   });
 
   socket.on("task", function(data){
-    console.log("[ socket ] set-task : ", data);
-    appState.setTask(data);
-    appState.stopAlarm();
+    app.setTask(data);
+    app.stopAlarm();
   });
 
   socket.on("toggle", function(){
-    console.log("[ socket ] toggle-timer");
-    appState.toggleTimer();
-    appState.stopAlarm();
+    app.toggleTimer();
+    app.stopAlarm();
   });
 
   socket.on("reset", function() {
-    console.log("[ socket ] reset");
-    appState.reset();
-    appState.stopAlarm();
+    app.reset();
+    app.stopAlarm();
   });
 
   socket.on("interrupt", function() {
-    console.log("[ socket ] interrupt");
-    appState.interrupt();
-    appState.stopAlarm();
+    app.interrupt();
+    app.stopAlarm();
   });
 
   socket.on("length", function(data) {
-    console.log("[ socket ] length");
-    appState.setLength(data);
-    appState.stopAlarm();
+    app.setLength(data);
+    app.stopAlarm();
   });
 
   socket.on("snooze", function(data) {
-    console.log("[ socket ] snooze");
-    appState.stopAlarm();
+    app.stopAlarm();
   });
 
   socket.on("mode", function() {
-    console.log("[ socket ] mode");
-    appState.toggleMode();
+    app.toggleLightingMode();
   });
 
   socket.on("reload", function() {
-    console.log("[ socket ] reload");
     location.reload();
   });
 
 }
 
-$(document).ready(function(){
+// -----------------------------------------------------------------------------
+$(document).ready(function(){ // Document Ready - Start
+// -----------------------------------------------------------------------------
 
-  if (Notification.permission !== "denied")
-    Notification.requestPermission();
+if (Notification.permission !== "denied")
+  Notification.requestPermission();
 
-  // DOM Selectors
-  body = $("body");
-  sectionA = $("#section-a");
-  sectionB = $("#section-b");
-  sectionC = $("#section-c");
-  sectionAContainer = $("#section-a-container");
-  alarm = $("#alarm");
-  contentSession = $("#content-session");
-  contentLength = $("#content-length");
-  contentTime = $("#content-time");
-  contentInterrupts = $("#content-interrupts");
-  contentFocus = $("#content-focus");
-  contentTask = $("#content-task");
-  contentActive = $("#content-active");
-  contentLog = $("#content-log");
-  contentLogContainer = $("#content-log table");
-  logTable = $("#log-table");
-  toggle = $("#toggle");
-  actionButtons = $("#action-buttons");
-  activeButton = $("#active-button");
-  resetButton = $("#reset-button");
-  interruptButton = $("#interrupt-button");
-  modeButton = $("#mode-button");
-  randomButton = $("#random-button");
-  clockButton = $("#clock-button");
-  colorPicker = $("#color-picker");
+// -----------------------------------------------------------------------------
+// DOM Selections
+// -----------------------------------------------------------------------------
 
-  appState = {
-    interrupts: 0,
-    seconds: 0,
-    length: defaultLengthInMin * 60,
-    origLength: null,
-    active: false,
-    stopwatchInterval: null,
-    alarmStatus: false,
-    alarmFlashStatus: false,
-    alarmInterval: null,
-    mode: mode,
-    lengthOptionIndex: 0,
+var body = $("body"),
+    sectionA = $("#section-a"),
+    sectionB = $("#section-b"),
+    sectionC = $("#section-c"),
+    sectionAContainer = $("#section-a-container"),
+    alarm = $("#alarm"),
+    contentSession = $("#content-session"),
+    contentLength = $("#content-length"),
+    contentTime = $("#content-time"),
+    contentInterrupts = $("#content-interrupts"),
+    contentFocus = $("#content-focus"),
+    contentTask = $("#content-task"),
+    contentActive = $("#content-active"),
+    contentLog = $("#content-log"),
+    contentLogContainer = $("#content-log table"),
+    logTable = $("#log-table"),
+    toggle = $("#toggle"),
+    actionButtons = $("#action-buttons"),
+    activeButton = $("#active-button"),
+    resetButton = $("#reset-button"),
+    interruptButton = $("#interrupt-button"),
+    lightingModeButton = $("#mode-button"),
+    randomButton = $("#random-button"),
+    clockButton = $("#clock-button"),
+    colorPicker = $("#color-picker");
 
-    reset: function(){
-      var tr = $("<tr>")
-        .append('<td class="table-col-small">' + Math.round(appState.seconds/60) + '</td>')
-        .append('<td class="table-col-small">' + contentInterrupts.text() + '</td>')
-        .append('<td class="table-col-small">' + contentFocus.text() + '</td>')
-        .append('<td class="table-desc">' + contentTask.text() + '</td>');
+// -----------------------------------------------------------------------------
+// Application Logic
+// -----------------------------------------------------------------------------
 
-      if (contentSession.text() === "1") {
-        logTable.empty();
-      }
-      logTable.prepend(tr);
+app = {
+  interrupts: 0,
+  seconds: 0,
+  length: timerLength * 60,
+  lengthOptions: DEFAULT_LENGTH_OPTIONS,
+  lengthOptionIndex: 0,
+  active: false,
+  stopwatchInterval: null,
+  alarmStatus: false,
+  alarmFlashStatus: false,
+  alarmInterval: null,
+  lightingMode: lightingMode,
 
-      appState.interrupts = 0;
-      appState.seconds = 0;
-      appState.active = false;
-      appState.incrementSession();
-      clearInterval(appState.stopwatchInterval);
-      contentActive.text("Inactive");
-      contentTime.text("...");
-      contentTask.text("...");
-      contentFocus.text("...");
-      contentInterrupts.text("0");
-      appState.setLength(defaultLengthInMin);
-      activeButton.removeClass("fa-hourglass-start").addClass("fa-hourglass-end");
-      bg.stopCycle();
-    },
+  reset: function(){
+    var self = this;
+    var tr = $("<tr>")
+      .append('<td class="table-col-small">' + Math.round(app.seconds/60) + '</td>')
+      .append('<td class="table-col-small">' + contentInterrupts.text() + '</td>')
+      .append('<td class="table-col-small">' + contentFocus.text() + '</td>')
+      .append('<td class="table-desc">' + contentTask.text() + '</td>');
 
-    toggleTimer: function() {
-      if (!appState.active) {
-        bg.startCycle();
-        appState.setLength(defaultLengthInMin);
-        appState.active = true;
-        contentActive.text("Active");
-        appState.stopwatchInterval = setInterval(function(){
-          appState.seconds++;
-          appState.length--;
-          contentTime.text(moment.utc(appState.seconds*1000).format('HH:mm:ss'));
-          contentLength.text(Math.ceil(appState.length / 60));
-          contentFocus.text(function(){
-            var focus = Math.round((1 - (appState.interrupts / (appState.seconds/60)))*100);
-            if ((focus < 0) || appState.seconds < 60) {
-              return "---";
-            } else {
-              return focus + "%";
-            }
-          });
-          if (appState.length < 1) {
-            contentLength.text(defaultLengthInMin);
-            appState.toggleTimer();
-            appState.startAlarm();
+    if (contentSession.text() === "1") {
+      logTable.empty();
+    }
+    logTable.prepend(tr);
+
+    this.interrupts = 0;
+    this.seconds = 0;
+    this.active = false;
+    this.incrementSession();
+    clearInterval(this.stopwatchInterval);
+    contentActive.text("Inactive");
+    contentTime.text(DEFAULT_TEXT_PLACEHOLDER);
+    contentTask.text(DEFAULT_TEXT_PLACEHOLDER);
+    contentFocus.text(DEFAULT_TEXT_PLACEHOLDER);
+    contentInterrupts.text("0");
+    this.setLength(timerLength);
+    activeButton.removeClass("fa-hourglass-start").addClass("fa-hourglass-end");
+    ui.stopCycle();
+  },
+
+  toggleTimer: function() {
+    var self = this;
+
+    if (!self.active) {
+      ui.startCycle();
+      self.setLength(timerLength);
+      self.active = true;
+      contentActive.text("Active");
+      self.stopwatchInterval = setInterval(function(){
+        self.seconds++;
+        self.length--;
+        contentTime.text(moment.utc(self.seconds*1000).format('HH:mm:ss'));
+        contentLength.text(Math.ceil(self.length / 60));
+        contentFocus.text(function(){
+          var focus = Math.round((1 - (self.interrupts / (self.seconds/60)))*100);
+          if ((focus < 0) || self.seconds < 60) {
+            return DEFAULT_NUMBER_PLACEHOLDER;
+          } else {
+            return focus + "%";
           }
-        }, 1000);
-        activeButton.removeClass("fa-hourglass-end").addClass("fa-hourglass-start");
-      } else {
-        bg.stopCycle();
-        clearInterval(appState.stopwatchInterval);
-        appState.active = false;
-        contentActive.text("Paused");
-        activeButton.removeClass("fa-hourglass-start").addClass("fa-hourglass-end");
-      }
-    },
-
-    interrupt: function() {
-      contentInterrupts.text(parseInt(contentInterrupts.text()) + 1);
-      appState.interrupts++;
-    },
-
-    incrementSession: function() {
-      contentSession.text(parseInt(contentSession.text()) + 1);
-    },
-
-    setTask: function(task) {
-      contentTask.text(task);
-    },
-
-    setLength: function(length) {
-      confirmedLength = parseInt(length) || defaultLengthInMin;
-      if (confirmedLength < 1) {
-        confirmedLength = 1;
-      }
-      if (appState.active) {
-        appState.toggleTimer();
-      }
-      contentLength.text(confirmedLength);
-      appState.length = confirmedLength * 60;
-      defaultLengthInMin = confirmedLength;
-    },
-
-    startAlarm: function(){
-      alarm.show();
-      alarmChord.play();
-      appState.alarmInterval = setInterval(function(){
-        if (appState.alarmFlashStatus) {
-          alarm.css({
-            "color": "black",
-            "background-color": "white"
-          });
-          alarmChord.play();
-        } else {
-          alarm.css({
-            "color": "white",
-            "background-color": "black"
-          });
+        });
+        if (self.length < 1) {
+          contentLength.text(timerLength);
+          self.toggleTimer();
+          self.startAlarm();
         }
-        appState.alarmFlashStatus = !appState.alarmFlashStatus;
-      }, 500);
-      issueAlarmNotification(contentTask.text());
-      document.title = "Session Complete! | GRYT Focus";
-    },
-
-    stopAlarm: function() {
-      clearInterval(appState.alarmInterval);
-      alarm.hide();
-      document.title = "GRYT Focus | Deep focus logger";
-    },
-
-    toggleMode: function() {
-      if (appState.mode === 'night') {
-        modeButton.removeClass("fa-moon-o").addClass("fa-sun-o");
-        appState.mode = 'day';
-      } else {
-        modeButton.removeClass("fa-sun-o").addClass("fa-moon-o");
-        appState.mode = 'night';
-      }
-      bg.invertColor();
-    },
-
-    toggleLength: function() {
-      var options = [25, 20, 15, 10, 5, 4, 3, 2, 1, 60, 55, 50, 45, 40, 35, 30];
-      if (appState.lengthOptionIndex === options.length - 1) {
-        appState.lengthOptionIndex = 0;
-      } else {
-        appState.lengthOptionIndex++;
-      }
-      appState.setLength(options[appState.lengthOptionIndex]);
-    },
-
-    pauseTimer: function(){
-      if (appState.active) {
-        appState.toggleTimer();
-      }
-    }
-
-  };
-
-  body.fadeIn();
-  contentLength.text(defaultLengthInMin);
-  alarm.css('height', $(window).height());
-
-  $(window).resize(function(){
-    alarm.css('height', $(window).height());
-  });
-
-  bg = {
-    interval: null,
-    allowCycling: true,
-    currentThemeColor: null,
-    currentAccentColor: null,
-    getNextColor: function(){
-      return themeColors[Math.floor(Math.random()*themeColors.length)];
-    },
-    cycleColor: function() {
-      if (this.allowCycling) {
-        if (appState.mode === 'night') {
-          this.currentThemeColor = theme || this.getNextColor();
-          this.currentAccentColor = defaultDarkTone;
-        } else {
-          this.currentThemeColor = defaultDarkTone;
-          this.currentAccentColor = theme || this.getNextColor();
-        }
-        bg.setAppColors(this.currentThemeColor, this.currentAccentColor);
-      }
-    },
-    invertColor: function() {
-      var origThemeColor = this.currentThemeColor;
-      this.currentThemeColor = this.currentAccentColor;
-      this.currentAccentColor = origThemeColor;
-      bg.setAppColors(this.currentThemeColor, this.currentAccentColor);
-    },
-    startCycle: function() {
-      bg.cycleColor();
-      this.interval = setInterval(function(){
-        bg.cycleColor();
-      }, 10000);
-    },
-    stopCycle: function() {
-      this.currentColorIdx = 0;
-      bg.cycleColor();
-      clearInterval(this.interval);
-    },
-    setAppColors: function(theme, accent) {
-      sectionA.css({"color": theme});
-      sectionAContainer.css("background-color", accent);
-      sectionB.css({"background-color": theme, "color": accent});
-      sectionC.css({"background-color": accent, "color": theme});
-      contentLogContainer.css("border-color", theme);
-      actionButtons.css({"color": theme});
-    },
-    setPickedColor: function(color) {
-      if (appState.mode === 'night') {
-        this.currentThemeColor = color;
-      } else {
-        this.currentAccentColor = color;
-      }
-      this.setAppColors(this.currentThemeColor, this.currentAccentColor);
-    },
-    toggleColorMode: function(){
-      this.allowCycling = !this.allowCycling;
-      if (this.allowCycling) {
-        randomButton.removeClass("fa-eyedropper").addClass("fa-random");
-      } else {
-        randomButton.removeClass("fa-random").addClass("fa-eyedropper");
-      }
-    },
-    updateAppColorTransition: function(transition) {
-      sectionA.css('transition', transition + " all ease-in-out");
-      sectionAContainer.css('transition', transition + " all ease-in-out");
-      sectionB.css('transition', transition + " all ease-in-out");
-      sectionC.css('transition', transition + " all ease-in-out");
-      contentLogContainer.css('transition', transition + " border ease-in-out");
-      actionButtons.css('transition', transition + " all ease-in-out");
-    },
-    resetAppColorTransition: function(){
-      this.updateAppColorTransition(defaultTransition);
-    }
-  };
-
-  // Cycle background color
-  bg.cycleColor();
-
-  // Keyboard/Click Events
-  activeButton.click(function(){
-    appState.toggleTimer();
-  });
-
-  resetButton.longpress(function(){
-    appState.reset();
-  });
-
-  contentTask.keypress(function(e) {
-    if(e.which == 13 && !e.shiftKey) {
-      appState.toggleTimer();
-      $(this).blur();
-    }
-  });
-
-  contentTask.on('focus', function(){
-    if ($(this).text() === "...") {
-      $(this).text("");
-    }
-  });
-
-  contentSession.on("click", function(){
-    appState.incrementSession();
-  });
-
-  interruptButton.on("click", function(){
-    appState.interrupt();
-  });
-
-  modeButton.on("click", function(){
-    bg.updateAppColorTransition("500ms");
-    appState.toggleMode();
-    setTimeout(function(){
-        bg.resetAppColorTransition();
-    }, 500);
-  });
-
-  randomButton.on('click', function(){
-    bg.updateAppColorTransition("500ms");
-    if (!bg.allowCycling) {
-      colorPicker.click();
+      }, 1000);
+      activeButton
+        .removeClass("fa-hourglass-end")
+        .addClass("fa-hourglass-start");
     } else {
-      bg.cycleColor();
-      setTimeout(function(){
-        bg.resetAppColorTransition();
-      }, 500);
+      ui.stopCycle();
+      clearInterval(self.stopwatchInterval);
+      self.active = false;
+      contentActive.text("Paused");
+      activeButton
+        .removeClass("fa-hourglass-start")
+        .addClass("fa-hourglass-end");
     }
-  });
+  },
 
-  randomButton.longpress(function(){
-    bg.toggleColorMode();
-  });
+  interrupt: function() {
+    contentInterrupts.text(parseInt(contentInterrupts.text()) + 1);
+    this.interrupts++;
+  },
 
-  colorPicker.on('change', function(){
-    bg.setPickedColor($(this).val());
-  });
+  incrementSession: function() {
+    contentSession.text(parseInt(contentSession.text()) + 1);
+  },
 
-  body.mousemove(function(){
-    appState.stopAlarm();
-  });
+  setTask: function(task) {
+    contentTask.text(task);
+  },
 
-  clockButton.on('click', function(){
-    appState.pauseTimer();
-    appState.toggleLength();
-  });
+  setLength: function(length) {
+    timerLength = parseInt(length) || timerLength;
 
-  contentLength.on('click', function(){
-    appState.pauseTimer();
-    $(this).attr('contenteditable', 'true');
-    $(this).focus();
-  });
-
-  contentLength.on('blur', function(){
-    $(this).attr('contenteditable', 'false');
-    appState.setLength($(this).text());
-  });
-
-  contentLength.keypress(function(e){
-    if (e.which == 13) {
-      $(this).blur();
+    if (timerLength < 1) {
+      timerLength = 1;
     }
-  });
+    if (this.active) {
+      this.toggleTimer();
+    }
+    this.length = timerLength * 60;
+    contentLength.text(timerLength);
+  },
 
-  function issueAlarmNotification(taskName) {
-    if (!("Notification" in window)) {
-      alert("This browser does not support desktop notifications. Try Chromium.");
+  startAlarm: function(){
+    var self = this;
+
+    alarm.show();
+    alarmChord.play();
+    self.alarmInterval = setInterval(function(){
+      if (self.alarmFlashStatus) {
+        alarm.css({
+          "color": "black",
+          "background-color": "white"
+        });
+        alarmChord.play();
+      } else {
+        alarm.css({
+          "color": "white",
+          "background-color": "black"
+        });
+      }
+      self.alarmFlashStatus = !self.alarmFlashStatus;
+    }, 500);
+    issueAlarmNotification(contentTask.text());
+    document.title = DEFAULT_ALARM_TITLE;
+  },
+
+  stopAlarm: function() {
+    clearInterval(this.alarmInterval);
+    alarm.hide();
+    document.title = DEFAULT_DOCUMENT_TITLE;
+  },
+
+  toggleLightingMode: function() {
+    if (this.lightingMode === 'night') {
+      lightingModeButton.removeClass("fa-moon-o").addClass("fa-sun-o");
+      this.lightingMode = 'day';
+    } else {
+      lightingModeButton.removeClass("fa-sun-o").addClass("fa-moon-o");
+      this.lightingMode = 'night';
     }
-    else if (Notification.permission === "granted") {
-      var notification = new Notification('Session Complete!', {
-        icon: 'http://nafeu.github.io/gryt-focus/assets/gryt-focus_notification.png',
-        body: taskName,
-      });
-      notification.onclick = function () {
-        appState.stopAlarm();
-        window.focus();
-      };
+    ui.invertColor();
+  },
+
+  toggleLength: function() {
+    var self = this;
+    if (self.lengthOptionIndex === self.lengthOptions.length - 1) {
+      self.lengthOptionIndex = 0;
+    } else {
+      self.lengthOptionIndex++;
     }
-    else if (Notification.permission !== "denied") {
-      Notification.requestPermission(function (permission) {
-        if (permission === "granted") {
-          issueAlarmNotification(taskName);
-        }
-      });
+    self.setLength(self.lengthOptions[self.lengthOptionIndex]);
+  },
+
+  pauseTimer: function(){
+    if (this.active) {
+      this.toggleTimer();
     }
   }
+};
 
+ui = {
+  interval: null,
+  allowCycling: true,
+  currentThemeColor: null,
+  currentAccentColor: null,
+
+  getNextColor: function(){
+    return themeColors[Math.floor(Math.random()*themeColors.length)];
+  },
+
+  cycleColor: function() {
+    if (this.allowCycling) {
+      if (app.lightingMode === 'night') {
+        this.currentThemeColor = customTheme || this.getNextColor();
+        this.currentAccentColor = DEFAULT_ACCENT_COLOR;
+      } else {
+        this.currentThemeColor = DEFAULT_ACCENT_COLOR;
+        this.currentAccentColor = customTheme || this.getNextColor();
+      }
+      ui.setAppColors(this.currentThemeColor, this.currentAccentColor);
+    }
+  },
+
+  invertColor: function() {
+    var origThemeColor = this.currentThemeColor;
+    this.currentThemeColor = this.currentAccentColor;
+    this.currentAccentColor = origThemeColor;
+    ui.setAppColors(this.currentThemeColor, this.currentAccentColor);
+  },
+
+  startCycle: function() {
+    ui.cycleColor();
+    this.interval = setInterval(function(){
+      ui.cycleColor();
+    }, 10000);
+  },
+
+  stopCycle: function() {
+    this.currentColorIdx = 0;
+    ui.cycleColor();
+    clearInterval(this.interval);
+  },
+
+  setAppColors: function(theme, accent) {
+    sectionA.css({"color": theme});
+    sectionAContainer.css("background-color", accent);
+    sectionB.css({"background-color": theme, "color": accent});
+    sectionC.css({"background-color": accent, "color": theme});
+    contentLogContainer.css("border-color", theme);
+    actionButtons.css({"color": theme});
+  },
+
+  setPickedColor: function(color) {
+    if (app.lightingMode === 'night') {
+      this.currentThemeColor = color;
+    } else {
+      this.currentAccentColor = color;
+    }
+    this.setAppColors(this.currentThemeColor, this.currentAccentColor);
+  },
+
+  toggleColorMode: function(){
+    this.allowCycling = !this.allowCycling;
+    if (this.allowCycling) {
+      randomButton.removeClass("fa-eyedropper").addClass("fa-random");
+    } else {
+      randomButton.removeClass("fa-random").addClass("fa-eyedropper");
+    }
+  },
+
+  updateAppColorTransition: function(transition) {
+    sectionA.css('transition', transition + " all ease-in-out");
+    sectionAContainer.css('transition', transition + " all ease-in-out");
+    sectionB.css('transition', transition + " all ease-in-out");
+    sectionC.css('transition', transition + " all ease-in-out");
+    contentLogContainer.css('transition', transition + " border ease-in-out");
+    actionButtons.css('transition', transition + " all ease-in-out");
+  },
+
+  resetAppColorTransition: function(){
+    this.updateAppColorTransition(DEFAULT_TRANSITION_TIME_IN_SECS);
+  }
+};
+
+function main() {
+  body.fadeIn();
+  contentLength.text(timerLength);
+  alarm.css('height', $(window).height());
+}
+
+main();
+
+// -----------------------------------------------------------------------------
+// Event Handlers
+// -----------------------------------------------------------------------------
+
+$(window).resize(function(){
+  alarm.css('height', $(window).height());
 });
 
+ui.cycleColor();
+
+activeButton.click(function(){
+  app.toggleTimer();
+});
+
+resetButton.longpress(function(){
+  app.reset();
+});
+
+contentTask.keypress(function(e) {
+  if(e.which == 13 && !e.shiftKey) {
+    app.toggleTimer();
+    $(this).blur();
+  }
+});
+
+contentTask.on('focus', function(){
+  if ($(this).text() === DEFAULT_TEXT_PLACEHOLDER) {
+    $(this).text("");
+  }
+});
+
+contentSession.on("click", function(){
+  app.incrementSession();
+});
+
+interruptButton.on("click", function(){
+  app.interrupt();
+});
+
+lightingModeButton.on("click", function(){
+  ui.updateAppColorTransition("500ms");
+  app.toggleLightingMode();
+  setTimeout(function(){
+      ui.resetAppColorTransition();
+  }, 500);
+});
+
+randomButton.on('click', function(){
+  ui.updateAppColorTransition("500ms");
+  if (!ui.allowCycling) {
+    colorPicker.click();
+  } else {
+    ui.cycleColor();
+    setTimeout(function(){
+      ui.resetAppColorTransition();
+    }, 500);
+  }
+});
+
+randomButton.longpress(function(){
+  ui.toggleColorMode();
+});
+
+colorPicker.on('change', function(){
+  ui.setPickedColor($(this).val());
+});
+
+body.mousemove(function(){
+  app.stopAlarm();
+});
+
+clockButton.on('click', function(){
+  app.pauseTimer();
+  app.toggleLength();
+});
+
+contentLength.on('click', function(){
+  app.pauseTimer();
+  $(this).attr('contenteditable', 'true');
+  $(this).focus();
+});
+
+contentLength.on('blur', function(){
+  $(this).attr('contenteditable', 'false');
+  app.setLength($(this).text());
+});
+
+contentLength.keypress(function(e){
+  if (e.which == 13) {
+    $(this).blur();
+  }
+});
+
+// -----------------------------------------------------------------------------
+// Helpers
+// -----------------------------------------------------------------------------
+
+function issueAlarmNotification(taskName) {
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notifications. Try Chromium.");
+  }
+  else if (Notification.permission === "granted") {
+    var notification = new Notification('Session Complete!', {
+      icon: NOTIFICATION_ICON_URL,
+      body: taskName,
+    });
+    notification.onclick = function () {
+      app.stopAlarm();
+      window.focus();
+    };
+  }
+  else if (Notification.permission !== "denied") {
+    Notification.requestPermission(function (permission) {
+      if (permission === "granted") {
+        issueAlarmNotification(taskName);
+      }
+    });
+  }
+}
+
+// -----------------------------------------------------------------------------
+}); // Document Ready - End
+// -----------------------------------------------------------------------------
 
 var themeColors = [
   "#455a64",
