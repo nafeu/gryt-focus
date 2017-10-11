@@ -215,12 +215,12 @@ td {
 
 #footer {
   position: fixed;
-  height: 20px;
+  height: 25px;
   bottom: 0px;
   left: 0px;
-  right: 10px;
+  right: 15px;
   margin-bottom: 0px;
   text-align: right;
-  font-size: 1.25vmin;
+  font-size: 1.2vmin;
   transition: 4s all ease-in-out;
 }
