@@ -129,15 +129,26 @@ var body = $("body"),
     logTable = $("#log-table"),
     toggle = $("#toggle"),
     actionButtons = $("#action-buttons"),
+    actionTip = $("#action-tip"),
     activeButton = $("#active-button"),
     resetButton = $("#reset-button"),
     interruptButton = $("#interrupt-button"),
-    lightingModeButton = $("#mode-button"),
+    lightingModeButton = $("#lighting-mode-button"),
     randomButton = $("#random-button"),
     clockButton = $("#clock-button"),
     colorPicker = $("#color-picker"),
     footer = $("#footer"),
     lanInfo = $("#lan-info");
+
+var actionTips = [
+  {"element": contentTask, "text": "Enter or edit the task to work on."},
+  {"element": activeButton, "text": "Click to start or stop the timer."},
+  {"element": clockButton, "text": "Click to change the timer length."},
+  {"element": interruptButton, "text": "Click to log an interruption."},
+  {"element": resetButton, "text": "Hold to save this task in log and reset."},
+  {"element": randomButton, "text": "Click to switch color. Hold to set specific color."},
+  {"element": lightingModeButton,"text": "Click to change lighting mode (night or day)."}
+];
 
 // -----------------------------------------------------------------------------
 // Application Logic
@@ -306,7 +317,7 @@ app = {
     self.setLength(self.lengthOptions[self.lengthOptionIndex]);
   },
 
-  pauseTimer: function(){
+  pauseTimer: function() {
     if (this.active) {
       this.toggleTimer();
     }
@@ -314,6 +325,14 @@ app = {
 
   showLanAddress: function(address) {
     lanInfo.text("Running at " + address + " | ");
+  },
+
+  setActionTip: function(text) {
+    actionTip.text(text);
+  },
+
+  resetActionTip: function() {
+    actionTip.text("");
   },
 
 };
@@ -505,6 +524,15 @@ contentLength.keypress(function(e){
   if (e.which == 13) {
     $(this).blur();
   }
+});
+
+actionTips.forEach(function(action){
+  action.element.on('mouseenter', function(){
+    app.setActionTip(action.text);
+  });
+  action.element.on('mouseleave', function(){
+    app.resetActionTip();
+  });
 });
 
 // -----------------------------------------------------------------------------
