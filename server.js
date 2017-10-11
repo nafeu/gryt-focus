@@ -1,9 +1,11 @@
+var os = require('os');
 var express = require('express');
 var app = express();
 var http = require('http');
 var server = require('http').Server(app);
 var bodyParser = require('body-parser');
 var io = require('socket.io')(server);
+var ifaces = os.networkInterfaces();
 
 try {
   var config = require('./config');
@@ -16,8 +18,10 @@ catch (err) {
 // Configuration
 // ---------------------------------------------------------------------------
 
+var port = process.env.PORT || 8000;
+
 // Server
-server.listen(process.env.PORT || 8000, function(){
+server.listen(port, function(){
   console.log('[ server.js ] Listening on port ' + server.address().port);
 });
 
@@ -32,6 +36,12 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/public'));
 
+var lanAddressInfo = getLanAddressInfo(port);
+
+if (lanAddressInfo) {
+  console.log("Accessible via LAN at: ", lanAddressInfo);
+}
+
 // ---------------------------------------------------------------------------
 // Socket Event Listeners
 // ---------------------------------------------------------------------------
@@ -43,6 +53,10 @@ io.on('connection', function(socket){
   socket.on('disconnect', function(){
     console.log(socket.id + " disconnected...");
   });
+
+  if (lanAddressInfo) {
+    io.emit('lan', lanAddressInfo);
+  }
 
 });
 
@@ -94,5 +108,36 @@ app.get('/api/interact', function(req, res){
     res.status(400).send('Invalid query vars.');
   }
 });
+
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+function getLanAddressInfo(port){
+  var out = {
+    addresses: [],
+    port: port
+  };
+
+  Object.keys(ifaces).forEach(function (ifname) {
+    var alias = 0;
+
+    ifaces[ifname].forEach(function (iface) {
+      if ('IPv4' !== iface.family ||
+          iface.internal !== false) {
+        return;
+      }
+
+      if (alias >= 1) {
+        out.addresses.push(alias + " " + iface.address);
+      } else {
+        out.addresses.push(iface.address);
+      }
+      ++alias;
+    });
+  });
+
+  return out;
+}
 
 module.exports = app;
