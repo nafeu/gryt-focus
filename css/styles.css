@@ -7,6 +7,15 @@ body {
   overflow: hidden;
 }
 
+a, a:visited, a:hover, a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 textarea:focus, input:focus{
     outline: none;
 }
@@ -202,4 +211,16 @@ td {
 #color-picker {
   position: absolute;
   left: -200px;
+}
+
+#footer {
+  position: fixed;
+  height: 20px;
+  bottom: 0px;
+  left: 0px;
+  right: 10px;
+  margin-bottom: 0px;
+  text-align: right;
+  font-size: 1.25vmin;
+  transition: 4s all ease-in-out;
 }

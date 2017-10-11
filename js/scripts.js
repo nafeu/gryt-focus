@@ -131,7 +131,8 @@ var body = $("body"),
     lightingModeButton = $("#mode-button"),
     randomButton = $("#random-button"),
     clockButton = $("#clock-button"),
-    colorPicker = $("#color-picker");
+    colorPicker = $("#color-picker"),
+    footer = $("#footer");
 
 // -----------------------------------------------------------------------------
 // Application Logic
@@ -357,6 +358,7 @@ ui = {
     sectionC.css({"background-color": accent, "color": theme});
     contentLogContainer.css("border-color", theme);
     actionButtons.css({"color": theme});
+    footer.css({"color": theme});
   },
 
   setPickedColor: function(color) {
@@ -385,8 +387,9 @@ ui = {
     sectionAContainer.css('transition', sectionTransition);
     sectionB.css('transition', sectionTransition);
     sectionC.css('transition', sectionTransition);
-    actionButtons.css('transition', sectionTransition);
     contentLogContainer.css('transition', borderTransition);
+    actionButtons.css('transition', sectionTransition);
+    footer.css('transition', sectionTransition);
   },
 
   resetAppColorTransition: function(){
