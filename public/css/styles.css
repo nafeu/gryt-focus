@@ -202,10 +202,16 @@ td {
   color: white;
   cursor: pointer;
   transition: 4s color ease-in-out;
+  text-align: right;
 }
 
 #action-buttons i:hover {
   opacity: 0.5;
+}
+
+#action-tip {
+  font-size: 1.25vmin;
+  padding-top: 10px;
 }
 
 #color-picker {
