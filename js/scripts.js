@@ -19,6 +19,8 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     ICON_PAUSED = "fa-hourglass-end",
     ICON_LIGHTING_MODE_NIGHT = "fa-moon-o",
     ICON_LIGHTING_MODE_DAY = "fa-sun-o",
+    ICON_FULLSCREEN_EXPAND = "fa-expand",
+    ICON_FULLSCREEN_COMPRESS = "fa-compress",
     COLOR_BLACK = "#000000",
     COLOR_WHITE = "#FFFFFF",
     LIGHTING_MODE_NIGHT = 'night',
@@ -135,6 +137,7 @@ var body = $("body"),
     resetButton = $("#reset-button"),
     interruptButton = $("#interrupt-button"),
     lightingModeButton = $("#lighting-mode-button"),
+    fullscreenButton = $("#fullscreen-button"),
     randomButton = $("#random-button"),
     clockButton = $("#clock-button"),
     colorPicker = $("#color-picker"),
@@ -148,7 +151,8 @@ var actionTips = [
   {"element": interruptButton, "text": "Click to log an interruption."},
   {"element": resetButton, "text": "Hold to save this task in log and reset."},
   {"element": randomButton, "text": "Click to switch color. Hold to set specific color."},
-  {"element": lightingModeButton,"text": "Click to change lighting mode (night or day)."}
+  {"element": lightingModeButton, "text": "Click to change lighting mode (night or day)."},
+  {"element": fullscreenButton, "text": "Click to toggle full-screen mode."}
 ];
 
 // -----------------------------------------------------------------------------
@@ -340,6 +344,39 @@ app = {
     this.pauseTimer();
     contentLength.attr('contenteditable', 'true');
     contentLength.focus();
+  },
+
+  toggleFullscreen: function() {
+    if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+        (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+      if (document.documentElement.requestFullScreen) {
+        document
+          .documentElement
+          .requestFullScreen();
+      } else if (document.documentElement.mozRequestFullScreen) {
+        document
+          .documentElement
+          .mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullScreen) {
+        document
+          .documentElement
+          .webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+      }
+      fullscreenButton
+        .removeClass(ICON_FULLSCREEN_EXPAND)
+        .addClass(ICON_FULLSCREEN_COMPRESS);
+    } else {
+      if (document.cancelFullScreen) {
+        document.cancelFullScreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+      }
+      fullscreenButton
+        .removeClass(ICON_FULLSCREEN_COMPRESS)
+        .addClass(ICON_FULLSCREEN_EXPAND);
+    }
   }
 
 };
@@ -533,6 +570,11 @@ contentLength.keypress(function(e){
   if (e.which == 13) {
     $(this).blur();
   }
+});
+
+fullscreenButton.on('click', function(){
+  console.log("CLICKED...");
+  app.toggleFullscreen();
 });
 
 actionTips.forEach(function(action){
