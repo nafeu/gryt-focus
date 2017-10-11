@@ -22,7 +22,8 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     COLOR_BLACK = "#000000",
     COLOR_WHITE = "#FFFFFF",
     LIGHTING_MODE_NIGHT = 'night',
-    LIGHTING_MODE_DAY = 'day';
+    LIGHTING_MODE_DAY = 'day',
+    KEYCODE_ENTER = 13;
 
 var socket,
     app,
@@ -143,7 +144,7 @@ var body = $("body"),
 var actionTips = [
   {"element": contentTask, "text": "Enter or edit the task to work on."},
   {"element": activeButton, "text": "Click to start or stop the timer."},
-  {"element": clockButton, "text": "Click to change the timer length."},
+  {"element": clockButton, "text": "Double-click to change the timer length. Hold to set manually."},
   {"element": interruptButton, "text": "Click to log an interruption."},
   {"element": resetButton, "text": "Hold to save this task in log and reset."},
   {"element": randomButton, "text": "Click to switch color. Hold to set specific color."},
@@ -335,6 +336,12 @@ app = {
     actionTip.text("");
   },
 
+  manuallySetTimerLength: function() {
+    this.pauseTimer();
+    contentLength.attr('contenteditable', 'true');
+    contentLength.focus();
+  }
+
 };
 
 ui = {
@@ -399,7 +406,7 @@ ui = {
     this.setAppColors(this.currentThemeColor, this.currentAccentColor);
   },
 
-  toggleColorMode: function(){
+  toggleColorMode: function() {
     this.allowCycling = !this.allowCycling;
     if (this.allowCycling) {
       randomButton.removeClass("fa-eyedropper").addClass("fa-random");
@@ -421,9 +428,10 @@ ui = {
     footer.css('transition', sectionTransition);
   },
 
-  resetAppColorTransition: function(){
+  resetAppColorTransition: function() {
     this.updateAppColorTransition(DEFAULT_TRANSITION_TIME_IN_SECS);
-  }
+  },
+
 };
 
 function main() {
@@ -452,8 +460,7 @@ resetButton.longpress(function(){
 });
 
 contentTask.keypress(function(e) {
-  if(e.which == 13 && !e.shiftKey) {
-    app.toggleTimer();
+  if(e.which == KEYCODE_ENTER && !e.shiftKey) {
     $(this).blur();
   }
 });
@@ -504,15 +511,17 @@ body.mousemove(function(){
   app.stopAlarm();
 });
 
-clockButton.on('click', function(){
+clockButton.dblclick('click', function(){
   app.pauseTimer();
   app.toggleLength();
 });
 
+clockButton.longpress(function(){
+  app.manuallySetTimerLength();
+});
+
 contentLength.on('click', function(){
-  app.pauseTimer();
-  $(this).attr('contenteditable', 'true');
-  $(this).focus();
+  app.manuallySetTimerLength(true);
 });
 
 contentLength.on('blur', function(){
