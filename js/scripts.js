@@ -57,6 +57,10 @@ if (remoteStatus) {
     'reconnection': false
   });
 
+  socket.on("lan", function(data){
+    app.showLanAddress(data.addresses[0] + ":" + data.port);
+  });
+
   socket.on("task", function(data){
     app.setTask(data);
     app.stopAlarm();
@@ -132,7 +136,8 @@ var body = $("body"),
     randomButton = $("#random-button"),
     clockButton = $("#clock-button"),
     colorPicker = $("#color-picker"),
-    footer = $("#footer");
+    footer = $("#footer"),
+    lanInfo = $("#lan-info");
 
 // -----------------------------------------------------------------------------
 // Application Logic
@@ -305,7 +310,12 @@ app = {
     if (this.active) {
       this.toggleTimer();
     }
-  }
+  },
+
+  showLanAddress: function(address) {
+    lanInfo.text("Running at " + address + " | ");
+  },
+
 };
 
 ui = {
@@ -498,6 +508,10 @@ contentLength.keypress(function(e){
 });
 
 // -----------------------------------------------------------------------------
+}); // Document Ready - End
+// -----------------------------------------------------------------------------
+
+// -----------------------------------------------------------------------------
 // Helpers
 // -----------------------------------------------------------------------------
 
@@ -523,10 +537,6 @@ function issueAlarmNotification(taskName) {
     });
   }
 }
-
-// -----------------------------------------------------------------------------
-}); // Document Ready - End
-// -----------------------------------------------------------------------------
 
 var themeColors = [
   "#455a64",
