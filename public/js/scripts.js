@@ -6,14 +6,23 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     DEFAULT_ACCENT_COLOR = "#1C2021",
     DEFAULT_LIGHTING_MODE = "night",
     DEFAULT_TRANSITION_TIME_IN_SECS = "4s",
-    DEFAULT_TEXT_PLACEHOLDER = "...",
-    DEFAULT_NUMBER_PLACEHOLDER = "---",
     DEFAULT_DOCUMENT_TITLE = "GRYT Focus | Deep focus logger",
-    DEFAULT_ALARM_TITLE = "Session Complete! | GRYT Focus",
-    DEFAULT_LENGTH_OPTIONS = [25, 20, 15, 10, 5, 4, 3, 2, 1,
-                              60, 55, 50, 45, 40, 35, 30],
-    NOTIFICATION_ICON_URL = "http://nafeu.github.io/gryt-focus/assets/" +
-                            "gryt-focus_notification.png";
+    TEXT_PLACEHOLDER = "...",
+    NUMBER_PLACEHOLDER = "---",
+    ALARM_DOCUMENT_TITLE = "Session Complete! | GRYT Focus",
+    LENGTH_OPTIONS = [25, 20, 15, 10, 5, 4, 3, 2, 1,
+                      60, 55, 50, 45, 40, 35, 30],
+    NOTIFICATION_IMG_URL = "http://nafeu.github.io/gryt-focus/assets/" +
+                            "gryt-focus_notification.png",
+    NOTIFICATION_TITLE = "Session Complete!",
+    ICON_ACTIVE = "fa-hourglass-start",
+    ICON_PAUSED = "fa-hourglass-end",
+    ICON_LIGHTING_MODE_NIGHT = "fa-moon-o",
+    ICON_LIGHTING_MODE_DAY = "fa-sun-o",
+    COLOR_BLACK = "#000000",
+    COLOR_WHITE = "#FFFFFF",
+    LIGHTING_MODE_NIGHT = 'night',
+    LIGHTING_MODE_DAY = 'day';
 
 var socket,
     app,
@@ -132,7 +141,7 @@ app = {
   interrupts: 0,
   seconds: 0,
   length: timerLength * 60,
-  lengthOptions: DEFAULT_LENGTH_OPTIONS,
+  lengthOptions: LENGTH_OPTIONS,
   lengthOptionIndex: 0,
   active: false,
   stopwatchInterval: null,
@@ -160,12 +169,12 @@ app = {
     this.incrementSession();
     clearInterval(this.stopwatchInterval);
     contentActive.text("Inactive");
-    contentTime.text(DEFAULT_TEXT_PLACEHOLDER);
-    contentTask.text(DEFAULT_TEXT_PLACEHOLDER);
-    contentFocus.text(DEFAULT_TEXT_PLACEHOLDER);
+    contentTime.text(TEXT_PLACEHOLDER);
+    contentTask.text(TEXT_PLACEHOLDER);
+    contentFocus.text(TEXT_PLACEHOLDER);
     contentInterrupts.text("0");
     this.setLength(timerLength);
-    activeButton.removeClass("fa-hourglass-start").addClass("fa-hourglass-end");
+    activeButton.removeClass(ICON_ACTIVE).addClass(ICON_PAUSED);
     ui.stopCycle();
   },
 
@@ -185,7 +194,7 @@ app = {
         contentFocus.text(function(){
           var focus = Math.round((1 - (self.interrupts / (self.seconds/60)))*100);
           if ((focus < 0) || self.seconds < 60) {
-            return DEFAULT_NUMBER_PLACEHOLDER;
+            return NUMBER_PLACEHOLDER;
           } else {
             return focus + "%";
           }
@@ -197,16 +206,16 @@ app = {
         }
       }, 1000);
       activeButton
-        .removeClass("fa-hourglass-end")
-        .addClass("fa-hourglass-start");
+        .removeClass(ICON_PAUSED)
+        .addClass(ICON_ACTIVE);
     } else {
       ui.stopCycle();
       clearInterval(self.stopwatchInterval);
       self.active = false;
       contentActive.text("Paused");
       activeButton
-        .removeClass("fa-hourglass-start")
-        .addClass("fa-hourglass-end");
+        .removeClass(ICON_ACTIVE)
+        .addClass(ICON_PAUSED);
     }
   },
 
@@ -244,20 +253,20 @@ app = {
     self.alarmInterval = setInterval(function(){
       if (self.alarmFlashStatus) {
         alarm.css({
-          "color": "black",
-          "background-color": "white"
+          "color": COLOR_BLACK,
+          "background-color": COLOR_WHITE
         });
         alarmChord.play();
       } else {
         alarm.css({
-          "color": "white",
-          "background-color": "black"
+          "color": COLOR_WHITE,
+          "background-color": COLOR_BLACK
         });
       }
       self.alarmFlashStatus = !self.alarmFlashStatus;
     }, 500);
     issueAlarmNotification(contentTask.text());
-    document.title = DEFAULT_ALARM_TITLE;
+    document.title = ALARM_DOCUMENT_TITLE;
   },
 
   stopAlarm: function() {
@@ -267,12 +276,16 @@ app = {
   },
 
   toggleLightingMode: function() {
-    if (this.lightingMode === 'night') {
-      lightingModeButton.removeClass("fa-moon-o").addClass("fa-sun-o");
-      this.lightingMode = 'day';
+    if (this.lightingMode === LIGHTING_MODE_NIGHT) {
+      lightingModeButton
+        .removeClass(ICON_LIGHTING_MODE_NIGHT)
+        .addClass(ICON_LIGHTING_MODE_DAY);
+      this.lightingMode = LIGHTING_MODE_DAY;
     } else {
-      lightingModeButton.removeClass("fa-sun-o").addClass("fa-moon-o");
-      this.lightingMode = 'night';
+      lightingModeButton
+        .removeClass(ICON_LIGHTING_MODE_DAY)
+        .addClass(ICON_LIGHTING_MODE_NIGHT);
+      this.lightingMode = LIGHTING_MODE_NIGHT;
     }
     ui.invertColor();
   },
@@ -306,7 +319,7 @@ ui = {
 
   cycleColor: function() {
     if (this.allowCycling) {
-      if (app.lightingMode === 'night') {
+      if (app.lightingMode === LIGHTING_MODE_NIGHT) {
         this.currentThemeColor = customTheme || this.getNextColor();
         this.currentAccentColor = DEFAULT_ACCENT_COLOR;
       } else {
@@ -347,7 +360,7 @@ ui = {
   },
 
   setPickedColor: function(color) {
-    if (app.lightingMode === 'night') {
+    if (app.lightingMode === LIGHTING_MODE_NIGHT) {
       this.currentThemeColor = color;
     } else {
       this.currentAccentColor = color;
@@ -365,12 +378,15 @@ ui = {
   },
 
   updateAppColorTransition: function(transition) {
-    sectionA.css('transition', transition + " all ease-in-out");
-    sectionAContainer.css('transition', transition + " all ease-in-out");
-    sectionB.css('transition', transition + " all ease-in-out");
-    sectionC.css('transition', transition + " all ease-in-out");
-    contentLogContainer.css('transition', transition + " border ease-in-out");
-    actionButtons.css('transition', transition + " all ease-in-out");
+    var sectionTransition = transition + " all ease-in-out",
+        borderTransition = transition + " border ease-in-out";
+
+    sectionA.css('transition', sectionTransition);
+    sectionAContainer.css('transition', sectionTransition);
+    sectionB.css('transition', sectionTransition);
+    sectionC.css('transition', sectionTransition);
+    actionButtons.css('transition', sectionTransition);
+    contentLogContainer.css('transition', borderTransition);
   },
 
   resetAppColorTransition: function(){
@@ -382,6 +398,7 @@ function main() {
   body.fadeIn();
   contentLength.text(timerLength);
   alarm.css('height', $(window).height());
+  ui.cycleColor();
 }
 
 main();
@@ -393,8 +410,6 @@ main();
 $(window).resize(function(){
   alarm.css('height', $(window).height());
 });
-
-ui.cycleColor();
 
 activeButton.click(function(){
   app.toggleTimer();
@@ -412,7 +427,7 @@ contentTask.keypress(function(e) {
 });
 
 contentTask.on('focus', function(){
-  if ($(this).text() === DEFAULT_TEXT_PLACEHOLDER) {
+  if ($(this).text() === TEXT_PLACEHOLDER) {
     $(this).text("");
   }
 });
@@ -488,8 +503,8 @@ function issueAlarmNotification(taskName) {
     alert("This browser does not support desktop notifications. Try Chromium.");
   }
   else if (Notification.permission === "granted") {
-    var notification = new Notification('Session Complete!', {
-      icon: NOTIFICATION_ICON_URL,
+    var notification = new Notification(NOTIFICATION_TITLE, {
+      icon: NOTIFICATION_IMG_URL,
       body: taskName,
     });
     notification.onclick = function () {
