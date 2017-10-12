@@ -236,6 +236,7 @@ app = {
         .addClass(ICON_ACTIVE);
     } else {
       ui.stopCycle();
+      contentLength.text(timerLength);
       clearInterval(self.stopwatchInterval);
       self.active = false;
       contentActive.text("Paused");
