@@ -7,6 +7,7 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     DEFAULT_LIGHTING_MODE = "night",
     DEFAULT_TRANSITION_TIME_IN_SECS = "4s",
     DEFAULT_DOCUMENT_TITLE = "GRYT Focus | Deep focus logger",
+    DEFAULT_TEXTAREA_FONT_SIZE = "10vmin",
     TEXT_PLACEHOLDER = "...",
     NUMBER_PLACEHOLDER = "---",
     ALARM_DOCUMENT_TITLE = "Session Complete! | GRYT Focus",
@@ -27,7 +28,10 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     LIGHTING_MODE_DAY = "day",
     KEYCODE_ENTER = 13,
     STATUS_TIME_FORMAT = "HH:mm:ss",
-    ACTIVITY_LOG_DATETIME_FORMAT = "MM/DD/YYYY, h:mm A";
+    ACTIVITY_LOG_DATETIME_FORMAT = "MM/DD/YYYY, h:mm A",
+    TEXTAREA_RESIZE_RULES = [{"limit": 210, "size": "3vmin"},
+                             {"limit": 100, "size": "5vmin"},
+                             {"limit": 50, "size": "7vmin"}];
 
 var socket,
     app,
@@ -260,6 +264,7 @@ app = {
 
   setTask: function(task) {
     contentTask.text(task);
+    this.adjustTaskFontSize();
   },
 
   setLength: function(length) {
@@ -410,8 +415,23 @@ app = {
     } else {
       this.showActivityLog();
     }
-  }
+  },
 
+  adjustTaskFontSize: function() {
+    var charCount = contentTask.val().length;
+    if (charCount > TEXTAREA_RESIZE_RULES[0].limit) {
+      contentTask.css('font-size', TEXTAREA_RESIZE_RULES[0].size);
+    }
+    else if (charCount > TEXTAREA_RESIZE_RULES[1].limit) {
+      contentTask.css('font-size', TEXTAREA_RESIZE_RULES[1].size);
+    }
+    else if (charCount > TEXTAREA_RESIZE_RULES[2].limit) {
+      contentTask.css('font-size', TEXTAREA_RESIZE_RULES[2].size);
+    }
+    else {
+      contentTask.css('font-size', DEFAULT_TEXTAREA_FONT_SIZE);
+    }
+  }
 };
 
 ui = {
@@ -459,6 +479,7 @@ ui = {
 
   setAppColors: function(theme, accent) {
     sectionA.css({"color": theme});
+    contentTask.css({"color": theme});
     sectionAContainer.css("background-color", accent);
     sectionB.css({"background-color": theme, "color": accent});
     sectionC.css({"background-color": accent, "color": theme});
@@ -489,6 +510,7 @@ ui = {
   updateAppColorTransition: function(transition) {
     var sectionTransition = transition + " all ease-in-out";
         borderTransition = transition + " border-color ease-in-out";
+        colorTransition = transition + " color easet-in-out";
 
     sectionA.css('transition', sectionTransition);
     sectionAContainer.css('transition', sectionTransition);
@@ -498,6 +520,7 @@ ui = {
     footer.css('transition', sectionTransition);
     activityLogContainer.css('transition', sectionTransition);
     activityLogPanel.css('transition', borderTransition);
+    contentTask.css({'transition': colorTransition});
   },
 
   resetAppColorTransition: function() {
@@ -507,6 +530,7 @@ ui = {
 };
 
 function main() {
+  contentTask.css('font-size', DEFAULT_TEXTAREA_FONT_SIZE);
   body.fadeIn();
   contentLength.text(timerLength);
   alarm.css('height', $(window).height());
@@ -629,6 +653,10 @@ actionTips.forEach(function(action){
   action.element.on('mouseleave', function(){
     app.resetActionTip();
   });
+});
+
+contentTask.on('keydown change', function(){
+  app.adjustTaskFontSize();
 });
 
 // -----------------------------------------------------------------------------
