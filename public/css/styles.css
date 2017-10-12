@@ -71,13 +71,26 @@ hr {
   font-weight: 400;
 }
 
-.jumbo {
-  font-size: 8vmin;
+#content-task {
+  height: 80%;
   font-weight: 700;
+  font-family: 'Roboto Mono', sans-serif;
   outline: none;
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
+  background: none;
+  border: none;
+  width: 100%;
+  transition: 4s color ease-in-out;
+}
+
+textarea {
+  resize: none;
+}
+
+#content-task::placeholder {
+  color: #FFFFFF;
 }
 
 #content-session {
