@@ -132,33 +132,6 @@ p, h1, h2, h3, h4, div, ul, li, a {
   text-align: center;
 }
 
-#content-log {
-  text-align: left;
-  padding: 10px 0px 10px 10px;
-}
-
-table {
-  width: 100%;
-  border: 1px solid white;
-  padding: 10px 10px 10px 15px;
-  transition: 4s border ease-in-out;
-}
-
-th {
-  font-weight: 100;
-  font-size: 3vmin;
-}
-
-.table-col-small {
-  width: 10%;
-  font-weight: 700;
-}
-
-td {
-  font-size: 2vmin;
-  vertical-align: top;
-}
-
 #alarm {
   position: absolute;
   width: 100%;
@@ -229,4 +202,65 @@ td {
   text-align: right;
   font-size: 1.2vmin;
   transition: 4s all ease-in-out;
+}
+
+#activity-log-container {
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+  text-align: center;
+  display: none;
+  transition: 4s all ease-in-out;
+}
+
+#activity-log-panel {
+  transition: 4s border ease-in-out;
+  border-top: 2px solid white;
+  margin: 0 auto;
+}
+
+#activity-log-container .title {
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+#content-log {
+  text-align: left;
+  padding: 10px 0px 10px 10px;
+}
+
+table {
+  width: 100%;
+  padding-top: 10px;
+  text-align: left;
+}
+
+#hide-activity-log-button {
+  position: absolute;
+  right: 12.5%;
+  top: 40px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+th {
+  font-weight: 100;
+  font-size: 3vmin;
+}
+
+td {
+  font-size: 2vmin;
+  vertical-align: top;
+}
+
+#log-header-date {
+  width: 20%;
+}
+
+#log-header-length, #log-header-interrupts, #log-header-focus {
+  width: 8%;
+}
+
+#log-header-task {
+  width: 66%;
 }

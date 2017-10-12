@@ -23,9 +23,11 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     ICON_FULLSCREEN_COMPRESS = "fa-compress",
     COLOR_BLACK = "#000000",
     COLOR_WHITE = "#FFFFFF",
-    LIGHTING_MODE_NIGHT = 'night',
-    LIGHTING_MODE_DAY = 'day',
-    KEYCODE_ENTER = 13;
+    LIGHTING_MODE_NIGHT = "night",
+    LIGHTING_MODE_DAY = "day",
+    KEYCODE_ENTER = 13,
+    STATUS_TIME_FORMAT = "HH:mm:ss",
+    ACTIVITY_LOG_DATETIME_FORMAT = "MM/DD/YYYY, h:mm A";
 
 var socket,
     app,
@@ -35,6 +37,9 @@ var socket,
     timerLength = DEFAULT_LENGTH_IN_MIN,
     alarmChord = new Audio("assets/alarm-chord.wav"),
     remoteStatus = false;
+
+// Activity Log Data Format: [date, time (min), interrupts, focus, task name]
+var activityLogData = [];
 
 // -----------------------------------------------------------------------------
 // Configurations
@@ -128,7 +133,6 @@ var body = $("body"),
     contentTask = $("#content-task"),
     contentActive = $("#content-active"),
     contentLog = $("#content-log"),
-    contentLogContainer = $("#content-log table"),
     logTable = $("#log-table"),
     toggle = $("#toggle"),
     actionButtons = $("#action-buttons"),
@@ -139,18 +143,24 @@ var body = $("body"),
     lightingModeButton = $("#lighting-mode-button"),
     fullscreenButton = $("#fullscreen-button"),
     randomButton = $("#random-button"),
+    showActivityLogButton = $("#show-activity-log-button"),
+    hideActivityLogButton = $("#hide-activity-log-button"),
     clockButton = $("#clock-button"),
     colorPicker = $("#color-picker"),
     footer = $("#footer"),
-    lanInfo = $("#lan-info");
+    lanInfo = $("#lan-info"),
+    activityLogContainer = $("#activity-log-container"),
+    activityLogPanel = $("#activity-log-panel"),
+    activityLogTable = $("#activity-log-table");
 
 var actionTips = [
   {"element": contentTask, "text": "Enter or edit the task to work on."},
   {"element": activeButton, "text": "Click to start or stop the timer."},
   {"element": clockButton, "text": "Double-click to change the timer length. Hold to set manually."},
   {"element": interruptButton, "text": "Click to log an interruption."},
-  {"element": resetButton, "text": "Hold to save this task in log and reset."},
+  {"element": resetButton, "text": "Hold to save this task in activity log and reset."},
   {"element": randomButton, "text": "Click to switch color. Hold to set specific color."},
+  {"element": showActivityLogButton, "text": "Click to show activity log."},
   {"element": lightingModeButton, "text": "Click to change lighting mode (night or day)."},
   {"element": fullscreenButton, "text": "Click to toggle full-screen mode."}
 ];
@@ -174,17 +184,11 @@ app = {
 
   reset: function(){
     var self = this;
-    var tr = $("<tr>")
-      .append('<td class="table-col-small">' + Math.round(app.seconds/60) + '</td>')
-      .append('<td class="table-col-small">' + contentInterrupts.text() + '</td>')
-      .append('<td class="table-col-small">' + contentFocus.text() + '</td>')
-      .append('<td class="table-desc">' + contentTask.text() + '</td>');
-
-    if (contentSession.text() === "1") {
-      logTable.empty();
-    }
-    logTable.prepend(tr);
-
+    this.saveToActivityLog([moment().format(ACTIVITY_LOG_DATETIME_FORMAT),
+                            Math.round(app.seconds/60),
+                            contentInterrupts.text(),
+                            contentFocus.text(),
+                            contentTask.text()]);
     this.interrupts = 0;
     this.seconds = 0;
     this.active = false;
@@ -211,7 +215,7 @@ app = {
       self.stopwatchInterval = setInterval(function(){
         self.seconds++;
         self.length--;
-        contentTime.text(moment.utc(self.seconds*1000).format('HH:mm:ss'));
+        contentTime.text(moment.utc(self.seconds*1000).format(STATUS_TIME_FORMAT));
         contentLength.text(Math.ceil(self.length / 60));
         contentFocus.text(function(){
           var focus = Math.round((1 - (self.interrupts / (self.seconds/60)))*100);
@@ -377,6 +381,23 @@ app = {
         .removeClass(ICON_FULLSCREEN_COMPRESS)
         .addClass(ICON_FULLSCREEN_EXPAND);
     }
+  },
+
+  saveToActivityLog: function(data) {
+    activityLogData.push(data);
+    var tr = $("<tr>");
+    data.forEach(function(cell){
+      tr.append($("<td>").text(cell));
+    });
+    activityLogTable.append(tr);
+  },
+
+  showActivityLog: function() {
+    activityLogContainer.show();
+  },
+
+  hideActivityLog: function() {
+    activityLogContainer.hide();
   }
 
 };
@@ -429,9 +450,10 @@ ui = {
     sectionAContainer.css("background-color", accent);
     sectionB.css({"background-color": theme, "color": accent});
     sectionC.css({"background-color": accent, "color": theme});
-    contentLogContainer.css("border-color", theme);
     actionButtons.css({"color": theme});
     footer.css({"color": theme});
+    activityLogContainer.css({"background-color": accent, "color": theme});
+    activityLogPanel.css({"border-color": theme});
   },
 
   setPickedColor: function(color) {
@@ -453,16 +475,17 @@ ui = {
   },
 
   updateAppColorTransition: function(transition) {
-    var sectionTransition = transition + " all ease-in-out",
-        borderTransition = transition + " border ease-in-out";
+    var sectionTransition = transition + " all ease-in-out";
+        borderTransition = transition + " border-color ease-in-out";
 
     sectionA.css('transition', sectionTransition);
     sectionAContainer.css('transition', sectionTransition);
     sectionB.css('transition', sectionTransition);
     sectionC.css('transition', sectionTransition);
-    contentLogContainer.css('transition', borderTransition);
     actionButtons.css('transition', sectionTransition);
     footer.css('transition', sectionTransition);
+    activityLogContainer.css('transition', sectionTransition);
+    activityLogPanel.css('transition', borderTransition);
   },
 
   resetAppColorTransition: function() {
@@ -475,6 +498,7 @@ function main() {
   body.fadeIn();
   contentLength.text(timerLength);
   alarm.css('height', $(window).height());
+  activityLogContainer.css('height', $(window).height());
   ui.cycleColor();
 }
 
@@ -486,6 +510,7 @@ main();
 
 $(window).resize(function(){
   alarm.css('height', $(window).height());
+  activityLogContainer.css('height', $(window).height());
 });
 
 activeButton.click(function(){
@@ -575,6 +600,14 @@ contentLength.keypress(function(e){
 fullscreenButton.on('click', function(){
   console.log("CLICKED...");
   app.toggleFullscreen();
+});
+
+showActivityLogButton.on('click', function(){
+  app.showActivityLog();
+});
+
+hideActivityLogButton.on('click', function(){
+  app.hideActivityLog();
 });
 
 actionTips.forEach(function(action){
