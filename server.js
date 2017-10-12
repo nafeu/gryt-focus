@@ -100,6 +100,9 @@ app.get('/api/interact', function(req, res){
       case "reload":
         io.emit("reload");
         break;
+      case "log":
+        io.emit("log");
+        break;
       default:
         break;
     }
