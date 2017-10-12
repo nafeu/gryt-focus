@@ -106,6 +106,10 @@ if (remoteStatus) {
     location.reload();
   });
 
+  socket.on('log', function(data){
+    app.toggleActivityLog();
+  });
+
 }
 
 // -----------------------------------------------------------------------------
@@ -399,6 +403,14 @@ app = {
 
   hideActivityLog: function() {
     activityLogContainer.hide();
+  },
+
+  toggleActivityLog: function() {
+    if (activityLogTable.is(":visible")) {
+      this.hideActivityLog();
+    } else {
+      this.showActivityLog();
+    }
   }
 
 };
