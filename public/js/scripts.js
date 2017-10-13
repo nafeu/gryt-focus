@@ -510,7 +510,7 @@ ui = {
   updateAppColorTransition: function(transition) {
     var sectionTransition = transition + " all ease-in-out";
         borderTransition = transition + " border-color ease-in-out";
-        colorTransition = transition + " color easet-in-out";
+        colorTransition = transition + " color ease-in-out";
 
     sectionA.css('transition', sectionTransition);
     sectionAContainer.css('transition', sectionTransition);
