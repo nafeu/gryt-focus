@@ -195,7 +195,7 @@ app = {
                             Math.round(app.seconds/60),
                             contentInterrupts.text(),
                             contentFocus.text(),
-                            contentTask.text()]);
+                            contentTask.val()]);
     this.interrupts = 0;
     this.seconds = 0;
     this.active = false;
@@ -203,7 +203,7 @@ app = {
     clearInterval(this.stopwatchInterval);
     contentActive.text("Inactive");
     contentTime.text(TEXT_PLACEHOLDER);
-    contentTask.text(TEXT_PLACEHOLDER);
+    contentTask.val("");
     contentFocus.text(TEXT_PLACEHOLDER);
     contentInterrupts.text("0");
     this.setLength(timerLength);
