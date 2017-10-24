@@ -31,7 +31,8 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     ACTIVITY_LOG_DATETIME_FORMAT = "MM/DD/YYYY, h:mm A",
     TEXTAREA_RESIZE_RULES = [{"limit": 210, "size": "3vmin"},
                              {"limit": 100, "size": "5vmin"},
-                             {"limit": 50, "size": "7vmin"}];
+                             {"limit": 50, "size": "7vmin"}],
+    INTERVAL_TIME_IN_MS = 1000;
 
 var socket,
     app,
@@ -228,10 +229,9 @@ app = {
       self.endTime = new moment();
       self.endTime.add(self.length, "minutes");
 
-      self.incrementTimer();
       self.stopwatchInterval = setInterval(function(){
         self.incrementTimer();
-      }, 1000);
+      }, INTERVAL_TIME_IN_MS);
 
       activeButton
         .removeClass(ICON_PAUSED)
@@ -243,6 +243,7 @@ app = {
       self.active = false;
       self.startTime = null;
       self.endTime = null;
+      self.taskTime += self.elapsedTime;
       contentActive.text("Paused");
       activeButton
         .removeClass(ICON_ACTIVE)
@@ -256,11 +257,12 @@ app = {
     var now = moment();
     var timeLeft = self.endTime.diff(now, "seconds");
     self.elapsedTime = (self.length * 60) - timeLeft;
+    var totalWorkTime = self.taskTime + self.elapsedTime;
 
-    contentTime.text(moment.utc((self.taskTime + self.elapsedTime)*1000).format(STATUS_TIME_FORMAT));
-    contentLength.text(Math.ceil(self.length / 60));
+    contentTime.text(moment.utc(totalWorkTime*1000).format(STATUS_TIME_FORMAT));
+    contentLength.text(Math.ceil(timeLeft / 60));
     contentFocus.text(function(){
-      var focus = Math.round((1 - (self.interrupts / (self.elapsedTime/60)))*100);
+      var focus = Math.round((1 - (self.interrupts / (totalWorkTime/60)))*100);
       if ((focus < 0) || self.elapsedTime < 60) {
         return NUMBER_PLACEHOLDER;
       } else {
@@ -270,7 +272,6 @@ app = {
 
     if (timeLeft < 1) {
       contentLength.text(timerLength);
-      self.taskTime += self.elapsedTime;
       self.toggleTimer();
       self.startAlarm();
     }
