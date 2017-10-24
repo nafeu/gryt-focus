@@ -281,19 +281,23 @@ td {
 .x-axis text, .x-axis path, .x-axis line, .y-axis text, .y-axis path, .y-axis line {
   stroke: #FFFFFF;
 }
+
 .grid line {
   stroke: #FFFFFF;
-  stroke-opacity: 0.2;
+  stroke-opacity: 0.1;
+  transition: 4s stroke ease-in-out;
 }
 .grid path {
   stroke: #FFFFFF;
-  stroke-opacity: 0.2;
+  stroke-opacity: 0.1;
   stroke-width: 1;
+  transition: 4s stroke ease-in-out;
 }
 .line {
   fill: none;
   stroke: #FFFFFF;
   stroke-width: 1;
+  transition: 4s stroke ease-in-out;
 }
 .dot {
   fill: #FFFFFF;

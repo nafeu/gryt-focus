@@ -57,6 +57,10 @@ ui = {
     footer.css({"color": theme});
     activityLogContainer.css({"background-color": accent, "color": theme});
     activityLogPanel.css({"border-color": theme});
+
+    // SVG Elements
+    $(".line").css({"stroke": theme});
+    $(".grid line, .grid path").css({"stroke": theme});
   },
 
   setPickedColor: function(color) {
@@ -78,9 +82,10 @@ ui = {
   },
 
   updateAppColorTransition: function(transition) {
-    var sectionTransition = transition + " all ease-in-out";
-        borderTransition = transition + " border-color ease-in-out";
-        colorTransition = transition + " color ease-in-out";
+    var sectionTransition = transition + " all ease-in-out",
+        borderTransition = transition + " border-color ease-in-out",
+        colorTransition = transition + " color ease-in-out",
+        strokeTransition = transition + " stroke ease-in-out";
 
     sectionA.css('transition', sectionTransition);
     sectionAContainer.css('transition', sectionTransition);
@@ -91,6 +96,10 @@ ui = {
     activityLogContainer.css('transition', sectionTransition);
     activityLogPanel.css('transition', borderTransition);
     contentTask.css({'transition': colorTransition});
+
+    // SVG Elements
+    $(".grid line, .grid path").css({'transition': strokeTransition});
+    $(".line").css({'transition': strokeTransition});
   },
 
   resetAppColorTransition: function() {
