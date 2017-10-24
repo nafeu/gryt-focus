@@ -267,7 +267,7 @@ td {
 }
 
 #log-header-date {
-  width: 20%;
+  width: 24%;
 }
 
 #log-header-length, #log-header-interrupts, #log-header-focus {
@@ -275,5 +275,5 @@ td {
 }
 
 #log-header-task {
-  width: 66%;
+  width: 62%;
 }
