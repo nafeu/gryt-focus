@@ -178,7 +178,10 @@ var actionTips = [
 
 app = {
   interrupts: 0,
-  seconds: 0,
+  elapsedTime: 0,
+  startTime: null,
+  endTime: null,
+  taskTime: 0,
   length: timerLength * 60,
   lengthOptions: LENGTH_OPTIONS,
   lengthOptionIndex: 0,
@@ -192,12 +195,13 @@ app = {
   reset: function(){
     var self = this;
     this.saveToActivityLog([moment().format(ACTIVITY_LOG_DATETIME_FORMAT),
-                            Math.round(app.seconds/60),
+                            Math.round(self.elapsedTime/60),
                             contentInterrupts.text(),
                             contentFocus.text(),
                             contentTask.val()]);
     this.interrupts = 0;
-    this.seconds = 0;
+    this.elapsedTime = 0;
+    this.taskTime = 0;
     this.active = false;
     this.incrementSession();
     clearInterval(this.stopwatchInterval);
@@ -219,25 +223,16 @@ app = {
       self.setLength(timerLength);
       self.active = true;
       contentActive.text("Active");
+
+      self.startTime = new moment();
+      self.endTime = new moment();
+      self.endTime.add(self.length, "minutes");
+
+      self.incrementTimer();
       self.stopwatchInterval = setInterval(function(){
-        self.seconds++;
-        self.length--;
-        contentTime.text(moment.utc(self.seconds*1000).format(STATUS_TIME_FORMAT));
-        contentLength.text(Math.ceil(self.length / 60));
-        contentFocus.text(function(){
-          var focus = Math.round((1 - (self.interrupts / (self.seconds/60)))*100);
-          if ((focus < 0) || self.seconds < 60) {
-            return NUMBER_PLACEHOLDER;
-          } else {
-            return focus + "%";
-          }
-        });
-        if (self.length < 1) {
-          contentLength.text(timerLength);
-          self.toggleTimer();
-          self.startAlarm();
-        }
+        self.incrementTimer();
       }, 1000);
+
       activeButton
         .removeClass(ICON_PAUSED)
         .addClass(ICON_ACTIVE);
@@ -246,10 +241,38 @@ app = {
       contentLength.text(timerLength);
       clearInterval(self.stopwatchInterval);
       self.active = false;
+      self.startTime = null;
+      self.endTime = null;
       contentActive.text("Paused");
       activeButton
         .removeClass(ICON_ACTIVE)
         .addClass(ICON_PAUSED);
+    }
+  },
+
+  incrementTimer: function() {
+    var self = this;
+
+    var now = moment();
+    var timeLeft = self.endTime.diff(now, "seconds");
+    self.elapsedTime = (self.length * 60) - timeLeft;
+
+    contentTime.text(moment.utc((self.taskTime + self.elapsedTime)*1000).format(STATUS_TIME_FORMAT));
+    contentLength.text(Math.ceil(self.length / 60));
+    contentFocus.text(function(){
+      var focus = Math.round((1 - (self.interrupts / (self.elapsedTime/60)))*100);
+      if ((focus < 0) || self.elapsedTime < 60) {
+        return NUMBER_PLACEHOLDER;
+      } else {
+        return focus + "%";
+      }
+    });
+
+    if (timeLeft < 1) {
+      contentLength.text(timerLength);
+      self.taskTime += self.elapsedTime;
+      self.toggleTimer();
+      self.startAlarm();
     }
   },
 
@@ -276,7 +299,7 @@ app = {
     if (this.active) {
       this.toggleTimer();
     }
-    this.length = timerLength * 60;
+    this.length = timerLength;
     contentLength.text(timerLength);
   },
 
