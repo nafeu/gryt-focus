@@ -1,16 +1,5 @@
 $(document).ready(function(){
 
-function main() {
-  contentTask.css('font-size', DEFAULT_TEXTAREA_FONT_SIZE);
-  body.fadeIn();
-  contentLength.text(timerLength);
-  alarm.css('height', $(window).height());
-  activityLogContainer.css('height', $(window).height());
-  ui.cycleColor();
-}
-
-main();
-
 // -----------------------------------------------------------------------------
 // D3 Configurations
 // -----------------------------------------------------------------------------
@@ -130,5 +119,16 @@ function update(data) {
 document.addEventListener('keypress', function(event) {
   if (event.which == 114) update(generateData()); // r
 });
+
+function main() {
+  contentTask.css('font-size', DEFAULT_TEXTAREA_FONT_SIZE);
+  body.fadeIn();
+  contentLength.text(timerLength);
+  alarm.css('height', $(window).height());
+  activityLogContainer.css('height', $(window).height());
+  ui.cycleColor();
+}
+
+main();
 
 });
