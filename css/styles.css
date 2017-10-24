@@ -277,3 +277,26 @@ td {
 #log-header-task {
   width: 62%;
 }
+
+.x-axis text, .x-axis path, .x-axis line, .y-axis text, .y-axis path, .y-axis line {
+  stroke: #FFFFFF;
+}
+.grid line {
+  stroke: #FFFFFF;
+  stroke-opacity: 0.2;
+}
+.grid path {
+  stroke: #FFFFFF;
+  stroke-opacity: 0.2;
+  stroke-width: 1;
+}
+.line {
+  fill: none;
+  stroke: #FFFFFF;
+  stroke-width: 1;
+}
+.dot {
+  fill: #FFFFFF;
+  stroke: #7B1FA2;
+  stroke-width: 4;
+}
