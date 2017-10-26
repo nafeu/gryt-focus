@@ -31,17 +31,7 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     ACTIVITY_LOG_DATETIME_FORMAT = "MM/DD/YYYY, h:mm A",
     TEXTAREA_RESIZE_RULES = [{"limit": 210, "size": "3vmin"},
                              {"limit": 100, "size": "5vmin"},
-                             {"limit": 50, "size": "7vmin"}],
-    INTERVAL_TIME_IN_MS = 1000,
-    NUM_DATA_POINTS = 30,
-    Y_DELTA = 0.05,
-    Y_STARTING_VAL = "0.0",
-    Y_TOP_LIMIT = 1,
-    Y_BOTTOM_LIMIT = 0,
-    SHOW_DOTS = false,
-    SHOW_AXIS = false,
-    RANDOM_LOW_DIVIDER = 0.2,
-    RANDOM_HIGH_DIVIDER = 0.8;
+                             {"limit": 50, "size": "7vmin"}];
 
 var socket,
     app,
@@ -65,6 +55,21 @@ var body, sectionA, sectionB, sectionC, sectionAContainer, alarm,
     activityLogPanel, activityLogTable;
 
 var actionTips;
+
+// D3 Chart Configs
+var margin = {top: 25, right: 2, bottom: 25, left: 10},
+    INTERVAL_TIME_IN_MS = 1000,
+    NUM_DATA_POINTS = 1500,
+    Y_DELTA = 0.01,
+    Y_STARTING_VAL = "0.0",
+    Y_TOP_LIMIT = 1,
+    Y_BOTTOM_LIMIT = 0,
+    SHOW_DOTS = false,
+    SHOW_AXIS = false,
+    RANDOM_LOW_DIVIDER = 0.2,
+    RANDOM_HIGH_DIVIDER = 0.8,
+    svgChart,
+    line;
 
 // -----------------------------------------------------------------------------
 // Configurations
