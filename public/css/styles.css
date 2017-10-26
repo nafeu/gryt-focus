@@ -283,24 +283,18 @@ td {
 }
 
 .grid line {
-  stroke: #FFFFFF;
   stroke-opacity: 0.1;
   transition: 4s stroke ease-in-out;
 }
+
 .grid path {
-  stroke: #FFFFFF;
   stroke-opacity: 0.1;
   stroke-width: 1;
   transition: 4s stroke ease-in-out;
 }
+
 .line {
   fill: none;
-  stroke: #FFFFFF;
-  stroke-width: 1;
+  stroke-width: 3;
   transition: 4s stroke ease-in-out;
-}
-.dot {
-  fill: #FFFFFF;
-  stroke: #7B1FA2;
-  stroke-width: 4;
 }

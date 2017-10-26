@@ -1,12 +1,8 @@
-// -----------------------------------------------------------------------------
-// D3 Configurations
-// -----------------------------------------------------------------------------
-
 $(document).ready(function(){
   document.addEventListener('keypress', function(event) {
     if (event.which == 114) {
-      shuffleData();
-      update();
+      updateData(0.5);
+      renderChart();
     }
   });
 
@@ -20,6 +16,6 @@ $(document).ready(function(){
   }
 
   draw();
-  update();
+  renderChart();
   main();
 });

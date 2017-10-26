@@ -40,6 +40,8 @@ app = {
     contentInterrupts.text("0");
     this.setLength(timerLength);
     activeButton.removeClass(ICON_ACTIVE).addClass(ICON_PAUSED);
+    setDataRange(timerLength * 60);
+    renderChart();
     ui.stopCycle();
   },
 
@@ -47,6 +49,7 @@ app = {
     var self = this;
 
     if (!self.active) {
+      renderChart();
       ui.startCycle();
       self.setLength(timerLength);
       self.active = true;
@@ -85,17 +88,26 @@ app = {
     var timeLeft = self.endTime.diff(now, "seconds");
     self.elapsedTime = (self.length * 60) - timeLeft;
     var totalWorkTime = self.taskTime + self.elapsedTime;
+    var focus = (1 - (self.interrupts / (totalWorkTime/60)));
 
     contentTime.text(moment.utc(totalWorkTime*1000).format(STATUS_TIME_FORMAT));
     contentLength.text(Math.ceil(timeLeft / 60));
     contentFocus.text(function(){
-      var focus = Math.round((1 - (self.interrupts / (totalWorkTime/60)))*100);
-      if ((focus < 0) || self.elapsedTime < 60) {
+      var focusPercentage = Math.round(focus*100);
+      if ((focusPercentage < 0) || self.elapsedTime < 60) {
+        if ((self.elapsedTime / 60) < 1) {
+          updateData(self.elapsedTime / 60);
+        } else {
+          updateData(1);
+        }
         return NUMBER_PLACEHOLDER;
       } else {
-        return focus + "%";
+        updateData(focus);
+        return focusPercentage + "%";
       }
     });
+
+    renderChart();
 
     if (timeLeft < 1) {
       contentLength.text(timerLength);
@@ -184,6 +196,9 @@ app = {
       self.lengthOptionIndex++;
     }
     self.setLength(self.lengthOptions[self.lengthOptionIndex]);
+    setDataRange(timerLength * 60);
+    $("#perf-chart svg").remove();
+    draw(ui.currentThemeColor);
   },
 
   pauseTimer: function() {

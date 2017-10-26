@@ -146,6 +146,9 @@ contentLength.on('click', function(){
 contentLength.on('blur', function(){
   $(this).attr('contenteditable', 'false');
   app.setLength($(this).text());
+  setDataRange(timerLength * 60);
+  $("#perf-chart svg").remove();
+  draw(ui.currentThemeColor);
 });
 
 contentLength.keypress(function(e){
