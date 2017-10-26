@@ -64,17 +64,15 @@ var margin = {top: 25, right: 2, bottom: 25, left: 10},
     Y_STARTING_VAL = "0.0",
     Y_TOP_LIMIT = 1,
     Y_BOTTOM_LIMIT = 0,
-    SHOW_DOTS = false,
-    SHOW_AXIS = false,
     RANDOM_LOW_DIVIDER = 0.2,
     RANDOM_HIGH_DIVIDER = 0.8,
     svgChart,
     line;
 
-var dataset = d3.range(NUM_DATA_POINTS)
-  .map(function(d) {
-    return {"y": "0.0"};
-  });
+var data = d3.range(timerLength * 60)
+    .map(function(d) {
+      return {"y": "0.0"};
+    });
 
 // -----------------------------------------------------------------------------
 // Configurations
@@ -100,6 +98,8 @@ $(document).ready(function(){
   sectionB = $("#section-b");
   sectionC = $("#section-c");
   sectionAContainer = $("#section-a-container");
+  sectionBContainer = $("#section-b-container");
+  perfChart = $("#perf-chart");
   alarm = $("#alarm");
   contentSession = $("#content-session");
   contentLength = $("#content-length");

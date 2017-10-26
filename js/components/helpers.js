@@ -25,27 +25,28 @@ function issueAlarmNotification(taskName) {
   }
 }
 
-function shuffleData() {
-  dataset.shift();
-  datapoint = {y: dataset[dataset.length - 1].y};
-  if ((parseFloat(datapoint.y) + Y_DELTA) <= Y_TOP_LIMIT && Math.random() >= RANDOM_HIGH_DIVIDER) {
-    datapoint.y = (parseFloat(datapoint.y) + Y_DELTA).toString();
-  }
-  else if ((parseFloat(datapoint.y) - Y_DELTA) >= Y_BOTTOM_LIMIT && Math.random() < RANDOM_LOW_DIVIDER) {
-    datapoint.y = (parseFloat(datapoint.y) - Y_DELTA).toString();
-  }
-  dataset.push(datapoint);
+function setDataRange(range) {
+  data = d3.range(range)
+    .map(function(d) {
+      return {"y": "0.0"};
+    });
 }
 
-function draw() {
-  var elementWidth = $("#perf-chart").width();
-  var elementHeight = $("#section-b-container").height() * 0.7;
+function updateData(y) {
+  data.shift();
+  datapoint = {y: y};
+  data.push(datapoint);
+}
+
+function draw(color) {
+  var elementWidth = perfChart.width();
+  var elementHeight = sectionBContainer.height() * 0.7;
 
   var width = elementWidth - margin.left - margin.right;
   var height = elementHeight - margin.top - margin.bottom;
 
   var xScale = d3.scaleLinear()
-      .domain([0, NUM_DATA_POINTS - 1])
+      .domain([0, (timerLength * 60) - 1])
       .range([0, width]);
 
   var yScale = d3.scaleLinear()
@@ -54,7 +55,8 @@ function draw() {
 
   line = d3.line()
       .x(function(d, i) { return xScale(i); })
-      .y(function(d) { return yScale(d.y); });
+      .y(function(d) { return yScale(d.y); })
+      .curve(d3.curveMonotoneX);
 
   function makeXGridlines() {
       return d3.axisBottom(xScale)
@@ -86,17 +88,32 @@ function draw() {
           .tickFormat(""));
 
   svgChart.append("path")
-      .datum(dataset)
+      .datum(data)
       .attr("class", "line")
+      .attr("stroke", function(){
+        if (color) {
+          return ui.currentThemeColor;
+        } else {
+          return "#FFFFFF";
+        }
+      })
       .attr("d", line);
+
+  $(".grid path, .grid line").attr("stroke", function(){
+    if (color) {
+      return ui.currentThemeColor;
+    } else {
+      return "#FFFFFF";
+    }
+  });
 }
 
-function update() {
+function renderChart() {
   svgChart.select(".line")
-    .attr("d", line(dataset));
+    .attr("d", line(data));
 
   svgChart.selectAll('circle')
-    .data(dataset)
+    .data(data)
     .attr("cx", function(d, i) {
       return xScale(i);
     })
