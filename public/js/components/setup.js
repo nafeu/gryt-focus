@@ -71,6 +71,11 @@ var margin = {top: 25, right: 2, bottom: 25, left: 10},
     svgChart,
     line;
 
+var dataset = d3.range(NUM_DATA_POINTS)
+  .map(function(d) {
+    return {"y": "0.0"};
+  });
+
 // -----------------------------------------------------------------------------
 // Configurations
 // -----------------------------------------------------------------------------

@@ -64,6 +64,10 @@ $(document).ready(function(){
 $(window).resize(function(){
   alarm.css('height', $(window).height());
   activityLogContainer.css('height', $(window).height());
+  $("#perf-chart svg").remove();
+  draw();
+  $(".line").css({"stroke": ui.currentThemeColor});
+  $(".grid line, .grid path").css({"stroke": ui.currentThemeColor});
 });
 
 activeButton.click(function(){
