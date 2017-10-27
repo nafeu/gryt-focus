@@ -106,6 +106,9 @@ app.get('/api/interact', function(req, res){
       case "log":
         io.emit("log");
         break;
+      case "random":
+        io.emit("random");
+        break;
       default:
         break;
     }
