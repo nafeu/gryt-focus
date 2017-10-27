@@ -74,7 +74,7 @@ activeButton.click(function(){
   app.toggleTimer();
 });
 
-resetButton.longpress(function(){
+resetButton.dblclick(function(){
   app.reset();
 });
 
