@@ -84,7 +84,7 @@ app = {
   incrementTimer: function() {
     var self = this;
 
-    var now = moment();
+    var now = moment().subtract(TIMER_OFFSET_IN_MS, "milliseconds");
     var timeLeft = self.endTime.diff(now, "seconds");
     self.elapsedTime = (self.length * 60) - timeLeft;
     var totalWorkTime = self.taskTime + self.elapsedTime;
