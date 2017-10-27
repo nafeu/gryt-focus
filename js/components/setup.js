@@ -9,6 +9,7 @@ var DEFAULT_LENGTH_IN_MIN = 25,
     DEFAULT_DOCUMENT_TITLE = "gryt-focus | deep focus logger",
     DEFAULT_TEXTAREA_FONT_SIZE = "10vmin",
     TEXT_PLACEHOLDER = "...",
+    INTERRUPTS_PLACEHOLDER = "0",
     NUMBER_PLACEHOLDER = "---",
     ALARM_DOCUMENT_TITLE = "Session Complete! | gryt-focus",
     LENGTH_OPTIONS = [25, 20, 15, 10, 5, 4, 3, 2, 1,
@@ -51,10 +52,10 @@ var activityLogData = [];
 var body, sectionA, sectionB, sectionC, sectionAContainer, alarm,
     contentSession, contentLength, contentTime, contentInterrupts,
     contentFocus, contentTask, contentActive, logTable, toggle, actionButtons,
-    actionTip, activeButton, resetButton, interruptButton, lightingModeButton,
-    fullscreenButton, randomButton, showActivityLogButton, hideActivityLogButton,
-    resetActivityLogButton, clockButton, colorPicker, footer, lanInfo,
-    activityLogContainer, activityLogPanel, activityLogTable;
+    actionTip, activeButton, saveButton, undoButton, interruptButton,
+    lightingModeButton, fullscreenButton, randomButton, showActivityLogButton,
+    hideActivityLogButton, resetActivityLogButton, clockButton, colorPicker,
+    footer, lanInfo, activityLogContainer, activityLogPanel, activityLogTable;
 
 var actionTips;
 
@@ -114,7 +115,8 @@ $(document).ready(function(){
   actionButtons = $("#action-buttons");
   actionTip = $("#action-tip");
   activeButton = $("#active-button");
-  resetButton = $("#reset-button");
+  saveButton = $("#save-button");
+  undoButton = $("#undo-button");
   interruptButton = $("#interrupt-button");
   lightingModeButton = $("#lighting-mode-button");
   fullscreenButton = $("#fullscreen-button");
@@ -135,7 +137,8 @@ $(document).ready(function(){
       {"element": activeButton, "text": "Click to start or stop the timer."},
       {"element": clockButton, "text": "Double-click to change the timer length. Hold to set manually."},
       {"element": interruptButton, "text": "Click to log an interruption."},
-      {"element": resetButton, "text": "Double-click to save this task in activity log and reset."},
+      {"element": saveButton, "text": "Double-click to save this task in activity log and reset."},
+      {"element": undoButton, "text": "Double-click to reset timer content."},
       {"element": randomButton, "text": "Click to switch color. Hold to set specific color."},
       {"element": showActivityLogButton, "text": "Click to show activity log."},
       {"element": lightingModeButton, "text": "Click to change lighting mode (night or day)."},

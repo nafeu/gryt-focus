@@ -22,7 +22,13 @@ if (remoteStatus) {
     app.stopAlarm();
   });
 
-  socket.on("reset", function() {
+  socket.on("save", function() {
+    app.save();
+    app.reset();
+    app.stopAlarm();
+  });
+
+  socket.on("undo", function() {
     app.reset();
     app.stopAlarm();
   });
@@ -74,7 +80,12 @@ activeButton.click(function(){
   app.toggleTimer();
 });
 
-resetButton.dblclick(function(){
+saveButton.dblclick(function(){
+  app.save();
+  app.reset();
+});
+
+undoButton.dblclick(function(){
   app.reset();
 });
 
