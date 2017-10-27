@@ -59,6 +59,10 @@ if (remoteStatus) {
     app.toggleActivityLog();
   });
 
+  socket.on('random', function() {
+    ui.randomizeTheme();
+  });
+
 }
 
 // -----------------------------------------------------------------------------
@@ -118,15 +122,7 @@ lightingModeButton.on("click", function(){
 });
 
 randomButton.on('click', function(){
-  ui.updateAppColorTransition("500ms");
-  if (!ui.allowCycling) {
-    colorPicker.click();
-  } else {
-    ui.cycleColor();
-    setTimeout(function(){
-      ui.resetAppColorTransition();
-    }, 500);
-  }
+  ui.randomizeTheme();
 });
 
 randomButton.longpress(function(){

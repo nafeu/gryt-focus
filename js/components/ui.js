@@ -106,6 +106,18 @@ ui = {
     this.updateAppColorTransition(DEFAULT_TRANSITION_TIME_IN_SECS);
   },
 
+  randomizeTheme: function() {
+    this.updateAppColorTransition("500ms");
+    if (!this.allowCycling) {
+      colorPicker.click();
+    } else {
+      this.cycleColor();
+      setTimeout(function(){
+        this.resetAppColorTransition();
+      }, 500);
+    }
+  },
+
 };
 
 });
