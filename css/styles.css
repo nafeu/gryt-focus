@@ -295,6 +295,14 @@ td {
 
 .line {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 2;
   transition: 4s stroke ease-in-out;
+}
+
+@media (max-width: 786px) {
+
+  #section-a {
+    padding-top: 10%;
+  }
+
 }
