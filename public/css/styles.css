@@ -254,20 +254,16 @@ table {
   text-align: left;
 }
 
-#hide-activity-log-button {
-  position: absolute;
-  right: 12.5%;
-  top: 40px;
-  font-size: 20px;
+#hide-activity-log-button, #reset-activity-log-button {
   cursor: pointer;
 }
 
-#reset-activity-log-button {
+#activity-log-actions {
   position: absolute;
-  right: 14.5%;
+  right: 12.5%;
+  text-align: right;
   top: 40px;
   font-size: 20px;
-  cursor: pointer;
 }
 
 th {

@@ -10,7 +10,7 @@ Check it out at: [nafeu.com/gryt-focus](http://nafeu.com/gryt-focus)
 - Set the length of your interruption free work session
 - Press the `hourglass` icon to start/stop the timer
 - Press the `exclamation` icon any time you get interrupted by external distractions unrelated to your work
-- Double click the `reset` button to save your completed work session
+- Double click the `save` button to save your completed work session
 
 [![Build Status](https://travis-ci.org/nafeu/gryt-focus.svg?branch=master)](https://travis-ci.org/nafeu/gryt-focus)
 
@@ -91,7 +91,8 @@ Use `send-command.js` to administer commands to the app running remotely or loca
 node send-command.js remote task "Work on a specific task"
 node send-command.js remote toggle
 node send-command.js remote interrupt
-node send-command.js remote reset
+node send-command.js remote save
+node send-command.js remote undo
 node send-command.js remote snooze
 node send-command.js remote mode
 ```

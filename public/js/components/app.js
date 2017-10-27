@@ -22,27 +22,31 @@ app = {
 
   reset: function(){
     var self = this;
-    this.saveToActivityLog([moment().format(ACTIVITY_LOG_DATETIME_FORMAT),
-                            Math.round(self.elapsedTime/60),
-                            contentInterrupts.text(),
-                            contentFocus.text(),
-                            contentTask.val()]);
+
     this.interrupts = 0;
     this.elapsedTime = 0;
     this.taskTime = 0;
     this.active = false;
-    this.incrementSession();
     clearInterval(this.stopwatchInterval);
     contentActive.text("Inactive");
     contentTime.text(TEXT_PLACEHOLDER);
     contentTask.val("");
     contentFocus.text(TEXT_PLACEHOLDER);
-    contentInterrupts.text("0");
+    contentInterrupts.text(INTERRUPTS_PLACEHOLDER);
     this.setLength(timerLength);
     activeButton.removeClass(ICON_ACTIVE).addClass(ICON_PAUSED);
     setDataRange(timerLength * 60);
     renderChart();
     ui.stopCycle();
+  },
+
+  save: function() {
+    this.saveToActivityLog([moment().format(ACTIVITY_LOG_DATETIME_FORMAT),
+                            Math.round(this.elapsedTime / 60),
+                            contentInterrupts.text(),
+                            contentFocus.text(),
+                            contentTask.val()]);
+    this.incrementSession();
   },
 
   toggleTimer: function() {

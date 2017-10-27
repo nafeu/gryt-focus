@@ -85,8 +85,11 @@ app.get('/api/interact', function(req, res){
       case "toggle":
         io.emit("toggle");
         break;
-      case "reset":
-        io.emit("reset");
+      case "save":
+        io.emit("save");
+        break;
+      case "undo":
+        io.emit("undo");
         break;
       case "interrupt":
         io.emit("interrupt");
