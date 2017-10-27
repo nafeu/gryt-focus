@@ -262,6 +262,14 @@ table {
   cursor: pointer;
 }
 
+#reset-activity-log-button {
+  position: absolute;
+  right: 14.5%;
+  top: 40px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 th {
   font-weight: 100;
   font-size: 3vmin;
