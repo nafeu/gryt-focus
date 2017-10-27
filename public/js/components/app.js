@@ -260,11 +260,11 @@ app = {
 
   saveToActivityLog: function(data) {
     activityLogData.push(data);
-    var tr = $("<tr>");
-    data.forEach(function(cell){
-      tr.append($("<td>").text(cell));
-    });
-    activityLogTable.append(tr);
+    if (typeof(Storage) !== "undefined") {
+      var logData = { data: activityLogData };
+      localStorage.setItem("gryt-focus", JSON.stringify(logData));
+    }
+    this.insertActivityLogEntry(data);
   },
 
   showActivityLog: function() {
@@ -273,6 +273,14 @@ app = {
 
   hideActivityLog: function() {
     activityLogContainer.hide();
+  },
+
+  insertActivityLogEntry: function(data) {
+    var tr = $("<tr>");
+    data.forEach(function(cell){
+      tr.append($("<td>").text(cell));
+    });
+    activityLogTable.append(tr);
   },
 
   toggleActivityLog: function() {

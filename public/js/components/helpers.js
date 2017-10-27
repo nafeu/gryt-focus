@@ -2,6 +2,18 @@
 // Helpers
 // -----------------------------------------------------------------------------
 
+function loadActivityLogData() {
+  if (typeof(Storage) !== "undefined") {
+    var logData = localStorage.getItem("gryt-focus");
+    if (logData) {
+      activityLogData = JSON.parse(logData).data;
+      activityLogData.forEach(function(entry){
+        app.insertActivityLogEntry(entry);
+      });
+    }
+  }
+}
+
 function issueAlarmNotification(taskName) {
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notifications. Try Chromium.");
