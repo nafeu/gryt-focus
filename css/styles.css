@@ -1,7 +1,5 @@
 body {
   font-family: 'Roboto Mono', sans-serif;
-  background-color: white;
-  color: white;
   margin: 0;
   height: 100%;
   overflow: hidden;
@@ -49,6 +47,13 @@ hr {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+#section-c {
+  background-color: #000000;
+  color: #FFFFFF;
 }
 
 .title {
@@ -172,8 +177,9 @@ p, h1, h2, h3, h4, div, ul, li, a {
 }
 
 #section-a-container {
-  background-color: white;
   transition: 4s all ease-in-out;
+  background-color: #000000;
+  color: #FFFFFF;
 }
 
 *:focus {
