@@ -16,6 +16,11 @@ Check it out at: [nafeu.com/gryt-focus](http://nafeu.com/gryt-focus)
 
 <img alt="GRYT Focus Screenshot" src="http://phrakture.com/images/github/gryt-focus-screenshot-updated.png" width="500" valign="middle"/>
 
+### Compatibility
+
+- Works on most modern web browsers including android device web browsers
+- Does NOT work on iOS devices
+
 ### Requirements to a local server
 
 OSX/Linux, Node.js (v7), Raspberry Pi (optional) with Raspbian Jessie
