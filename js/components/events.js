@@ -170,6 +170,10 @@ hideActivityLogButton.on('click', function(){
   app.hideActivityLog();
 });
 
+resetActivityLogButton.dblclick(function(){
+  app.resetActivityLog();
+});
+
 actionTips.forEach(function(action){
   action.element.on('mouseenter', function(){
     app.setActionTip(action.text);

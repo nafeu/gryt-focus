@@ -291,6 +291,14 @@ app = {
     }
   },
 
+  resetActivityLog: function() {
+    activityLogTable.empty();
+    if (typeof(Storage) !== "undefined") {
+      localStorage.removeItem("gryt-focus");
+    }
+    activityLogData = [];
+  },
+
   adjustTaskFontSize: function() {
     var charCount = contentTask.val().length;
     if (charCount > TEXTAREA_RESIZE_RULES[0].limit) {

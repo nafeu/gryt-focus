@@ -53,8 +53,8 @@ var body, sectionA, sectionB, sectionC, sectionAContainer, alarm,
     contentFocus, contentTask, contentActive, logTable, toggle, actionButtons,
     actionTip, activeButton, resetButton, interruptButton, lightingModeButton,
     fullscreenButton, randomButton, showActivityLogButton, hideActivityLogButton,
-    clockButton, colorPicker, footer, lanInfo, activityLogContainer,
-    activityLogPanel, activityLogTable;
+    resetActivityLogButton, clockButton, colorPicker, footer, lanInfo,
+    activityLogContainer, activityLogPanel, activityLogTable;
 
 var actionTips;
 
@@ -121,6 +121,7 @@ $(document).ready(function(){
   randomButton = $("#random-button");
   showActivityLogButton = $("#show-activity-log-button");
   hideActivityLogButton = $("#hide-activity-log-button");
+  resetActivityLogButton = $("#reset-activity-log-button");
   clockButton = $("#clock-button");
   colorPicker = $("#color-picker");
   footer = $("#footer");
