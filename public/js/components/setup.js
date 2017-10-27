@@ -133,7 +133,7 @@ $(document).ready(function(){
       {"element": activeButton, "text": "Click to start or stop the timer."},
       {"element": clockButton, "text": "Double-click to change the timer length. Hold to set manually."},
       {"element": interruptButton, "text": "Click to log an interruption."},
-      {"element": resetButton, "text": "Hold to save this task in activity log and reset."},
+      {"element": resetButton, "text": "Double-click to save this task in activity log and reset."},
       {"element": randomButton, "text": "Click to switch color. Hold to set specific color."},
       {"element": showActivityLogButton, "text": "Click to show activity log."},
       {"element": lightingModeButton, "text": "Click to change lighting mode (night or day)."},
