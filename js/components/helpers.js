@@ -46,7 +46,7 @@ function setDataRange(range) {
 
 function updateData(y) {
   data.shift();
-  datapoint = {y: y};
+  var datapoint = {y: y};
   data.push(datapoint);
 }
 
