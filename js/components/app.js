@@ -47,7 +47,7 @@ app = {
   save: function() {
     var efficiency;
     if (this.interrupts > 0) {
-      efficiency = Math.max(1 - (this.interrupts / Math.round(this.elapsedTime / 60)), 0) + "%";
+      efficiency = (Math.max(1 - (this.interrupts / Math.round(this.elapsedTime / 60)), 0) * 100) + "%";
     } else {
       efficiency = "100%";
     }
