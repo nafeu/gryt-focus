@@ -153,7 +153,7 @@ app = {
   },
 
   setTask: function(task) {
-    contentTask.text(task);
+    contentTask.val(task);
     this.adjustTaskFontSize();
   },
 
