@@ -10,6 +10,9 @@ app = {
   startTime: null,
   endTime: null,
   taskTime: 0,
+  focus: 0,
+  timeSinceLastInterruption: 0,
+  recoveryStep: 0,
   length: timerLength * 60,
   lengthOptions: LENGTH_OPTIONS,
   lengthOptionIndex: 0,
@@ -21,12 +24,13 @@ app = {
   lightingMode: lightingMode,
 
   reset: function(){
-    var self = this;
-
     this.interrupts = 0;
     this.elapsedTime = 0;
     this.taskTime = 0;
     this.active = false;
+    this.focus = 0;
+    this.recoveryStep = 0;
+    this.timeSinceLastInterruption = 0;
     clearInterval(this.stopwatchInterval);
     contentActive.text("Inactive");
     contentTime.text(TEXT_PLACEHOLDER);
@@ -41,10 +45,16 @@ app = {
   },
 
   save: function() {
+    var efficiency;
+    if (this.interrupts > 0) {
+      efficiency = Math.max(1 - (this.interrupts / Math.round(this.elapsedTime / 60)), 0) + "%";
+    } else {
+      efficiency = "100%";
+    }
     this.saveToActivityLog([moment().format(ACTIVITY_LOG_DATETIME_FORMAT),
                             Math.round(this.elapsedTime / 60),
                             contentInterrupts.text(),
-                            contentFocus.text(),
+                            efficiency,
                             contentTask.val()]);
     this.incrementSession();
   },
@@ -91,22 +101,31 @@ app = {
     var now = moment().subtract(TIMER_OFFSET_IN_MS, "milliseconds");
     var timeLeft = self.endTime.diff(now, "seconds");
     self.elapsedTime = (self.length * 60) - timeLeft;
+    self.timeSinceLastInterruption++;
     var totalWorkTime = self.taskTime + self.elapsedTime;
-    var focus = (1 - (self.interrupts / (totalWorkTime/60)));
+
+    if (self.timeSinceLastInterruption == 60) {
+      self.recoveryStep = (1 - self.focus) / 60;
+    }
+
+    if (self.timeSinceLastInterruption > 60) {
+      self.focus += self.recoveryStep;
+      self.focus = Math.min(self.focus, 1);
+    } else if (self.interrupts > Math.round(totalWorkTime/60)) {
+      self.focus = 0;
+    } else {
+      self.focus = Math.max((1 - (self.interrupts / (totalWorkTime/60))), 0);
+    }
 
     contentTime.text(moment.utc(totalWorkTime*1000).format(STATUS_TIME_FORMAT));
     contentLength.text(Math.ceil(timeLeft / 60));
     contentFocus.text(function(){
-      var focusPercentage = Math.round(focus*100);
-      if ((focusPercentage < 0) || self.elapsedTime < 60) {
-        if ((self.elapsedTime / 60) < 1) {
-          updateData(self.elapsedTime / 60);
-        } else {
-          updateData(1);
-        }
+      var focusPercentage = Math.round(self.focus*100);
+      if (self.elapsedTime < 60) {
+        updateData(self.elapsedTime / 60);
         return NUMBER_PLACEHOLDER;
       } else {
-        updateData(focus);
+        updateData(self.focus);
         return focusPercentage + "%";
       }
     });
@@ -123,6 +142,7 @@ app = {
   interrupt: function() {
     contentInterrupts.text(parseInt(contentInterrupts.text()) + 1);
     this.interrupts++;
+    this.timeSinceLastInterruption = 0;
   },
 
   incrementSession: function() {

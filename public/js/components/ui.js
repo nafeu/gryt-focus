@@ -107,13 +107,15 @@ ui = {
   },
 
   randomizeTheme: function() {
-    this.updateAppColorTransition("500ms");
-    if (!this.allowCycling) {
+    var self = this;
+
+    self.updateAppColorTransition("500ms");
+    if (!self.allowCycling) {
       colorPicker.click();
     } else {
-      this.cycleColor();
+      self.cycleColor();
       setTimeout(function(){
-        this.resetAppColorTransition();
+        self.resetAppColorTransition();
       }, 500);
     }
   },
