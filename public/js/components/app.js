@@ -87,6 +87,9 @@ app = {
       self.active = false;
       self.startTime = null;
       self.endTime = null;
+      self.focus = 0;
+      self.recoveryStep = 0;
+      self.timeSinceLastInterruption = 0;
       self.taskTime += self.elapsedTime;
       contentActive.text("Paused");
       activeButton
