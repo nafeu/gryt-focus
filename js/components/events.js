@@ -9,7 +9,9 @@ if (remoteStatus) {
   });
 
   socket.on("lan", function(data){
-    app.showLanAddress(data.addresses[0] + ":" + data.port);
+    setTimeout(function(){
+      app.showLanAddress(data.addresses[0] + ":" + data.port);
+    }, 5000);
   });
 
   socket.on("task", function(data){
