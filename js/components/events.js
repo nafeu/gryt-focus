@@ -40,6 +40,9 @@ if (remoteStatus) {
 
   socket.on("length", function(data) {
     app.setLength(data);
+    setDataRange(data * 60);
+    $("#perf-chart svg").remove();
+    draw(ui.currentThemeColor);
     app.stopAlarm();
   });
 
