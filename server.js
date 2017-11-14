@@ -1,24 +1,25 @@
-var os = require('os');
-var express = require('express');
-var app = express();
-var http = require('http');
-var server = require('http').Server(app);
-var bodyParser = require('body-parser');
-var io = require('socket.io')(server);
-var ifaces = os.networkInterfaces();
+const os = require('os');
+const express = require('express');
+const app = express();
+const path = require('path');
+const http = require('http');
+const server = require('http').Server(app);
+const bodyParser = require('body-parser');
+const io = require('socket.io')(server);
+const ifaces = os.networkInterfaces();
 
 try {
-  var config = require('./config');
+  let config = require('./config');
 }
 catch (err) {
-  var config = {};
+  let config = {};
 }
 
 // ---------------------------------------------------------------------------
 // Configuration
 // ---------------------------------------------------------------------------
 
-var port = process.env.PORT || 8000;
+const port = process.env.PORT || 8000;
 
 // Server
 server.listen(port, function(){
@@ -34,9 +35,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
-var lanAddressInfo = getLanAddressInfo(port);
+const lanAddressInfo = getLanAddressInfo(port);
 
 if (lanAddressInfo) {
   console.log("Accessible via LAN at: ", lanAddressInfo);
@@ -72,14 +73,14 @@ app.get('/api/interact', function(req, res){
         if (req.query.data) {
           io.emit("task", req.query.data);
         } else {
-          res.status(400).send('Invalid query vars.');
+          res.status(400).send('Invalid query consts.');
         }
         break;
       case "length":
         if (req.query.data) {
           io.emit("length", req.query.data);
         } else {
-          res.status(400).send('Invalid query vars.');
+          res.status(400).send('Invalid query consts.');
         }
         break;
       case "toggle":
@@ -114,7 +115,7 @@ app.get('/api/interact', function(req, res){
     }
     res.status(200).send('Handling interaction: ' + JSON.stringify(req.query));
   } else {
-    res.status(400).send('Invalid query vars.');
+    res.status(400).send('Invalid query consts.');
   }
 });
 
@@ -123,13 +124,13 @@ app.get('/api/interact', function(req, res){
 // ---------------------------------------------------------------------------
 
 function getLanAddressInfo(port){
-  var out = {
+  let out = {
     addresses: [],
     port: port
   };
 
   Object.keys(ifaces).forEach(function (ifname) {
-    var alias = 0;
+    let alias = 0;
 
     ifaces[ifname].forEach(function (iface) {
       if ('IPv4' !== iface.family ||
