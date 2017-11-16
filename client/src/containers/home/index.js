@@ -10,30 +10,55 @@ import {
 class Home extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
-      timer: null,
-      elapsedTime: props.endTime - props.startTime
+      timerInterval: null,
+      active: props.isActive,
+      elapsedTime: props.startTime ? (moment.now() - props.startTime) : 0
     }
 
     this.toggleTimer = this.toggleTimer.bind(this)
     this.tick = this.tick.bind(this)
   }
 
-  tick() {
-    this.setState({elapsedTime: moment.now() - this.props.startTime})
+  componentDidMount() {
+    if (this.state.active) {
+      this.initTimerInterval()
+    }
+  }
+
+  componentWillUnmount() {
+    this.clearTimerInterval()
+  }
+
+  clearTimerInterval() {
+    clearInterval(this.state.timerInterval)
+    this.setState({
+      timerInterval: null,
+      active: !this.state.active
+    })
+  }
+
+  initTimerInterval() {
+    let timerInterval = setInterval(this.tick, 1000)
+    this.setState({
+      timerInterval,
+      active: !this.state.active
+    })
   }
 
   toggleTimer() {
     if (this.props.isActive) {
-      clearInterval(this.state.timer)
+      this.clearTimerInterval()
     } else {
-      let timer = setInterval(this.tick, 1000)
-      this.setState({
-        timer,
-        elapsedTime: this.props.endTime - this.props.startTime
-      })
+      this.initTimerInterval()
     }
     this.props.toggleTimer()
+  }
+
+  tick() {
+    const elapsedTime = moment.now() - this.props.startTime
+    this.setState({elapsedTime})
   }
 
   getDisplayTime() {
@@ -44,16 +69,11 @@ class Home extends React.Component {
     return (
       <div>
         <h1>Home</h1>
-
         <p>Time Elapsed: {this.getDisplayTime()}</p>
         <p>Active: {this.props.isActive ? 'YES' : 'NO'}</p>
-        <p>Start: {this.props.startTime}</p>
-        <p>End: {this.props.endTime}</p>
-
         <p>
           <button onClick={this.toggleTimer}>Toggle</button>
         </p>
-
       </div>
     )
   }

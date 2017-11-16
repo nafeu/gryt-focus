@@ -3,8 +3,8 @@ import moment from 'moment';
 export const TOGGLE_TIMER = 'timer/TOGGLE_TIMER'
 
 const initialState = {
-  startTime: 0,
-  endTime: 0,
+  startTime: null,
+  endTime: null,
   isActive: false
 }
 
