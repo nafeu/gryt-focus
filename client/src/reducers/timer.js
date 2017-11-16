@@ -1,6 +1,5 @@
 import moment from 'moment';
-
-export const TOGGLE_TIMER = 'timer/TOGGLE_TIMER'
+import { TOGGLE_TIMER } from '../constants/actionTypes'
 
 const initialState = {
   startTime: null,
@@ -8,7 +7,6 @@ const initialState = {
   isActive: false
 }
 
-// Reducers
 export default (state = initialState, action) => {
   switch (action.type) {
     case TOGGLE_TIMER:
@@ -21,14 +19,5 @@ export default (state = initialState, action) => {
 
     default:
       return state
-  }
-}
-
-// Actions
-export const toggleTimer = () => {
-  return dispatch => {
-    dispatch({
-      type: TOGGLE_TIMER
-    })
   }
 }

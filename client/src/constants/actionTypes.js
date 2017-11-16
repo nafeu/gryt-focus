@@ -1,0 +1,1 @@
+export const TOGGLE_TIMER = 'timer/TOGGLE_TIMER'

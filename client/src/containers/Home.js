@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import {
   toggleTimer,
-} from '../../modules/timer'
+} from '../actions/TimerActions'
 
 class Home extends React.Component {
   constructor(props) {
