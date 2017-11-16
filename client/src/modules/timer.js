@@ -1,8 +1,10 @@
+import moment from 'moment';
+
 export const TOGGLE_TIMER = 'timer/TOGGLE_TIMER'
-export const INCREMENT_TIMER = 'timer/INCREMENT_TIMER'
 
 const initialState = {
-  secondsElapsed: 0,
+  startTime: 0,
+  endTime: 0,
   isActive: false
 }
 
@@ -12,13 +14,9 @@ export default (state = initialState, action) => {
     case TOGGLE_TIMER:
       return {
         ...state,
+        startTime: state.isActive ? state.startTime : moment.now(),
+        endTime: state.isActive ? moment.now() : null,
         isActive: !state.isActive
-      }
-
-    case INCREMENT_TIMER:
-      return {
-        ...state,
-        secondsElapsed: state.secondsElapsed + 1
       }
 
     default:
@@ -31,14 +29,6 @@ export const toggleTimer = () => {
   return dispatch => {
     dispatch({
       type: TOGGLE_TIMER
-    })
-  }
-}
-
-export const incrementTimer = () => {
-  return dispatch => {
-    dispatch({
-      type: INCREMENT_TIMER
     })
   }
 }
