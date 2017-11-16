@@ -7,6 +7,17 @@ import {
   toggleTimer,
 } from '../actions/TimerActions'
 
+const mapStateToProps = state => ({
+  startTime: state.timer.startTime,
+  endTime: state.timer.endTime,
+  isActive: state.timer.isActive,
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  toggleTimer,
+  changePage: () => push('/about-us')
+}, dispatch)
+
 class Timer extends React.Component {
   constructor(props) {
     super(props)
@@ -77,17 +88,6 @@ class Timer extends React.Component {
     )
   }
 }
-
-const mapStateToProps = state => ({
-  startTime: state.timer.startTime,
-  endTime: state.timer.endTime,
-  isActive: state.timer.isActive,
-})
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  toggleTimer,
-  changePage: () => push('/about-us')
-}, dispatch)
 
 export default connect(
   mapStateToProps,
