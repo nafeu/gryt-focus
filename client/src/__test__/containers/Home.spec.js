@@ -1,10 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from '../containers/Home';
-import { shallow, mount, configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-configure({ adapter: new Adapter() });
+import Home from '../../containers/Home';
+import { shallow } from 'enzyme';
 
 describe('Home component',()=>{
   let wrapper
