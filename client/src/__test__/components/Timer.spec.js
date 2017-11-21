@@ -109,4 +109,12 @@ describe('Timer component', () => {
     expect(component.instance().state.timerInterval).toBeNull()
   })
 
+  it('stores elapsed time on active timers', () => {
+    component = setupTimer({
+      isActive: true,
+      startTime: 762152400,
+      toggleTimer: jest.fn()
+    })
+    expect(component.instance().state.elapsedTime).toBeGreaterThan(0)
+  })
 });

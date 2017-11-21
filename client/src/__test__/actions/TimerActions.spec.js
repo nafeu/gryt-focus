@@ -1,9 +1,19 @@
-import { toggleTimer } from '../../actions/TimerActions'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import * as actions from '../../actions/TimerActions'
+import * as types from '../../constants/ActionTypes'
 
-describe('Actions for Timer component', () => {
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
+
+describe('Timer actions', () => {
   it('creates TOGGLE_TIMER action', () => {
-    toggleTimer((action) => {
-      expect(action).toEqual({type:"TOGGLE_TIMER"})
-    })
+    const expectedActions = [
+      { type: types.TOGGLE_TIMER },
+    ]
+    const store = mockStore({timer:{}})
+
+    store.dispatch(actions.toggleTimer())
+    expect(store.getActions()).toEqual(expectedActions)
   })
 })

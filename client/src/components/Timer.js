@@ -1,5 +1,4 @@
 import React from 'react'
-import { push } from 'react-router-redux'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -45,7 +44,7 @@ export class Timer extends React.Component {
     clearInterval(this.state.timerInterval)
     this.setState({
       timerInterval: null,
-      active: !this.state.active
+      active: false
     })
   }
 
@@ -53,7 +52,7 @@ export class Timer extends React.Component {
     let timerInterval = setInterval(this.tick, 1000)
     this.setState({
       timerInterval,
-      active: !this.state.active
+      active: true
     })
   }
 
