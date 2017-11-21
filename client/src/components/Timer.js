@@ -15,10 +15,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   toggleTimer,
-  changePage: () => push('/about-us')
 }, dispatch)
 
-class Timer extends React.Component {
+export class Timer extends React.Component {
   constructor(props) {
     super(props)
 
@@ -59,7 +58,7 @@ class Timer extends React.Component {
   }
 
   toggleTimer() {
-    if (this.props.isActive) {
+    if (this.state.active) {
       this.clearTimerInterval()
     } else {
       this.initTimerInterval()

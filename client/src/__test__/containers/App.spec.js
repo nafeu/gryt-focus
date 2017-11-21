@@ -1,12 +1,12 @@
 import React from 'react';
-import Home from '../../containers/Home';
+import App from '../../containers/App';
 import { shallow } from 'enzyme';
 
-describe('Home component',()=>{
+describe('App component',()=>{
   let wrapper
 
   beforeEach(()=>{
-    wrapper = shallow(<Home />)
+    wrapper = shallow(<App />)
   })
 
   it('renders without crashing', () => {
