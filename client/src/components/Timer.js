@@ -77,11 +77,13 @@ export class Timer extends React.Component {
   render() {
     return (
       <div>
+        <h3>Status</h3>
         <p>Time Elapsed: {this.getDisplayTime()}</p>
         <p>Active: {this.props.isActive ? 'YES' : 'NO'}</p>
         <p>
           <button onClick={this.toggleTimer}>Toggle</button>
         </p>
+        <hr/>
       </div>
     )
   }

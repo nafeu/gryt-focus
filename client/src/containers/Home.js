@@ -1,12 +1,17 @@
 import React from 'react'
 import Timer from '../components/Timer'
+import Task from '../components/Task'
+import Efficiency from '../components/Efficiency'
+import NavButtons from '../components/NavButtons'
 
 class Home extends React.Component {
   render() {
     return (
       <div>
-        <h1>Home Page</h1>
+        <NavButtons />
+        <Task />
         <Timer />
+        <Efficiency />
       </div>
     )
   }
