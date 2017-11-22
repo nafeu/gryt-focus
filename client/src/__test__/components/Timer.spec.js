@@ -117,4 +117,19 @@ describe('Timer component', () => {
     })
     expect(component.instance().state.elapsedTime).toBeGreaterThan(0)
   })
+
+  it('gets the correct elapsed time', () => {
+    expect(component.instance().getElapsedTime()).toEqual(0)
+    component = setupTimer({
+      isActive: true,
+      startTime: 762152400,
+    })
+    expect(component.instance().getElapsedTime()).toBeGreaterThan(0)
+    component = setupTimer({
+      isActive: false,
+      startTime: 1,
+      endTime: 2
+    })
+    expect(component.instance().getElapsedTime()).toEqual(1)
+  })
 });

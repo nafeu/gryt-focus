@@ -23,11 +23,20 @@ export class Timer extends React.Component {
     this.state = {
       timerInterval: null,
       active: props.isActive,
-      elapsedTime: props.startTime ? (moment.now() - props.startTime) : 0
+      elapsedTime: this.getElapsedTime()
     }
 
     this.toggleTimer = this.toggleTimer.bind(this)
     this.tick = this.tick.bind(this)
+  }
+
+  getElapsedTime() {
+    if (this.props.startTime && this.props.endTime) {
+      return this.props.endTime - this.props.startTime
+    } else if (this.props.startTime) {
+      return moment.now() - this.props.startTime
+    }
+    return 0
   }
 
   componentDidMount() {
