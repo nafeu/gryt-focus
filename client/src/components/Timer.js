@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   startTime: state.timer.startTime,
   endTime: state.timer.endTime,
   isActive: state.timer.isActive,
+  accumulatedTime: state.timer.accumulatedTime,
   taskName: state.task.name
 })
 
@@ -26,11 +27,11 @@ export class Timer extends React.Component {
 
   getElapsedTime() {
     if (this.props.startTime && this.props.endTime) {
-      return this.props.endTime - this.props.startTime
+      return this.props.accumulatedTime
     } else if (this.props.startTime) {
-      return moment.now() - this.props.startTime
+      return this.props.accumulatedTime + (moment.now() - this.props.startTime)
     }
-    return 0
+    return this.props.accumulatedTime
   }
 
   componentDidMount() {
@@ -64,7 +65,7 @@ export class Timer extends React.Component {
   }
 
   tick() {
-    const elapsedTime = moment.now() - this.props.startTime
+    const elapsedTime = this.props.accumulatedTime + (moment.now() - this.props.startTime)
     this.setState({elapsedTime})
   }
 
