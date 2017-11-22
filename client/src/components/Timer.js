@@ -7,6 +7,7 @@ const mapStateToProps = state => ({
   startTime: state.timer.startTime,
   endTime: state.timer.endTime,
   isActive: state.timer.isActive,
+  taskName: state.task.name
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
@@ -75,6 +76,7 @@ export class Timer extends React.Component {
     return (
       <div>
         <h3>Status</h3>
+        <p>Current Task: {this.props.taskName}</p>
         <p>Time Elapsed: {this.getDisplayTime()}</p>
         <p>Active: {this.props.isActive ? 'YES' : 'NO'}</p>
         <hr/>
