@@ -28,7 +28,7 @@ export class Task extends React.Component {
   }
 
   handleKeyPress(e) {
-    if (e.key == 'Enter') {
+    if (e.key === 'Enter') {
       e.target.blur()
     }
   }

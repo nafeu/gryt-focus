@@ -9,12 +9,16 @@ const initialState = {
     startTime: null,
     endTime: null,
     isActive: false
+  },
+  task: {
+    name: ""
   }
 }
 
 const props = {
   isActive: false,
   startTime: null,
+  taskName: "",
   toggleTimer: jest.fn()
 }
 
@@ -61,7 +65,6 @@ describe('Timer component', () => {
 
   it('instantiates with correct internal state', () => {
     expect(component.instance().state).toEqual({
-      "active": false,
       "elapsedTime": 0,
       "timerInterval": null
     })
@@ -69,7 +72,6 @@ describe('Timer component', () => {
 
   it('can initiate a timer interval', () => {
     component.instance().initTimerInterval()
-    expect(component.instance().state.active).toBeTruthy()
     expect(component.instance().state.timerInterval).toBeTruthy()
   })
 
@@ -81,12 +83,6 @@ describe('Timer component', () => {
   it('can clear the timer interval', () => {
     component.instance().clearTimerInterval()
     expect(component.instance().state.timerInterval).toBeNull()
-  })
-
-  it('can toggle the timer', () => {
-    expect(props.toggleTimer.mock.calls.length).toBe(0)
-    component.find('button').simulate('click')
-    expect(props.toggleTimer.mock.calls.length).toBe(1)
   })
 
   it('did mount correctly', () => {
