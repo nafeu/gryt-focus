@@ -2,9 +2,6 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import {
-  toggleTimer,
-} from '../actions/TimerActions'
 
 const mapStateToProps = state => ({
   startTime: state.timer.startTime,
@@ -12,9 +9,7 @@ const mapStateToProps = state => ({
   isActive: state.timer.isActive,
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  toggleTimer,
-}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
 
 export class Timer extends React.Component {
   constructor(props) {
@@ -22,11 +17,9 @@ export class Timer extends React.Component {
 
     this.state = {
       timerInterval: null,
-      active: props.isActive,
       elapsedTime: this.getElapsedTime()
     }
 
-    this.toggleTimer = this.toggleTimer.bind(this)
     this.tick = this.tick.bind(this)
   }
 
@@ -40,7 +33,7 @@ export class Timer extends React.Component {
   }
 
   componentDidMount() {
-    if (this.state.active) {
+    if (this.props.isActive) {
       this.initTimerInterval()
     }
   }
@@ -51,27 +44,22 @@ export class Timer extends React.Component {
 
   clearTimerInterval() {
     clearInterval(this.state.timerInterval)
-    this.setState({
-      timerInterval: null,
-      active: false
-    })
+    this.setState({timerInterval: null})
   }
 
   initTimerInterval() {
     let timerInterval = setInterval(this.tick, 1000)
-    this.setState({
-      timerInterval,
-      active: true
-    })
+    this.setState({timerInterval})
   }
 
-  toggleTimer() {
-    if (this.state.active) {
-      this.clearTimerInterval()
-    } else {
-      this.initTimerInterval()
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isActive !== this.state.isActive) {
+      if (nextProps.isActive) {
+        this.initTimerInterval()
+      } else {
+        this.clearTimerInterval()
+      }
     }
-    this.props.toggleTimer()
   }
 
   tick() {
@@ -89,9 +77,6 @@ export class Timer extends React.Component {
         <h3>Status</h3>
         <p>Time Elapsed: {this.getDisplayTime()}</p>
         <p>Active: {this.props.isActive ? 'YES' : 'NO'}</p>
-        <p>
-          <button onClick={this.toggleTimer}>Toggle</button>
-        </p>
         <hr/>
       </div>
     )

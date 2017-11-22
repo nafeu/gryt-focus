@@ -85,12 +85,8 @@ describe('Timer component', () => {
 
   it('can toggle the timer', () => {
     expect(props.toggleTimer.mock.calls.length).toBe(0)
-    component.instance().toggleTimer()
+    component.find('button').simulate('click')
     expect(props.toggleTimer.mock.calls.length).toBe(1)
-    expect(component.instance().state.active).toBeTruthy()
-    component.instance().toggleTimer()
-    expect(props.toggleTimer.mock.calls.length).toBe(2)
-    expect(component.instance().state.active).toBeFalsy()
   })
 
   it('did mount correctly', () => {

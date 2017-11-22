@@ -1,18 +1,24 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import {
+  toggleTimer,
+} from '../actions/TimerActions'
 
-const mapStateToProps = state => ({
-  isActive: state.timer.isActive
-})
+const mapStateToProps = state => ({})
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({
+  toggleTimer,
+}, dispatch)
 
 export class NavButtons extends React.Component {
   render() {
     return (
       <div>
         <h3>NavButtons</h3>
+        <p>
+          <button onClick={this.props.toggleTimer}>Toggle</button>
+        </p>
         <hr/>
       </div>
     )
