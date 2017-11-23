@@ -55,14 +55,14 @@ export class Timer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isActive !== this.state.isActive) {
+    if (nextProps.isActive !== this.props.isActive) {
       if (nextProps.isActive) {
         this.initTimerInterval()
       } else {
         this.clearTimerInterval()
       }
     }
-    if (nextProps.accumulatedTime !== this.state.accumulatedTime) {
+    if (nextProps.accumulatedTime !== this.props.accumulatedTime) {
       this.setState({elapsedTime: nextProps.accumulatedTime})
     }
   }
