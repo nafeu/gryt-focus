@@ -8,7 +8,6 @@ const mapStateToProps = state => ({
   endTime: state.timer.endTime,
   isActive: state.timer.isActive,
   accumulatedTime: state.timer.accumulatedTime,
-  taskName: state.task.name
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)

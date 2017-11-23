@@ -9,9 +9,6 @@ const initialState = {
     startTime: null,
     endTime: null,
     isActive: false
-  },
-  task: {
-    name: ""
   }
 }
 
@@ -19,18 +16,17 @@ const props = {
   isActive: false,
   startTime: null,
   accumulatedTime: 0,
-  taskName: "",
   toggleTimer: jest.fn()
 }
 
-function setupTimer(inputProps) {
+function setupComponent(inputProps) {
   if (inputProps) {
     return mount(<Timer {...inputProps} />)
   }
   return mount(<Timer {...props} />)
 }
 
-function setupConnectedTimer() {
+function setupConnectedComponent() {
   const mockStore = configureStore()
   return shallow(<ConnectedTimer store={mockStore(initialState)} />)
 }
@@ -39,7 +35,7 @@ describe('Connected Timer component', () => {
   let component
 
   beforeEach(()=>{
-    component = setupConnectedTimer()
+    component = setupConnectedComponent()
   })
 
   it('renders the connected(Timer) component without crashing', () => {
@@ -57,7 +53,7 @@ describe('Timer component', () => {
   let component
 
   beforeEach(()=>{
-    component = setupTimer()
+    component = setupComponent()
   })
 
   it('renders the Timer component without crashing', () => {
@@ -92,7 +88,7 @@ describe('Timer component', () => {
   })
 
   it('will unmount correctly', () => {
-    component = setupTimer({
+    component = setupComponent({
       isActive: true,
       startTime: null,
       toggleTimer: jest.fn()
@@ -103,7 +99,7 @@ describe('Timer component', () => {
   })
 
   it('stores elapsed time on active timers', () => {
-    component = setupTimer({
+    component = setupComponent({
       isActive: true,
       startTime: 762152400,
       accumulatedTime: 0,
@@ -114,22 +110,47 @@ describe('Timer component', () => {
 
   it('gets the correct elapsed time', () => {
     expect(component.instance().getElapsedTime()).toEqual(0)
-    component = setupTimer({
+    component = setupComponent({
       isActive: true,
       startTime: 762152400,
       accumulatedTime: 0
     })
     expect(component.instance().getElapsedTime()).toBeGreaterThan(0)
-    component = setupTimer({
+    component = setupComponent({
       isActive: false,
       startTime: 1,
       endTime: 2,
-      accumulatedTime: 1
+      accumulatedTime: 1000
     })
-    expect(component.instance().getElapsedTime()).toEqual(1)
+    expect(component.instance().getElapsedTime()).toEqual(1000)
   })
 
-  // it('updates timers and elapsed time accordingly on prop change', () => {
-  //   expect(component.instance().state.timerInterval).toBeNone()
-  // })
+  it('creates appropriate timer on prop change', () => {
+    expect(component.instance().state.timerInterval).toBeNull()
+    component.instance().componentWillReceiveProps({
+      isActive: true,
+      startTime: 762152400,
+      endTime: null,
+      accumulatedTime: 0
+    })
+    expect(component.instance().state.timerInterval).toBeTruthy()
+  })
+
+  it('clears appropriate timer on prop change', () => {
+    component = setupComponent({
+      isActive: true,
+      startTime: 762152400,
+      endTime: null,
+      accumulatedTime: 0
+    })
+    expect(component.instance().state.timerInterval).toBeTruthy()
+    component.instance().componentWillReceiveProps({
+      isActive: false,
+      startTime: 762152400,
+      endTime: 762153400,
+      accumulatedTime: 1000
+    })
+    expect(component.instance().state.timerInterval).toBeNull()
+    expect(component.instance().state.elapsedTime).toEqual(1000)
+  })
 });
