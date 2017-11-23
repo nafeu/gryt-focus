@@ -7,9 +7,10 @@ describe('Root reducer', () => {
     let store = createStore(rootReducer)
 
     expect(store.getState().timer).toEqual({
-      "endTime": null,
-      "isActive": false,
-      "startTime": null
+      accumulatedTime: 0,
+      endTime: null,
+      isActive: false,
+      startTime: null
     })
 
     const action = { type: 'TOGGLE_TIMER' }

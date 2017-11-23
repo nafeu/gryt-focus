@@ -18,6 +18,7 @@ const initialState = {
 const props = {
   isActive: false,
   startTime: null,
+  accumulatedTime: 0,
   taskName: "",
   toggleTimer: jest.fn()
 }
@@ -65,8 +66,8 @@ describe('Timer component', () => {
 
   it('instantiates with correct internal state', () => {
     expect(component.instance().state).toEqual({
-      "elapsedTime": 0,
-      "timerInterval": null
+      elapsedTime: 0,
+      timerInterval: null
     })
   })
 
@@ -105,6 +106,7 @@ describe('Timer component', () => {
     component = setupTimer({
       isActive: true,
       startTime: 762152400,
+      accumulatedTime: 0,
       toggleTimer: jest.fn()
     })
     expect(component.instance().state.elapsedTime).toBeGreaterThan(0)
@@ -115,13 +117,19 @@ describe('Timer component', () => {
     component = setupTimer({
       isActive: true,
       startTime: 762152400,
+      accumulatedTime: 0
     })
     expect(component.instance().getElapsedTime()).toBeGreaterThan(0)
     component = setupTimer({
       isActive: false,
       startTime: 1,
-      endTime: 2
+      endTime: 2,
+      accumulatedTime: 1
     })
     expect(component.instance().getElapsedTime()).toEqual(1)
   })
+
+  // it('updates timers and elapsed time accordingly on prop change', () => {
+  //   expect(component.instance().state.timerInterval).toBeNone()
+  // })
 });

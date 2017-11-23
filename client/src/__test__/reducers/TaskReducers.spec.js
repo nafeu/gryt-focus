@@ -3,13 +3,12 @@ import * as types from '../../constants/ActionTypes'
 
 describe('Reducers for Timer component', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(
-      {
-        endTime: null,
-        startTime: null,
-        isActive: false
-      }
-    )
+    expect(reducer(undefined, {})).toEqual({
+      accumulatedTime: 0,
+      endTime: null,
+      isActive: false,
+      startTime: null
+    })
   })
 
   it('should handle TOGGLE_TIMER', () => {

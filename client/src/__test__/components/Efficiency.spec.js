@@ -50,6 +50,9 @@ describe('Efficiency component', () => {
   })
 
   it('instantiates with correct internal state', () => {
-    expect(component.instance().state).toEqual(null)
+    expect(component.instance().state).toEqual({
+      focus: "---",
+      timerInterval: null
+    })
   })
 });
