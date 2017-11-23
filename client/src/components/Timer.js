@@ -62,6 +62,9 @@ export class Timer extends React.Component {
         this.clearTimerInterval()
       }
     }
+    if (nextProps.accumulatedTime !== this.state.accumulatedTime) {
+      this.setState({elapsedTime: nextProps.accumulatedTime})
+    }
   }
 
   tick() {

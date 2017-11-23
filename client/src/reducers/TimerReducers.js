@@ -2,7 +2,8 @@ import moment from 'moment';
 import {
   TOGGLE_TIMER,
   START_TIMER,
-  STOP_TIMER
+  STOP_TIMER,
+  RESET_TIMER
 } from '../constants/actionTypes'
 
 const initialState = {
@@ -38,6 +39,15 @@ export default (state = initialState, action) => {
         endTime: now,
         isActive: false,
         accumulatedTime: state.accumulatedTime + (now - state.startTime)
+      }
+
+    case RESET_TIMER:
+      return {
+        ...state,
+        startTime: null,
+        endTime: null,
+        isActive: false,
+        accumulatedTime: 0
       }
 
     default:
