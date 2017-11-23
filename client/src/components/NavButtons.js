@@ -6,7 +6,9 @@ import {
   resetTimer
 } from '../actions/TimerActions'
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  isActive: state.timer.isActive
+})
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   toggleTimer,
@@ -19,7 +21,7 @@ export class NavButtons extends React.Component {
       <div>
         <h3>NavButtons</h3>
         <p>
-          <button onClick={this.props.toggleTimer}>Toggle</button>
+          <button onClick={this.props.toggleTimer}>{this.props.isActive ? 'Stop' : 'Start'}</button>
           <button onClick={this.props.resetTimer}>Reset</button>
         </p>
         <hr/>

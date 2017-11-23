@@ -79,10 +79,8 @@ export class Timer extends React.Component {
   render() {
     return (
       <div>
-        <h3>Status</h3>
-        <p>Current Task: {this.props.taskName}</p>
+        <h3>{this.props.isActive ? 'Active' : 'Inactive'}</h3>
         <p>Time Elapsed: {this.getDisplayTime()}</p>
-        <p>Active: {this.props.isActive ? 'YES' : 'NO'}</p>
         <hr/>
       </div>
     )
