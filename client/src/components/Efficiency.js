@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 const mapStateToProps = state => ({
-  isActive: state.timer.isActive
+  interruptions: state.efficiency.interruptions
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
@@ -13,6 +13,7 @@ export class Efficiency extends React.Component {
     return (
       <div>
         <h3>Efficiency</h3>
+        <p>Interruptions: {this.props.interruptions}</p>
         <hr/>
       </div>
     )

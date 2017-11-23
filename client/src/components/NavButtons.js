@@ -5,6 +5,7 @@ import {
   toggleTimer,
   resetTimer
 } from '../actions/TimerActions'
+import { incrementInterruptions } from '../actions/EfficiencyActions'
 
 const mapStateToProps = state => ({
   isActive: state.timer.isActive
@@ -12,7 +13,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   toggleTimer,
-  resetTimer
+  resetTimer,
+  incrementInterruptions
 }, dispatch)
 
 export class NavButtons extends React.Component {
@@ -23,6 +25,7 @@ export class NavButtons extends React.Component {
         <p>
           <button onClick={this.props.toggleTimer}>{this.props.isActive ? 'Stop' : 'Start'}</button>
           <button onClick={this.props.resetTimer}>Reset</button>
+          <button onClick={this.props.incrementInterruptions}>Interrupt</button>
         </p>
         <hr/>
       </div>
