@@ -23,7 +23,7 @@ export class NavButtons extends React.Component {
       <div>
         <h3>NavButtons</h3>
         <p>
-          <button onClick={this.props.toggleTimer}>{this.props.isActive ? 'Stop' : 'Start'}</button>
+          <button className="toggle-button" onClick={this.props.toggleTimer}>{this.props.isActive ? 'Stop' : 'Start'}</button>
           <button onClick={this.props.resetTimer}>Reset</button>
           <button onClick={this.props.incrementInterruptions}>Interrupt</button>
         </p>
