@@ -1,39 +1,37 @@
-import reducer from '../../reducers/TimerReducers'
+import reducer from '../../reducers/TaskReducers'
 import * as types from '../../constants/ActionTypes'
 
-describe('Reducers for Timer component', () => {
+describe('Reducers for Task component', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual({
-      accumulatedTime: 0,
-      endTime: null,
-      isActive: false,
-      startTime: null
-    })
+    expect(reducer(undefined, {})).toEqual(
+      {
+        name: ""
+      }
+    )
   })
 
-  it('should handle TOGGLE_TIMER', () => {
+  it('should handle SET_TASK', () => {
     let newState
 
-    newState = reducer([], {type: types.TOGGLE_TIMER})
-
-    expect(newState.isActive).toBeTruthy()
-    expect(newState.startTime.toString()).toHaveLength(13)
-    expect(newState.endTime).toBeNull()
+    newState = reducer([], {
+      type: types.SET_TASK,
+      payload: {
+        name: "foo"
+      }
+    })
+    expect(newState.name).toEqual("foo")
 
     newState = reducer(
       {
-        endTime: null,
-        startTime: 1333065600000,
-        isActive: true
+        name: "foo"
       },
       {
-        type: types.TOGGLE_TIMER
+        type: types.SET_TASK,
+        payload: {
+          name: "bar"
+        }
       }
     )
-
-    expect(newState.isActive).toBeFalsy()
-    expect(newState.startTime.toString()).toHaveLength(13)
-    expect(newState.endTime.toString()).toHaveLength(13)
-    expect(newState.endTime).toBeGreaterThan(newState.startTime)
+    expect(newState.name).toEqual("bar")
   })
 })
