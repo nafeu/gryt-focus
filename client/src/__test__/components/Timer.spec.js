@@ -43,9 +43,9 @@ describe('Connected Timer component', () => {
   })
 
   it('matches its props with the initialState', () => {
-     expect(component.prop('timer.isActive')).toEqual(initialState.isActive)
-     expect(component.prop('timer.startTime')).toEqual(initialState.startTime)
-     expect(component.prop('timer.endTime')).toEqual(initialState.endTime)
+     expect(component.prop('isActive')).toEqual(initialState.timer.isActive)
+     expect(component.prop('startTime')).toEqual(initialState.timer.startTime)
+     expect(component.prop('endTime')).toEqual(initialState.timer.endTime)
   })
 });
 
