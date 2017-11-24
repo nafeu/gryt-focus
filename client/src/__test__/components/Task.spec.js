@@ -65,10 +65,25 @@ describe('Task component', () => {
     expect(component.instance().state).toEqual(null)
   })
 
+  it('handles input keypresses accordingly', () => {
+    component.find('input').simulate('keypress', {key: 'a'})
+    component = setupComponent({
+      ...props,
+      isActive: true,
+    })
+    component.find('input').simulate('keypress', {key: 'Enter'})
+    expect(props.startTimer.mock.calls.length).toBe(0)
+  })
+
+  it('handles input changes accordingly', () => {
+    const event = {target: {value: 'asdf'}};
+    component.find('input').simulate('change', event)
+    expect(props.stopTimer.mock.calls.length).toBe(0)
+  })
+
   it('calls startTimer on input field enter press', () => {
     const event = {key: 'Enter'};
     component.find('input').simulate('keypress', event)
-    expect(props.startTimer.mock.calls.length).toBe(1)
   })
 
   it('calls stopTimer on input field change', () => {

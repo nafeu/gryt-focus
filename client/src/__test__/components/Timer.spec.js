@@ -153,4 +153,9 @@ describe('Timer component', () => {
     expect(component.instance().state.timerInterval).toBeNull()
     expect(component.instance().state.elapsedTime).toEqual(1000)
   })
+
+  it('will not mess with timers if prop changes and isActive is the same', () => {
+    component.instance().componentWillReceiveProps({...props})
+    expect(component.instance().state.timerInterval).toEqual(null)
+  })
 });
