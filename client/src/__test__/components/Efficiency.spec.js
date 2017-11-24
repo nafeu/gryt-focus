@@ -5,44 +5,55 @@ import configureStore from 'redux-mock-store'
 import renderer from 'react-test-renderer'
 
 const initialState = {
-  efficiency: {}
+  efficiency: {},
+  timer: {
+    startTime: null,
+    endTime: null,
+    isActive: false
+  }
 }
 
-const props = {}
+const props = {
+  interruptions: 0,
+  startTime: null,
+  endTime: null,
+  accumulatedTime: 0,
+  isActive: false
+}
 
-function setupEfficiency(inputProps) {
+function setupComponent(inputProps) {
   if (inputProps) {
     return mount(<Efficiency {...inputProps} />)
   }
   return mount(<Efficiency {...props} />)
 }
 
-function setupConnectedEfficiency() {
+function setupConnectedComponent() {
   const mockStore = configureStore()
   return shallow(<ConnectedEfficiency store={mockStore(initialState)} />)
 }
 
-// describe('Connected Efficiency component', () => {
-//   let component
+describe('Connected Efficiency component', () => {
+  let component
 
-//   beforeEach(()=>{
-//     component = setupConnectedEfficiency()
-//   })
+  beforeEach(()=>{
+    component = setupConnectedComponent()
+  })
 
-//   it('renders the connected(Efficiency) component without crashing', () => {
-//      expect(component.length).toEqual(1)
-//   })
+  it('renders the connected(Efficiency) component without crashing', () => {
+     expect(component.length).toEqual(1)
+  })
 
-//   it('matches its props with the initialState', () => {
-//      expect(component.prop('Efficiency.isActive')).toEqual(initialState.isActive)
-//   })
-// });
+  it('matches its props with the initialState', () => {
+     expect(component.prop('Efficiency.isActive')).toEqual(initialState.isActive)
+  })
+});
 
 describe('Efficiency component', () => {
   let component
 
   beforeEach(()=>{
-    component = setupEfficiency()
+    component = setupComponent()
   })
 
   it('renders the Efficiency component without crashing', () => {
@@ -54,5 +65,79 @@ describe('Efficiency component', () => {
       focus: "---",
       timerInterval: null
     })
+  })
+
+  it('can initiate a timer interval', () => {
+    component.instance().initTimerInterval()
+    expect(component.instance().state.timerInterval).toBeTruthy()
+  })
+
+  it('updates on tick', () => {
+    component.instance().tick()
+    expect(component.instance().state.focus).toBeTruthy()
+  })
+
+  it('can clear the timer interval', () => {
+    component.instance().clearTimerInterval()
+    expect(component.instance().state.timerInterval).toBeNull()
+  })
+
+  it('did mount correctly', () => {
+    component.instance().componentDidMount()
+    expect(component.instance().state.timerInterval).toBeNull()
+  })
+
+  it('will unmount correctly', () => {
+    component = setupComponent({
+      isActive: true,
+      startTime: null,
+      toggleTimer: jest.fn()
+    })
+    expect(component.instance().state.timerInterval).toBeTruthy()
+    component.instance().componentWillUnmount()
+    expect(component.instance().state.timerInterval).toBeNull()
+  })
+
+  it('creates appropriate timer on prop change', () => {
+    expect(component.instance().state.timerInterval).toBeNull()
+    component.instance().componentWillReceiveProps({
+      isActive: true,
+      startTime: 762152400,
+      endTime: null,
+      accumulatedTime: 0,
+      interruptions: 0
+    })
+    expect(component.instance().state.timerInterval).toBeTruthy()
+  })
+
+  it('clears appropriate timer on prop change', () => {
+    component = setupComponent({
+      isActive: true,
+      startTime: 762152400,
+      endTime: null,
+      accumulatedTime: 0,
+      interruptions: 0
+    })
+    expect(component.instance().state.timerInterval).toBeTruthy()
+    component.instance().componentWillReceiveProps({
+      isActive: false,
+      startTime: 762152400,
+      endTime: 762153400,
+      accumulatedTime: 1000,
+      interruptions: 0
+    })
+    expect(component.instance().state.timerInterval).toBeNull()
+    expect(component.instance().state.focus).toBeTruthy()
+  })
+
+  it('gets correct elapsed time when start time and end time given', () => {
+    component = setupComponent({
+      isActive: false,
+      startTime: 762152400,
+      endTime: 762153400,
+      accumulatedTime: 1000,
+      interruptions: 0
+    })
+    expect(component.instance().getElapsedTime()).toEqual(1000)
   })
 });
