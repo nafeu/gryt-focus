@@ -1,7 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import moment from 'moment'
+import { getDisplayTime, getTimeSinceStart } from '../helpers'
 
 const mapStateToProps = state => ({
   startTime: state.timer.startTime,
@@ -28,7 +28,7 @@ export class Timer extends React.Component {
     if (this.props.startTime && this.props.endTime) {
       return this.props.accumulatedTime
     } else if (this.props.startTime) {
-      return this.props.accumulatedTime + (moment.now() - this.props.startTime)
+      return this.props.accumulatedTime + getTimeSinceStart(this.props.startTime)
     }
     return this.props.accumulatedTime
   }
@@ -67,19 +67,15 @@ export class Timer extends React.Component {
   }
 
   tick() {
-    const elapsedTime = this.props.accumulatedTime + (moment.now() - this.props.startTime)
+    const elapsedTime = this.props.accumulatedTime + getTimeSinceStart(this.props.startTime)
     this.setState({elapsedTime})
-  }
-
-  getDisplayTime() {
-    return moment.utc(this.state.elapsedTime).format("HH:mm:ss")
   }
 
   render() {
     return (
       <div>
         <h3>{this.props.isActive ? 'Active' : 'Inactive'}</h3>
-        <p>Time Elapsed: {this.getDisplayTime()}</p>
+        <p>Time Elapsed: {getDisplayTime(this.state.elapsedTime)}</p>
         <hr/>
       </div>
     )

@@ -25,7 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "coverage": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*js --collectCoverageFrom=!src/*js",
+    "coverage": "react-scripts test --env=jsdom --coverage --collectCoverageFrom=src/**/*js --collectCoverageFrom=!src/store.js --collectCoverageFrom=!src/index.js",
     "eject": "react-scripts eject"
   },
   "homepage": "https://nafeu.github.io/gryt-focus"

@@ -6,14 +6,7 @@ import {
   TOGGLE_MODE
 } from '../constants/actionTypes'
 import * as modes from '../constants/TimerConstants'
-
-function getNextMode(index) {
-  if (index === (modes.DISPLAY_NAMES.length - 1)) {
-    return 0
-  } else {
-    return index + 1
-  }
-}
+import { getNextIndex, getMsByMins } from '../helpers'
 
 const initialState = {
   startTime: null,
@@ -54,7 +47,7 @@ export default (state = initialState, action) => {
     case TOGGLE_MODE:
       return {
         ...state,
-        mode: getNextMode(state.mode)
+        mode: getNextIndex(state.mode, modes.DISPLAY_NAMES.length)
       }
 
     default:
