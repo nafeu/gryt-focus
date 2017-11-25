@@ -3,18 +3,22 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import {
   toggleTimer,
-  resetTimer
+  resetTimer,
+  toggleMode
 } from '../actions/TimerActions'
 import { incrementInterruptions } from '../actions/EfficiencyActions'
+import * as modes from '../constants/TimerConstants'
 
 const mapStateToProps = state => ({
-  isActive: state.timer.isActive
+  isActive: state.timer.isActive,
+  mode: state.timer.mode
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   toggleTimer,
   resetTimer,
-  incrementInterruptions
+  incrementInterruptions,
+  toggleMode
 }, dispatch)
 
 export class NavButtons extends React.Component {
@@ -26,6 +30,7 @@ export class NavButtons extends React.Component {
           <button className="toggle-button" onClick={this.props.toggleTimer}>{this.props.isActive ? 'Stop' : 'Start'}</button>
           <button onClick={this.props.resetTimer}>Reset</button>
           <button onClick={this.props.incrementInterruptions}>Interrupt</button>
+          <button onClick={this.props.toggleMode}>Mode: {modes.displayNames[this.props.mode]}</button>
         </p>
         <hr/>
       </div>

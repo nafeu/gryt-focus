@@ -3,14 +3,25 @@ import {
   TOGGLE_TIMER,
   START_TIMER,
   STOP_TIMER,
-  RESET_TIMER
+  RESET_TIMER,
+  TOGGLE_MODE
 } from '../constants/actionTypes'
+import * as modes from '../constants/TimerConstants'
+
+function getNextMode(index) {
+  if (index === (modes.displayNames.length - 1)) {
+    return 0
+  } else {
+    return index + 1
+  }
+}
 
 const initialState = {
   startTime: null,
   endTime: null,
   isActive: false,
-  accumulatedTime: 0
+  accumulatedTime: 0,
+  mode: modes.STOPWATCH
 }
 
 export default (state = initialState, action) => {
@@ -48,6 +59,12 @@ export default (state = initialState, action) => {
         endTime: null,
         isActive: false,
         accumulatedTime: 0
+      }
+
+    case TOGGLE_MODE:
+      return {
+        ...state,
+        mode: getNextMode(state.mode)
       }
 
     default:

@@ -2,7 +2,8 @@ import {
   TOGGLE_TIMER,
   START_TIMER,
   STOP_TIMER,
-  RESET_TIMER
+  RESET_TIMER,
+  TOGGLE_MODE
 } from '../constants/actionTypes'
 
 export const toggleTimer = () => {
@@ -33,6 +34,14 @@ export const resetTimer = () => {
   return dispatch => {
     dispatch({
       type: RESET_TIMER
+    })
+  }
+}
+
+export const toggleMode = () => {
+  return dispatch => {
+    dispatch({
+      type: TOGGLE_MODE
     })
   }
 }

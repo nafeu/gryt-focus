@@ -9,7 +9,8 @@ describe('Reducers for Timer component', () => {
       accumulatedTime: 0,
       endTime: null,
       isActive: false,
-      startTime: null
+      startTime: null,
+      mode: 0
     })
   })
 
