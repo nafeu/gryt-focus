@@ -13,11 +13,13 @@ describe('Timer actions', () => {
     store = mockStore({timer:{}})
   })
 
-  it('creates TOGGLE_TIMER action', () => {
+  it('creates START_TIMER and STOP_TIMER on toggleTimer action', () => {
     const expectedActions = [
-      { type: types.TOGGLE_TIMER },
+      { type: types.START_TIMER },
+      { type: types.STOP_TIMER }
     ]
-    store.dispatch(actions.toggleTimer())
+    store.dispatch(actions.toggleTimer(false))
+    store.dispatch(actions.toggleTimer(true))
     expect(store.getActions()).toEqual(expectedActions)
   })
 

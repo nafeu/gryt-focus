@@ -3,10 +3,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { setTask } from '../actions/TaskActions'
 import { startTimer, stopTimer } from '../actions/TimerActions'
+import * as modes from '../constants/TimerConstants'
 
 const mapStateToProps = state => ({
   name: state.task.name,
-  isActive: state.timer.isActive
+  isActive: state.timer.isActive,
+  mode: state.timer.mode
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -47,9 +49,19 @@ export class Task extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <h3>Task</h3>
+
+    const alarmLengthInput = (
+      <p>
+        <input
+          type="number"
+          min="0"
+          placeholder="Enter session length..."
+        />
+      </p>
+    )
+
+    const taskInput = (
+      <p>
         <input
           type="text"
           placeholder="Enter a task..."
@@ -58,6 +70,14 @@ export class Task extends React.Component {
           onChange={this.handleChange}
           onKeyPress={this.handleKeyPress}
         />
+      </p>
+    )
+
+    return (
+      <div>
+        <h3>Task</h3>
+        {this.props.mode === modes.ALARM ? alarmLengthInput : ""}
+        {taskInput}
         <hr/>
       </div>
     )

@@ -1,6 +1,5 @@
 import moment from 'moment';
 import {
-  TOGGLE_TIMER,
   START_TIMER,
   STOP_TIMER,
   RESET_TIMER,
@@ -9,7 +8,7 @@ import {
 import * as modes from '../constants/TimerConstants'
 
 function getNextMode(index) {
-  if (index === (modes.displayNames.length - 1)) {
+  if (index === (modes.DISPLAY_NAMES.length - 1)) {
     return 0
   } else {
     return index + 1
@@ -27,15 +26,6 @@ const initialState = {
 export default (state = initialState, action) => {
   const now = moment.now()
   switch (action.type) {
-    case TOGGLE_TIMER:
-      return {
-        ...state,
-        startTime: state.isActive ? state.startTime : now,
-        endTime: state.isActive ? now : null,
-        isActive: !state.isActive,
-        accumulatedTime: state.isActive ? (state.accumulatedTime + (now - state.startTime)) : state.accumulatedTime
-      }
-
     case START_TIMER:
       return {
         ...state,

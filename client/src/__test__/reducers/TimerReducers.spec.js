@@ -14,30 +14,6 @@ describe('Reducers for Timer component', () => {
     })
   })
 
-  it('should handle TOGGLE_TIMER', () => {
-    newState = reducer([], {type: types.TOGGLE_TIMER})
-
-    expect(newState.isActive).toBeTruthy()
-    expect(newState.startTime.toString()).toHaveLength(13)
-    expect(newState.endTime).toBeNull()
-
-    newState = reducer(
-      {
-        endTime: null,
-        startTime: 1333065600000,
-        isActive: true
-      },
-      {
-        type: types.TOGGLE_TIMER
-      }
-    )
-
-    expect(newState.isActive).toBeFalsy()
-    expect(newState.startTime.toString()).toHaveLength(13)
-    expect(newState.endTime.toString()).toHaveLength(13)
-    expect(newState.endTime).toBeGreaterThan(newState.startTime)
-  })
-
   it('should handle START_TIMER', () => {
     newState = reducer([], {type: types.START_TIMER})
 

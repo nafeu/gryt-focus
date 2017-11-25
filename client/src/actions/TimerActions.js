@@ -1,16 +1,21 @@
 import {
-  TOGGLE_TIMER,
   START_TIMER,
   STOP_TIMER,
   RESET_TIMER,
   TOGGLE_MODE
 } from '../constants/actionTypes'
 
-export const toggleTimer = () => {
+export const toggleTimer = (isActive) => {
   return dispatch => {
-    dispatch({
-      type: TOGGLE_TIMER
-    })
+    if (isActive) {
+      dispatch({
+        type: STOP_TIMER
+      })
+    } else {
+      dispatch({
+        type: START_TIMER
+      })
+    }
   }
 }
 
