@@ -6,14 +6,15 @@ import {
   TOGGLE_MODE
 } from '../constants/actionTypes'
 import * as modes from '../constants/TimerConstants'
-import { getNextIndex, getMsByMins } from '../helpers'
+import { getNextIndex, getMsByMins, getMsBySecs } from '../helpers'
 
 const initialState = {
   startTime: null,
   endTime: null,
   isActive: false,
   accumulatedTime: 0,
-  mode: modes.STOPWATCH
+  mode: modes.STOPWATCH,
+  sessionLength: getMsBySecs(3)
 }
 
 export default (state = initialState, action) => {

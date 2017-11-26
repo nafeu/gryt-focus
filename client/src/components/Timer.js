@@ -2,15 +2,21 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getDisplayTime, getTimeSinceStart } from '../helpers'
+import { stopTimer } from '../actions/TimerActions'
+import * as modes from '../constants/TimerConstants'
 
 const mapStateToProps = state => ({
   startTime: state.timer.startTime,
   endTime: state.timer.endTime,
   isActive: state.timer.isActive,
-  accumulatedTime: state.timer.accumulatedTime
+  accumulatedTime: state.timer.accumulatedTime,
+  sessionLength: state.timer.sessionLength,
+  mode: state.timer.mode
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({
+  stopTimer
+}, dispatch)
 
 export class Timer extends React.Component {
   constructor(props) {
@@ -68,14 +74,19 @@ export class Timer extends React.Component {
 
   tick() {
     const elapsedTime = this.props.accumulatedTime + getTimeSinceStart(this.props.startTime)
-    this.setState({elapsedTime})
+    if ((this.props.mode === modes.ALARM) && (elapsedTime >= this.props.sessionLength)) {
+      this.props.stopTimer()
+    } else {
+      this.setState({elapsedTime})
+    }
   }
 
   render() {
     return (
       <div>
         <h3>{this.props.isActive ? 'Active' : 'Inactive'}</h3>
-        <p>Time Elapsed: {getDisplayTime(this.state.elapsedTime)}</p>
+        <p>Elapsed: {getDisplayTime(this.state.elapsedTime)}</p>
+        <p>Session Length: {getDisplayTime(this.props.sessionLength)}</p>
         <hr/>
       </div>
     )

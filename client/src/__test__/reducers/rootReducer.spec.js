@@ -11,7 +11,8 @@ describe('Root reducer', () => {
       endTime: null,
       isActive: false,
       startTime: null,
-      mode: 0
+      mode: 0,
+      sessionLength: 3000
     })
 
     const action = { type: 'TOGGLE_TIMER' }

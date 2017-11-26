@@ -20,6 +20,13 @@ describe('Helper functions', () => {
     })
   })
 
+  describe('getMsBySecs function', () => {
+    it('should return milliseconds from seconds', () => {
+      expect(helpers.getMsBySecs(1)).toBe(1000)
+      expect(helpers.getMsBySecs(0)).toBe(0)
+    })
+  })
+
   describe('getDisplayTime function', () => {
     it('should return a formatted display time using a utc timestamp', () => {
       expect(helpers.getDisplayTime(0)).toBe("00:00:00")
