@@ -72,7 +72,7 @@ describe('Task component', () => {
       isActive: true,
     })
     component.find('input').simulate('keypress', {key: 'Enter'})
-    expect(props.startTimer.mock.calls.length).toBe(0)
+    expect(props.startTimer.mock.calls.length).toBe(1)
   })
 
   it('handles input changes accordingly', () => {

@@ -1,13 +1,14 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { setTask } from '../actions/TaskActions'
+import { setTask, setAlert } from '../actions/TaskActions'
 import { startTimer, stopTimer, setSessionLength } from '../actions/TimerActions'
 import * as modes from '../constants/TimerConstants'
 import { getMinsByMs } from '../helpers'
 
 const mapStateToProps = state => ({
   name: state.task.name,
+  alert: state.task.alert,
   isActive: state.timer.isActive,
   mode: state.timer.mode,
   sessionLength: state.timer.sessionLength
@@ -18,6 +19,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   startTimer,
   stopTimer,
   setSessionLength,
+  setAlert
 }, dispatch)
 
 export class Task extends React.Component {
@@ -38,20 +40,17 @@ export class Task extends React.Component {
   handleKeyPress(e) {
     if (e.key === 'Enter') {
       e.target.blur()
-      if (!this.props.isActive) {
-        this.props.startTimer()
-      }
+      this.props.startTimer()
     }
   }
 
   handleChange(e) {
     e.preventDefault()
     if (e.target.className === 'task-input') {
-      if (this.props.isActive) {
-        this.props.stopTimer()
-      }
+      this.props.stopTimer()
     }
     if (e.target.className === 'session-length-input') {
+      this.props.stopTimer()
       this.props.setSessionLength(e.target.value)
     }
   }
@@ -90,6 +89,7 @@ export class Task extends React.Component {
         <h3>Task</h3>
         {this.props.mode === modes.ALARM ? sessionLengthInput : ""}
         {taskInput}
+        <p>{this.props.alert ? (this.props.alert) : ""}</p>
         <hr/>
       </div>
     )

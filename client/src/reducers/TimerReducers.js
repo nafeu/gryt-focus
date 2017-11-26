@@ -22,19 +22,28 @@ export default (state = initialState, action) => {
   const now = moment.now()
   switch (action.type) {
     case START_TIMER:
-      return {
-        ...state,
-        startTime: now,
-        endTime: null,
-        isActive: true,
+      if (state.isActive) {
+        return state
+      }
+      else {
+        return {
+          ...state,
+          startTime: now,
+          endTime: null,
+          isActive: true
+        }
       }
 
     case STOP_TIMER:
-      return {
-        ...state,
-        endTime: now,
-        isActive: false,
-        accumulatedTime: state.accumulatedTime + (now - state.startTime)
+      if (state.isActive) {
+        return {
+          ...state,
+          endTime: now,
+          isActive: false,
+          accumulatedTime: state.accumulatedTime + (now - state.startTime)
+        }
+      } else {
+        return state
       }
 
     case RESET_TIMER:
