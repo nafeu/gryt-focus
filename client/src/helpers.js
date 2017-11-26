@@ -9,6 +9,10 @@ export function getMsByMins(minutes) {
   return minutes * 60 * 1000
 }
 
+export function getMinsByMs(milliseconds) {
+  return Math.round(milliseconds / 60 / 1000)
+}
+
 export function getMsBySecs(minutes) {
   return minutes * 1000
 }

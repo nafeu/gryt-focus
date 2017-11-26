@@ -3,10 +3,11 @@ import {
   START_TIMER,
   STOP_TIMER,
   RESET_TIMER,
-  TOGGLE_MODE
+  TOGGLE_MODE,
+  SET_SESSION_LENGTH
 } from '../constants/actionTypes'
 import * as modes from '../constants/TimerConstants'
-import { getNextIndex, getMsByMins, getMsBySecs } from '../helpers'
+import { getNextIndex, getMsByMins } from '../helpers'
 
 const initialState = {
   startTime: null,
@@ -14,7 +15,7 @@ const initialState = {
   isActive: false,
   accumulatedTime: 0,
   mode: modes.STOPWATCH,
-  sessionLength: getMsBySecs(3)
+  sessionLength: getMsByMins(25)
 }
 
 export default (state = initialState, action) => {
@@ -49,6 +50,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         mode: getNextIndex(state.mode, modes.DISPLAY_NAMES.length)
+      }
+
+    case SET_SESSION_LENGTH:
+      return {
+        ...state,
+        sessionLength: getMsByMins(action.payload.sessionLength)
       }
 
     default:

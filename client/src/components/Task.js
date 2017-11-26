@@ -2,19 +2,22 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { setTask } from '../actions/TaskActions'
-import { startTimer, stopTimer } from '../actions/TimerActions'
+import { startTimer, stopTimer, setSessionLength } from '../actions/TimerActions'
 import * as modes from '../constants/TimerConstants'
+import { getMinsByMs } from '../helpers'
 
 const mapStateToProps = state => ({
   name: state.task.name,
   isActive: state.timer.isActive,
-  mode: state.timer.mode
+  mode: state.timer.mode,
+  sessionLength: state.timer.sessionLength
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   setTask,
   startTimer,
-  stopTimer
+  stopTimer,
+  setSessionLength,
 }, dispatch)
 
 export class Task extends React.Component {
@@ -43,19 +46,27 @@ export class Task extends React.Component {
 
   handleChange(e) {
     e.preventDefault()
-    if (this.props.isActive) {
-      this.props.stopTimer()
+    if (e.target.className === 'task-input') {
+      if (this.props.isActive) {
+        this.props.stopTimer()
+      }
+    }
+    if (e.target.className === 'session-length-input') {
+      this.props.setSessionLength(e.target.value)
     }
   }
 
   render() {
 
-    const alarmLengthInput = (
+    const sessionLengthInput = (
       <p>
         <input
+          className="session-length-input"
           type="number"
           min="0"
+          defaultValue={getMinsByMs(this.props.sessionLength)}
           placeholder="Enter session length..."
+          onChange={this.handleChange}
         />
       </p>
     )
@@ -63,6 +74,7 @@ export class Task extends React.Component {
     const taskInput = (
       <p>
         <input
+          className="task-input"
           type="text"
           placeholder="Enter a task..."
           defaultValue={this.props.name}
@@ -76,7 +88,7 @@ export class Task extends React.Component {
     return (
       <div>
         <h3>Task</h3>
-        {this.props.mode === modes.ALARM ? alarmLengthInput : ""}
+        {this.props.mode === modes.ALARM ? sessionLengthInput : ""}
         {taskInput}
         <hr/>
       </div>

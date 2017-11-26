@@ -11,7 +11,7 @@ describe('Reducers for Timer component', () => {
       isActive: false,
       startTime: null,
       mode: 0,
-      sessionLength: 3000
+      sessionLength: 1500000
     })
   })
 

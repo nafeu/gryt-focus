@@ -2,7 +2,8 @@ import {
   START_TIMER,
   STOP_TIMER,
   RESET_TIMER,
-  TOGGLE_MODE
+  TOGGLE_MODE,
+  SET_SESSION_LENGTH
 } from '../constants/actionTypes'
 
 export const toggleTimer = (isActive) => {
@@ -47,6 +48,15 @@ export const toggleMode = () => {
   return dispatch => {
     dispatch({
       type: TOGGLE_MODE
+    })
+  }
+}
+
+export const setSessionLength = (sessionLength) => {
+  return dispatch => {
+    dispatch({
+      type: SET_SESSION_LENGTH,
+      payload: {sessionLength}
     })
   }
 }

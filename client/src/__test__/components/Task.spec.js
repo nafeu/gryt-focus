@@ -91,7 +91,7 @@ describe('Task component', () => {
       ...props,
       isActive: true,
     })
-    const event = {target: {value: 'asdf'}};
+    const event = {target: {className: "task-input", value: 'asdf'}};
     component.find('input').simulate('change', event)
     expect(props.stopTimer.mock.calls.length).toBe(1)
   })
