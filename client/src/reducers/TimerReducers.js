@@ -4,7 +4,9 @@ import {
   STOP_TIMER,
   RESET_TIMER,
   TOGGLE_MODE,
-  SET_SESSION_LENGTH
+  SET_SESSION_LENGTH,
+  ACTIVATE_ALARM,
+  DEACTIVATE_ALARM
 } from '../constants/actionTypes'
 import * as modes from '../constants/TimerConstants'
 import { getNextIndex, getMsByMins } from '../helpers'
@@ -14,8 +16,9 @@ const initialState = {
   endTime: null,
   isActive: false,
   accumulatedTime: 0,
-  mode: modes.STOPWATCH,
-  sessionLength: getMsByMins(25)
+  mode: modes.ALARM,
+  sessionLength: getMsByMins(25),
+  alarm: false
 }
 
 export default (state = initialState, action) => {
@@ -65,6 +68,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         sessionLength: getMsByMins(action.payload.sessionLength)
+      }
+
+    case ACTIVATE_ALARM:
+      return {
+        ...state,
+        alarm: true
+      }
+
+    case DEACTIVATE_ALARM:
+      return {
+        ...state,
+        alarm: false
       }
 
     default:

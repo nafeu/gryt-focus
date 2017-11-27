@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getDisplayTime, getTimeSinceStart } from '../helpers'
-import { stopTimer } from '../actions/TimerActions'
+import { stopTimer, activateAlarm } from '../actions/TimerActions'
 import * as modes from '../constants/TimerConstants'
 
 const mapStateToProps = state => ({
@@ -15,7 +15,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  stopTimer
+  stopTimer,
+  activateAlarm
 }, dispatch)
 
 export class Timer extends React.Component {
@@ -76,6 +77,7 @@ export class Timer extends React.Component {
     const elapsedTime = this.props.accumulatedTime + getTimeSinceStart(this.props.startTime)
     if ((this.props.mode === modes.ALARM) && (elapsedTime >= this.props.sessionLength)) {
       this.props.stopTimer()
+      this.props.activateAlarm()
     } else {
       this.setState({elapsedTime})
     }
