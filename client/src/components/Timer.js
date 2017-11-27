@@ -75,7 +75,8 @@ export class Timer extends React.Component {
 
   tick() {
     const elapsedTime = this.props.accumulatedTime + getTimeSinceStart(this.props.startTime)
-    if ((this.props.mode === modes.ALARM) && (elapsedTime >= this.props.sessionLength)) {
+    if ((this.props.mode === modes.ALARM) &&
+        (elapsedTime >= this.props.sessionLength)) {
       this.props.stopTimer()
       this.props.activateAlarm()
     } else {
@@ -88,7 +89,6 @@ export class Timer extends React.Component {
       <div>
         <h3>{this.props.isActive ? 'Active' : 'Inactive'}</h3>
         <p>Elapsed: {getDisplayTime(this.state.elapsedTime)}</p>
-        <p>Session Length: {getDisplayTime(this.props.sessionLength)}</p>
         <hr/>
       </div>
     )

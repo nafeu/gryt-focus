@@ -28,7 +28,7 @@ export class NavButtons extends React.Component {
   render() {
 
     const alarmButton = (
-      <button onClick={this.props.deactivateAlarm}>ALARM ACTIVE! CLICK TO SNOOZE</button>
+      <button className="alarm-button" onClick={this.props.deactivateAlarm}>ALARM ACTIVE! CLICK TO SNOOZE</button>
     )
 
     return (

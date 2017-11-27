@@ -84,12 +84,16 @@ export class Task extends React.Component {
       </p>
     )
 
+    const alertMessage = (
+      <h2 className='alert-message'>{this.props.alert}</h2>
+    )
+
     return (
       <div>
         <h3>Task</h3>
         {this.props.mode === modes.ALARM ? sessionLengthInput : ""}
         {taskInput}
-        <p>{this.props.alert ? (this.props.alert) : ""}</p>
+        {this.props.alert ? alertMessage : ""}
         <hr/>
       </div>
     )

@@ -3,12 +3,15 @@ import ConnectedTimer, { Timer } from '../../components/Timer'
 import { shallow, mount} from 'enzyme'
 import configureStore from 'redux-mock-store'
 import renderer from 'react-test-renderer'
+import moment from 'moment'
 
 const initialState = {
   timer: {
     startTime: null,
     endTime: null,
-    isActive: false
+    isActive: false,
+    sessionLength: 60000,
+    mode: 1
   }
 }
 
@@ -16,7 +19,9 @@ const props = {
   isActive: false,
   startTime: null,
   accumulatedTime: 0,
-  toggleTimer: jest.fn()
+  toggleTimer: jest.fn(),
+  stopTimer: jest.fn(),
+  activateAlarm: jest.fn()
 }
 
 function setupComponent(inputProps) {
@@ -75,6 +80,22 @@ describe('Timer component', () => {
   it('updates on tick', () => {
     component.instance().tick()
     expect(component.instance().state.elapsedTime).toBeGreaterThanOrEqual(1000)
+  })
+
+  it('activates the alarm when the session is done', () => {
+    const sessionEndProps = {
+      accumulatedTime: 60000,
+      sessionLength: 60000,
+      startTime: (moment.now() - 60000),
+      mode: 1,
+      stopTimer: jest.fn(),
+      activateAlarm: jest.fn()
+    }
+    component = setupComponent(sessionEndProps)
+    component.instance().tick()
+    expect(component.instance().state.elapsedTime).toBeGreaterThanOrEqual(60000)
+    expect(sessionEndProps.stopTimer.mock.calls.length).toBe(1)
+    expect(sessionEndProps.activateAlarm.mock.calls.length).toBe(1)
   })
 
   it('can clear the timer interval', () => {

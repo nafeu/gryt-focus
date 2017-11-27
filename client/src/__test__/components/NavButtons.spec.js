@@ -69,4 +69,18 @@ describe('NavButtons component', () => {
     })
     expect(component.find('.toggle-button').text()).toEqual('Stop')
   })
+
+  it('toggles the timer status when start/stop button is clicked', () => {
+    component.find('.toggle-button').simulate('click')
+    expect(props.toggleTimer.mock.calls.length).toBe(1)
+  })
+
+  it('renders the alarm button accordingly', () => {
+    component = setupComponent({
+      ...props,
+      alarm: true
+    })
+    expect(component.find('.alarm-button').exists()).toBeTruthy()
+  })
+
 });
