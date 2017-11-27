@@ -51,6 +51,9 @@ export const toggleMode = () => {
     dispatch({
       type: TOGGLE_MODE
     })
+    dispatch({
+      type: STOP_TIMER
+    })
   }
 }
 

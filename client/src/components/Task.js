@@ -32,15 +32,26 @@ export class Task extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
+  componentDidMount() {
+    this.taskInput.focus()
+  }
+
   handleBlur(e) {
     e.preventDefault()
     this.props.setTask(e.target.value)
   }
 
   handleKeyPress(e) {
-    if (e.key === 'Enter') {
-      e.target.blur()
-      this.props.startTimer()
+    if (e.target.className === 'task-input') {
+      if (e.key === 'Enter') {
+        e.target.blur()
+        this.props.startTimer()
+      }
+    }
+    if (e.target.className === 'session-length-input') {
+      if (e.key === 'Enter') {
+        this.taskInput.focus()
+      }
     }
   }
 
@@ -61,11 +72,13 @@ export class Task extends React.Component {
       <p>
         <input
           className="session-length-input"
+          ref={(input) => { this.sessionLengthInput = input; }}
           type="number"
-          min="0"
+          min="1"
           defaultValue={getMinsByMs(this.props.sessionLength)}
           placeholder="Enter session length..."
           onChange={this.handleChange}
+          onKeyPress={this.handleKeyPress}
         />
       </p>
     )
@@ -74,6 +87,7 @@ export class Task extends React.Component {
       <p>
         <input
           className="task-input"
+          ref={(input) => { this.taskInput = input; }}
           type="text"
           placeholder="Enter a task..."
           defaultValue={this.props.name}
