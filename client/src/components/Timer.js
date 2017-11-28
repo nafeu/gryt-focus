@@ -1,7 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getDisplayTime, getTimeSinceStart } from '../helpers'
+import { getDisplayTime, getTimeSinceStart, getElapsedTime } from '../helpers'
 import { stopTimer, activateAlarm } from '../actions/TimerActions'
 import * as modes from '../constants/TimerConstants'
 
@@ -25,19 +25,10 @@ export class Timer extends React.Component {
 
     this.state = {
       timerInterval: null,
-      elapsedTime: this.getElapsedTime()
+      elapsedTime: getElapsedTime(this.props.startTime, this.props.endTime, this.props.accumulatedTime)
     }
 
     this.tick = this.tick.bind(this)
-  }
-
-  getElapsedTime() {
-    if (this.props.startTime && this.props.endTime) {
-      return this.props.accumulatedTime
-    } else if (this.props.startTime) {
-      return this.props.accumulatedTime + getTimeSinceStart(this.props.startTime)
-    }
-    return this.props.accumulatedTime
   }
 
   componentDidMount() {

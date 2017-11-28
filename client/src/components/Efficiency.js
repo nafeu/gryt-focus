@@ -1,7 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import moment from 'moment'
+import { getElapsedTime, calculateFocus } from '../helpers'
 
 const mapStateToProps = state => ({
   interruptions: state.efficiency.interruptions,
@@ -17,36 +17,19 @@ export class Efficiency extends React.Component {
   constructor(props) {
     super(props)
 
+    const elapsedTime = getElapsedTime(this.startTime, this.endTime, this.accumulatedTime)
+
     this.state = {
       timerInterval: null,
-      focus: this.calculateFocus(this.getElapsedTime(), this.props.interruptions)
+      focus: calculateFocus(elapsedTime, this.props.interruptions)
     }
 
     this.tick = this.tick.bind(this)
   }
 
-  getElapsedTime() {
-    if (this.props.startTime && this.props.endTime) {
-      return this.props.accumulatedTime
-    } else if (this.props.startTime) {
-      return this.props.accumulatedTime + (moment.now() - this.props.startTime)
-    }
-    return this.props.accumulatedTime
-  }
-
-  calculateFocus(timeInMs, interruptions) {
-    const oneMinInMs = 60000
-    const timeInSecs = ((timeInMs * 0.001) / 60)
-    const interruptionsOverTime = (interruptions / timeInSecs)
-    const focus = Math.max(Math.round((1 - interruptionsOverTime) * 100), 0)
-    if (timeInMs > oneMinInMs && interruptions < Math.floor(timeInMs / oneMinInMs)) {
-      return focus + "%"
-    }
-    return "---"
-  }
-
   tick() {
-    const focus = this.calculateFocus(this.getElapsedTime(), this.props.interruptions)
+    const elapsedTime = getElapsedTime(this.startTime, this.endTime, this.accumulatedTime)
+    const focus = calculateFocus(elapsedTime, this.props.interruptions)
     this.setState({focus})
   }
 
@@ -79,7 +62,7 @@ export class Efficiency extends React.Component {
       }
     }
     if (nextProps.accumulatedTime !== this.props.accumulatedTime) {
-      const focus = this.calculateFocus(nextProps.accumulatedTime, nextProps.interruptions)
+      const focus = calculateFocus(nextProps.accumulatedTime, nextProps.interruptions)
       this.setState({focus})
     }
   }

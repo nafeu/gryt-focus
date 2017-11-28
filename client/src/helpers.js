@@ -24,3 +24,23 @@ export function getDisplayTime(time) {
 export function getTimeSinceStart(startTime) {
   return moment.now() - startTime
 }
+
+export function getElapsedTime(start, end, accumulation) {
+  if (start && end) {
+    return accumulation
+  } else if (start) {
+    return accumulation + getTimeSinceStart(start)
+  }
+  return accumulation
+}
+
+export function calculateFocus(timeInMs, interruptions) {
+  const oneMinInMs = 60000
+  const timeInSecs = ((timeInMs * 0.001) / 60)
+  const interruptionsOverTime = (interruptions / timeInSecs)
+  const focus = Math.max(Math.round((1 - interruptionsOverTime) * 100), 0)
+  if (timeInMs > oneMinInMs && interruptions < Math.floor(timeInMs / oneMinInMs)) {
+    return focus + "%"
+  }
+  return "..."
+}
