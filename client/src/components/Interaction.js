@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   stopTimer,
 }, dispatch)
 
-export class NavButtons extends React.Component {
+export class Interaction extends React.Component {
 
   constructor(props) {
     super(props)
@@ -64,7 +64,7 @@ export class NavButtons extends React.Component {
 
     return (
       <div>
-        <h3>NavButtons</h3>
+        <h3>Interaction</h3>
         <p>
           <button
             className="toggle-button"
@@ -86,4 +86,4 @@ export class NavButtons extends React.Component {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavButtons)
+)(Interaction)
