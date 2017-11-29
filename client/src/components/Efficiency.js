@@ -2,6 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { getElapsedTime, calculateFocus } from '../helpers'
+import PerformanceGraph from './PerformanceGraph'
 
 const mapStateToProps = state => ({
   interruptions: state.efficiency.interruptions,
@@ -68,11 +69,22 @@ export class Efficiency extends React.Component {
   }
 
   render() {
+    const data = []
+    for (var i = 0; i < 60; i++) {
+      data.push({"y": Math.random().toString()})
+    }
+
     return (
       <div>
         <h3>Efficiency</h3>
         <p>Interruptions: {this.props.interruptions}</p>
         <p>Focus: {this.state.focus}</p>
+        <PerformanceGraph
+          width={500}
+          height={500}
+          length={1}
+          data={data}
+        />
         <hr/>
       </div>
     )
