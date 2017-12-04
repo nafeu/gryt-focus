@@ -6,7 +6,8 @@ describe('Reducers for Efficiency component', () => {
 
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
-      interruptions: 0
+      interruptions: 0,
+      lastInterruption: null
     })
   })
 

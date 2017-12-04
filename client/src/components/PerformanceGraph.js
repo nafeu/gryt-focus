@@ -2,7 +2,6 @@ import React from 'react'
 import * as d3 from 'd3'
 
 export class PerformanceGraph extends React.Component {
-
   constructor(props) {
     super(props)
 
@@ -21,7 +20,7 @@ export class PerformanceGraph extends React.Component {
       .x((d, i) => { return xScale(i) })
       .y((d) => { return yScale(d.y) })
 
-    const configs = {
+    this.configs = {
       width,
       height,
       data: this.props.data,
@@ -31,18 +30,16 @@ export class PerformanceGraph extends React.Component {
       margin
     }
 
-    this.draw(configs)
+    this.draw(this.configs)
+  }
 
-    setInterval(() => {
-      const newData = []
-      for (var i = 0; i < 60; i++) {
-        newData.push({"y": Math.random().toString()})
-      }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data !== this.props.data) {
       this.renderChart({
-        ...configs,
-        data: newData
+        ...this.configs,
+        data: nextProps.data
       })
-    }, 1000)
+    }
   }
 
   draw(configs) {

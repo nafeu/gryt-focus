@@ -50,6 +50,7 @@ describe('Timer actions', () => {
   it('creates TOGGLE_MODE action', () => {
     const expectedActions = [
       { type: types.TOGGLE_MODE },
+      { type: types.STOP_TIMER }
     ]
     store.dispatch(actions.toggleMode())
     expect(store.getActions()).toEqual(expectedActions)

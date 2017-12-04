@@ -129,23 +129,6 @@ describe('Timer component', () => {
     expect(component.instance().state.elapsedTime).toBeGreaterThan(0)
   })
 
-  it('gets the correct elapsed time', () => {
-    expect(component.instance().getElapsedTime()).toEqual(0)
-    component = setupComponent({
-      isActive: true,
-      startTime: 762152400,
-      accumulatedTime: 0
-    })
-    expect(component.instance().getElapsedTime()).toBeGreaterThan(0)
-    component = setupComponent({
-      isActive: false,
-      startTime: 1,
-      endTime: 2,
-      accumulatedTime: 1000
-    })
-    expect(component.instance().getElapsedTime()).toEqual(1000)
-  })
-
   it('creates appropriate timer on prop change', () => {
     expect(component.instance().state.timerInterval).toBeNull()
     component.instance().componentWillReceiveProps({

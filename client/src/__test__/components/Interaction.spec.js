@@ -1,13 +1,19 @@
 import React from 'react'
-import ConnectedNavButtons, { NavButtons } from '../../components/NavButtons'
+import ConnectedInteraction, { Interaction } from '../../components/Interaction'
 import { shallow, mount} from 'enzyme'
 import configureStore from 'redux-mock-store'
 import renderer from 'react-test-renderer'
 
 const initialState = {
-  navButtons: {},
+  interaction: {},
   timer: {
     isActive: false
+  },
+  task: {
+    name: null
+  },
+  efficiency: {
+    interruptions: 0
   }
 }
 
@@ -20,24 +26,24 @@ const props = {
 
 function setupComponent(inputProps) {
   if (inputProps) {
-    return mount(<NavButtons {...inputProps} />)
+    return mount(<Interaction {...inputProps} />)
   }
-  return mount(<NavButtons {...props} />)
+  return mount(<Interaction {...props} />)
 }
 
 function setupConnectedComponent() {
   const mockStore = configureStore()
-  return shallow(<ConnectedNavButtons store={mockStore(initialState)} />)
+  return shallow(<ConnectedInteraction store={mockStore(initialState)} />)
 }
 
-describe('Connected NavButtons component', () => {
+describe('Connected Interaction component', () => {
   let component
 
   beforeEach(()=>{
     component = setupConnectedComponent()
   })
 
-  it('renders the connected(NavButtons) component without crashing', () => {
+  it('renders the connected(Interaction) component without crashing', () => {
      expect(component.length).toEqual(1)
   })
 
@@ -46,14 +52,14 @@ describe('Connected NavButtons component', () => {
   })
 });
 
-describe('NavButtons component', () => {
+describe('Interaction component', () => {
   let component
 
   beforeEach(()=>{
     component = setupComponent()
   })
 
-  it('renders the NavButtons component without crashing', () => {
+  it('renders the Interaction component without crashing', () => {
     expect(component.length).toEqual(1)
   })
 

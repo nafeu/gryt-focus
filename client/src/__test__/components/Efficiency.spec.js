@@ -61,9 +61,14 @@ describe('Efficiency component', () => {
   })
 
   it('instantiates with correct internal state', () => {
+    const graphData = []
+    for (var i = 0; i < 60; i++) {
+      graphData.push({y: "0.00000"})
+    }
     expect(component.instance().state).toEqual({
-      focus: "---",
-      timerInterval: null
+      focus: "0.00000",
+      timerInterval: null,
+      graphData
     })
   })
 
@@ -74,7 +79,7 @@ describe('Efficiency component', () => {
 
   it('updates on tick', () => {
     component.instance().tick()
-    expect(component.instance().state.focus).toBeTruthy()
+    expect(component.instance().state.focus).toBeDefined()
   })
 
   it('can clear the timer interval', () => {
@@ -116,7 +121,8 @@ describe('Efficiency component', () => {
       startTime: 762152400,
       endTime: null,
       accumulatedTime: 0,
-      interruptions: 0
+      interruptions: 0,
+      lastInterruption: 0
     })
     expect(component.instance().state.timerInterval).toBeTruthy()
     component.instance().componentWillReceiveProps({
@@ -124,21 +130,11 @@ describe('Efficiency component', () => {
       startTime: 762152400,
       endTime: 762153400,
       accumulatedTime: 1000,
-      interruptions: 0
+      interruptions: 0,
+      lastInterruption: 0
     })
     expect(component.instance().state.timerInterval).toBeNull()
-    expect(component.instance().state.focus).toBeTruthy()
-  })
-
-  it('gets correct elapsed time when start time and end time given', () => {
-    component = setupComponent({
-      isActive: false,
-      startTime: 762152400,
-      endTime: 762153400,
-      accumulatedTime: 1000,
-      interruptions: 0
-    })
-    expect(component.instance().getElapsedTime()).toEqual(1000)
+    expect(component.instance().state.focus).toBeDefined()
   })
 
   it('will not mess with timers if prop changes and isActive is the same', () => {
