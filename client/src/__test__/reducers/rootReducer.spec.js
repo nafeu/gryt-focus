@@ -1,4 +1,4 @@
-import rootReducer from '../../modules/rootReducer'
+import rootReducer from '../../modules/root-reducer'
 import timer from '../../app/timer/TimerReducers'
 import { createStore } from 'redux'
 
