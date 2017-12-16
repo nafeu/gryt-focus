@@ -16,7 +16,7 @@ const BLANK_STATE = {
   startTime: null,
   endTime: null,
   isActive: false,
-  elapsedTime: 0,
+  elapsedTime: null,
   accumulatedTime: 0,
   mode: modes.ALARM,
   sessionLength: getMsByMins(25),
@@ -33,6 +33,7 @@ export default (state = BLANK_STATE, action) => {
         return {
           ...state,
           startTime: now,
+          elapsedTime: now,
           endTime: null,
           isActive: true
         }
@@ -41,7 +42,7 @@ export default (state = BLANK_STATE, action) => {
     case TICK_TIMER:
       return {
         ...state,
-        elapsedTime: state.elapsedTime + 1
+        elapsedTime: now - state.startTime
       }
 
     case STOP_TIMER:

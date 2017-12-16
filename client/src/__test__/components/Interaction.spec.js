@@ -11,9 +11,6 @@ const initialState = {
   },
   task: {
     name: null
-  },
-  efficiency: {
-    interruptions: 0
   }
 }
 

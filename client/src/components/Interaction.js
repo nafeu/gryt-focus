@@ -8,8 +8,6 @@ import {
   stopTimer,
   deactivateAlarm
 } from '../modules/timer/actions'
-import { incrementInterruptions } from '../modules/efficiency/actions'
-import { saveSession } from '../modules/activity/actions'
 import * as modes from '../modules/timer/constants'
 import moment from 'moment'
 import { getElapsedTime, calculateFocus } from '../helpers'
@@ -21,17 +19,14 @@ const mapStateToProps = state => ({
   name: state.task.name,
   accumulatedTime: state.timer.accumulatedTime,
   startTime: state.timer.startTime,
-  endTime: state.timer.endTime,
-  interruptions: state.efficiency.interruptions
+  endTime: state.timer.endTime
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   toggleTimer,
   resetTimer,
-  incrementInterruptions,
   toggleMode,
   deactivateAlarm,
-  saveSession,
   stopTimer
 }, dispatch)
 
@@ -71,7 +66,6 @@ export class Interaction extends React.Component {
           </button>
           <button onClick={this.saveSession}>Save</button>
           <button onClick={this.props.resetTimer}>Reset</button>
-          <button onClick={this.props.incrementInterruptions}>Interrupt</button>
           <button onClick={this.props.toggleMode}>Mode: {modes.DISPLAY_NAMES[this.props.mode]}</button>
           {this.props.alarm ? alarmButton : ''}
         </p>
