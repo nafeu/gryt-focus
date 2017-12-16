@@ -8,7 +8,7 @@ import {
   ACTIVATE_ALARM,
   DEACTIVATE_ALARM,
   TICK_TIMER
-} from '../../constants/actionTypes'
+} from '../../constants/action-types'
 import * as modes from './constants'
 import { getNextIndex, getMsByMins } from '../../helpers'
 

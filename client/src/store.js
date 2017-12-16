@@ -5,7 +5,7 @@ import createSagaMiddleware from 'redux-saga'
 import createHistory from 'history/createBrowserHistory'
 
 import rootReducer from './modules/rootReducer'
-import TimerSaga from './app/timer/TimerSaga'
+import TimerSaga from './modules/timer/saga'
 
 const sagaMiddleware = createSagaMiddleware()
 export const history = createHistory()

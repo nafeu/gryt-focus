@@ -1,4 +1,4 @@
-import { SAVE_SESSION, RESET_TIMER } from '../../constants/actionTypes'
+import { SAVE_SESSION, RESET_TIMER } from '../../constants/action-types'
 
 export const saveSession = (sessionInfo) => {
   return dispatch => {

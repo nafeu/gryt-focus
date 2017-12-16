@@ -1,7 +1,7 @@
 import React from 'react'
-import Timer from '../app/timer/Timer'
-import Task from '../app/task/Task'
-import Efficiency from '../app/efficiency/Efficiency'
+import Timer from '../modules/timer/components/Timer'
+import Task from '../modules/task/components/Task'
+import Efficiency from '../modules/efficiency/components/Efficiency'
 import Interaction from '../components/Interaction'
 
 class Home extends React.Component {

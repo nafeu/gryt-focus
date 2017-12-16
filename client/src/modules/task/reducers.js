@@ -1,4 +1,4 @@
-import { SET_TASK, SET_ALERT } from '../../constants/actionTypes'
+import { SET_TASK, SET_ALERT } from '../../constants/action-types'
 
 const initialState = {
   name: '',

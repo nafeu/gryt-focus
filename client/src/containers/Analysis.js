@@ -1,5 +1,5 @@
 import React from 'react'
-import Activity from '../app/activity/Activity'
+import Activity from '../modules/activity/components/Activity'
 
 class Analysis extends React.Component {
   render () {

@@ -7,10 +7,10 @@ import {
   toggleMode,
   stopTimer,
   deactivateAlarm
-} from '../app/timer/TimerActions'
-import { incrementInterruptions } from '../app/efficiency/EfficiencyActions'
-import { saveSession } from '../app/activity/ActivityActions'
-import * as modes from '../app/timer/TimerConstants'
+} from '../modules/timer/actions'
+import { incrementInterruptions } from '../modules/efficiency/actions'
+import { saveSession } from '../modules/activity/actions'
+import * as modes from '../modules/timer/constants'
 import moment from 'moment'
 import { getElapsedTime, calculateFocus } from '../helpers'
 

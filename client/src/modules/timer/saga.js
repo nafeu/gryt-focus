@@ -2,7 +2,7 @@ import { actionChannel, call, take, put, race } from 'redux-saga/effects'
 import {
   START_TIMER,
   STOP_TIMER
-} from '../../constants/actionTypes'
+} from '../../constants/action-types'
 import { tick } from './actions'
 
 // wait :: Number -> Promise

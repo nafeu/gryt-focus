@@ -1,4 +1,4 @@
-import { SAVE_SESSION } from '../../constants/actionTypes'
+import { SAVE_SESSION } from '../../constants/action-types'
 
 const initialState = {
   log: []
