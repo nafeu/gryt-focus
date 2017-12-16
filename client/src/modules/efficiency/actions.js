@@ -1,4 +1,4 @@
-import { INCREMENT_INTERRUPTIONS } from '../constants/actionTypes'
+import { INCREMENT_INTERRUPTIONS } from '../../constants/actionTypes'
 
 export const incrementInterruptions = () => {
   return dispatch => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import ConnectedTimer, { Timer } from '../../components/Timer'
+import ConnectedTimer, { Timer } from '../../app/timer/Timer'
 import { shallow, mount} from 'enzyme'
 import configureStore from 'redux-mock-store'
 import renderer from 'react-test-renderer'

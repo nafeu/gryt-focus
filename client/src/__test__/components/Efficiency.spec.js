@@ -1,5 +1,5 @@
 import React from 'react'
-import ConnectedEfficiency, { Efficiency } from '../../components/Efficiency'
+import ConnectedEfficiency, { Efficiency } from '../../app/efficiency/Efficiency'
 import { shallow, mount} from 'enzyme'
 import configureStore from 'redux-mock-store'
 import renderer from 'react-test-renderer'

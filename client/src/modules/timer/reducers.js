@@ -8,9 +8,9 @@ import {
   ACTIVATE_ALARM,
   DEACTIVATE_ALARM,
   TICK_TIMER
-} from '../constants/actionTypes'
-import * as modes from '../constants/TimerConstants'
-import { getNextIndex, getMsByMins } from '../helpers'
+} from '../../constants/actionTypes'
+import * as modes from './constants'
+import { getNextIndex, getMsByMins } from '../../helpers'
 
 const BLANK_STATE = {
   startTime: null,

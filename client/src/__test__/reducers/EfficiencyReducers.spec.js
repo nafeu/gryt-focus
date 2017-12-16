@@ -1,4 +1,4 @@
-import reducer from '../../reducers/EfficiencyReducers'
+import reducer from '../../app/efficiency/EfficiencyReducers'
 import * as types from '../../constants/ActionTypes'
 
 describe('Reducers for Efficiency component', () => {

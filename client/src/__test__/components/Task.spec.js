@@ -1,5 +1,5 @@
 import React from 'react'
-import ConnectedTask, { Task } from '../../components/Task'
+import ConnectedTask, { Task } from '../../app/task/Task'
 import { shallow, mount } from 'enzyme'
 import configureStore from 'redux-mock-store'
 import renderer from 'react-test-renderer'

@@ -1,6 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as actions from '../../actions/EfficiencyActions'
+import * as actions from '../../app/efficiency/EfficiencyActions'
 import * as types from '../../constants/ActionTypes'
 
 const middlewares = [thunk]

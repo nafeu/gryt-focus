@@ -1,4 +1,4 @@
-import reducer from '../../reducers/TimerReducers'
+import reducer from '../../app/timer/TimerReducers'
 import * as types from '../../constants/ActionTypes'
 
 describe('Reducers for Timer component', () => {

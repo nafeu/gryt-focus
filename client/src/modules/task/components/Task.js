@@ -1,10 +1,10 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { setTask, setAlert } from '../actions/TaskActions'
-import { startTimer, stopTimer, setSessionLength } from '../actions/TimerActions'
-import * as modes from '../constants/TimerConstants'
-import { getMinsByMs } from '../helpers'
+import { setTask, setAlert } from '../actions'
+import { startTimer, stopTimer, setSessionLength } from '../../timer/actions'
+import * as modes from '../../timer/constants'
+import { getMinsByMs } from '../../../helpers'
 
 const mapStateToProps = state => ({
   name: state.task.name,

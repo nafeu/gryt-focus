@@ -4,8 +4,8 @@ import thunk from 'redux-thunk'
 import createSagaMiddleware from 'redux-saga'
 import createHistory from 'history/createBrowserHistory'
 
-import rootReducer from './reducers/rootReducer'
-import TimerSaga from './sagas/TimerSaga'
+import rootReducer from './modules/rootReducer'
+import TimerSaga from './app/timer/TimerSaga'
 
 const sagaMiddleware = createSagaMiddleware()
 export const history = createHistory()

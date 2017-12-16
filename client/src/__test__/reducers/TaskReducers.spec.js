@@ -1,4 +1,4 @@
-import reducer from '../../reducers/TaskReducers'
+import reducer from '../../app/task/TaskReducers'
 import * as types from '../../constants/ActionTypes'
 
 describe('Reducers for Task component', () => {

@@ -1,6 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as actions from '../../actions/TimerActions'
+import * as actions from '../../app/timer/TimerActions'
 import * as types from '../../constants/ActionTypes'
 
 const middlewares = [thunk]

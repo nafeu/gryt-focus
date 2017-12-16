@@ -1,4 +1,4 @@
-import { SET_TASK, SET_ALERT } from '../constants/actionTypes'
+import { SET_TASK, SET_ALERT } from '../../constants/actionTypes'
 
 export const setTask = (name) => {
   return dispatch => {

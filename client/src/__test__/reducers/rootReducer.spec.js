@@ -1,5 +1,5 @@
-import rootReducer from '../../reducers/rootReducer'
-import timer from '../../reducers/TimerReducers'
+import rootReducer from '../../modules/rootReducer'
+import timer from '../../app/timer/TimerReducers'
 import { createStore } from 'redux'
 
 describe('Root reducer', () => {

@@ -1,9 +1,9 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getDisplayTime, getTimeSinceStart, getElapsedTime } from '../helpers'
-import { stopTimer, activateAlarm } from '../actions/TimerActions'
-import * as modes from '../constants/TimerConstants'
+import { getDisplayTime, getTimeSinceStart, getElapsedTime } from '../../../helpers'
+import { stopTimer, activateAlarm } from '../actions'
+import * as modes from '../constants'
 
 export class Timer extends React.Component {
   // constructor (props) {

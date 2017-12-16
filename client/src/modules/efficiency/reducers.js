@@ -1,4 +1,4 @@
-import { INCREMENT_INTERRUPTIONS, RESET_TIMER, START_TIMER } from '../constants/actionTypes'
+import { INCREMENT_INTERRUPTIONS, RESET_TIMER, START_TIMER } from '../../constants/actionTypes'
 import moment from 'moment'
 
 const initialState = {
