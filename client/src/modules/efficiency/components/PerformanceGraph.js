@@ -2,7 +2,7 @@ import React from 'react'
 import * as d3 from 'd3'
 
 export class PerformanceGraph extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.svgChart = null
@@ -10,7 +10,7 @@ export class PerformanceGraph extends React.Component {
     this.renderChart = this.renderChart.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const margin = {top: 10, right: 10, bottom: 10, left: 10}
     const width = this.props.width - margin.left - margin.right
     const height = (this.props.height * 0.7) - margin.top - margin.bottom
@@ -33,7 +33,7 @@ export class PerformanceGraph extends React.Component {
     this.draw(this.configs)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.data !== this.props.data) {
       this.renderChart({
         ...this.configs,
@@ -42,42 +42,42 @@ export class PerformanceGraph extends React.Component {
     }
   }
 
-  draw(configs) {
-    this.svgChart = d3.select(".perf-chart").append("svg")
-        .attr("width", configs.width + configs.margin.left + configs.margin.right)
-        .attr("height", configs.height + configs.margin.top + configs.margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + configs.margin.left + "," + configs.margin.top + ")");
+  draw (configs) {
+    this.svgChart = d3.select('.perf-chart').append('svg')
+      .attr('width', configs.width + configs.margin.left + configs.margin.right)
+      .attr('height', configs.height + configs.margin.top + configs.margin.bottom)
+      .append('g')
+      .attr('transform', 'translate(' + configs.margin.left + ',' + configs.margin.top + ')')
 
-    this.svgChart.append("g")
-        .attr("class", "grid")
-        .attr("transform", "translate(0," + configs.height + ")")
-        .call(d3.axisBottom(configs.xScale)
-            .ticks(10)
-            .tickSize(-configs.height)
-            .tickFormat(""))
+    this.svgChart.append('g')
+      .attr('class', 'grid')
+      .attr('transform', 'translate(0,' + configs.height + ')')
+      .call(d3.axisBottom(configs.xScale)
+        .ticks(10)
+        .tickSize(-configs.height)
+        .tickFormat(''))
 
-    this.svgChart.append("g")
-        .attr("class", "grid")
-        .call(d3.axisLeft(configs.yScale)
-            .ticks(10)
-            .tickSize(-configs.width)
-            .tickFormat(""))
+    this.svgChart.append('g')
+      .attr('class', 'grid')
+      .call(d3.axisLeft(configs.yScale)
+        .ticks(10)
+        .tickSize(-configs.width)
+        .tickFormat(''))
 
-    this.svgChart.append("path")
-        .datum(configs.data)
-        .attr("class", "line")
-        .attr("stroke", "red")
-        .attr("fill", "none")
-        .attr("d", configs.line)
+    this.svgChart.append('path')
+      .datum(configs.data)
+      .attr('class', 'line')
+      .attr('stroke', 'red')
+      .attr('fill', 'none')
+      .attr('d', configs.line)
   }
 
-  renderChart(configs) {
-    this.svgChart.select(".line")
-      .attr("d", configs.line(configs.data));
+  renderChart (configs) {
+    this.svgChart.select('.line')
+      .attr('d', configs.line(configs.data))
   }
 
-  render() {
+  render () {
     return (
       <div className="perf-chart">
 
@@ -87,4 +87,3 @@ export class PerformanceGraph extends React.Component {
 }
 
 export default PerformanceGraph
-

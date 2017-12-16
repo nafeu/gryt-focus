@@ -32,18 +32,17 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   toggleMode,
   deactivateAlarm,
   saveSession,
-  stopTimer,
+  stopTimer
 }, dispatch)
 
 export class Interaction extends React.Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.saveSession = this.saveSession.bind(this)
   }
 
-  saveSession() {
+  saveSession () {
     const length = getElapsedTime(this.props.startTime, this.props.endTime, this.props.accumulatedTime)
     const focus = calculateFocus(length, this.props.interruptions)
     const sessionInfo = {
@@ -56,8 +55,7 @@ export class Interaction extends React.Component {
     this.props.saveSession(sessionInfo)
   }
 
-  render() {
-
+  render () {
     const alarmButton = (
       <button className="alarm-button" onClick={this.props.deactivateAlarm}>ALARM ACTIVE! CLICK TO SNOOZE</button>
     )
@@ -75,7 +73,7 @@ export class Interaction extends React.Component {
           <button onClick={this.props.resetTimer}>Reset</button>
           <button onClick={this.props.incrementInterruptions}>Interrupt</button>
           <button onClick={this.props.toggleMode}>Mode: {modes.DISPLAY_NAMES[this.props.mode]}</button>
-          {this.props.alarm ? alarmButton : ""}
+          {this.props.alarm ? alarmButton : ''}
         </p>
         <hr/>
       </div>

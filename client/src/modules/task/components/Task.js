@@ -23,8 +23,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch)
 
 export class Task extends React.Component {
-
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.handleBlur = this.handleBlur.bind(this)
@@ -32,16 +31,16 @@ export class Task extends React.Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.taskInput.focus()
   }
 
-  handleBlur(e) {
+  handleBlur (e) {
     e.preventDefault()
     this.props.setTask(e.target.value)
   }
 
-  handleKeyPress(e) {
+  handleKeyPress (e) {
     if (e.target.className === 'task-input') {
       if (e.key === 'Enter') {
         e.target.blur()
@@ -55,7 +54,7 @@ export class Task extends React.Component {
     }
   }
 
-  handleChange(e) {
+  handleChange (e) {
     e.preventDefault()
     if (e.target.className === 'task-input') {
       this.props.stopTimer()
@@ -66,13 +65,12 @@ export class Task extends React.Component {
     }
   }
 
-  render() {
-
+  render () {
     const sessionLengthInput = (
       <p>
         <input
           className="session-length-input"
-          ref={(input) => { this.sessionLengthInput = input; }}
+          ref={(input) => { this.sessionLengthInput = input }}
           type="number"
           min="1"
           defaultValue={getMinsByMs(this.props.sessionLength)}
@@ -87,7 +85,7 @@ export class Task extends React.Component {
       <p>
         <input
           className="task-input"
-          ref={(input) => { this.taskInput = input; }}
+          ref={(input) => { this.taskInput = input }}
           type="text"
           placeholder="Enter a task..."
           defaultValue={this.props.name}
@@ -105,9 +103,9 @@ export class Task extends React.Component {
     return (
       <div>
         <h3>Task</h3>
-        {this.props.mode === modes.ALARM ? sessionLengthInput : ""}
+        {this.props.mode === modes.ALARM ? sessionLengthInput : ''}
         {taskInput}
-        {this.props.alert ? alertMessage : ""}
+        {this.props.alert ? alertMessage : ''}
         <hr/>
       </div>
     )

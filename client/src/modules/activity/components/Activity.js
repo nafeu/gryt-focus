@@ -9,8 +9,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
 
 export class Activity extends React.Component {
-  render() {
-
+  render () {
     const log = this.props.log.map((entry, index) => {
       return (
         <tr key={index}>
@@ -26,18 +25,18 @@ export class Activity extends React.Component {
     return (
       <div>
         <h3>Activity</h3>
-          <table>
-            <tbody>
-              <tr>
-                <th>Date</th>
-                <th>Length</th>
-                <th>Interruptions</th>
-                <th>Focus</th>
-                <th>Task</th>
-              </tr>
-              {log}
-            </tbody>
-          </table>
+        <table>
+          <tbody>
+            <tr>
+              <th>Date</th>
+              <th>Length</th>
+              <th>Interruptions</th>
+              <th>Focus</th>
+              <th>Task</th>
+            </tr>
+            {log}
+          </tbody>
+        </table>
         <hr/>
       </div>
     )

@@ -1,8 +1,8 @@
 import { SET_TASK, SET_ALERT } from '../../constants/actionTypes'
 
 const initialState = {
-  name: "",
-  alert: ""
+  name: '',
+  alert: ''
 }
 
 export default (state = initialState, action) => {

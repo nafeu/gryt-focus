@@ -11,13 +11,13 @@ const mapStateToProps = state => ({
   startTime: state.timer.startTime,
   endTime: state.timer.endTime,
   accumulatedTime: state.timer.accumulatedTime,
-  isActive: state.timer.isActive,
+  isActive: state.timer.isActive
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
 
 export class Efficiency extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     const elapsedTime = getElapsedTime(this.props.startTime, this.props.endTime, this.props.accumulatedTime)
@@ -31,7 +31,7 @@ export class Efficiency extends React.Component {
     this.tick = this.tick.bind(this)
   }
 
-  tick() {
+  tick () {
     const elapsedTime = getElapsedTime(this.props.startTime, this.props.endTime, this.props.accumulatedTime)
     const focus = calculateFocus(elapsedTime, this.props.interruptions, this.props.lastInterruption, moment.now())
     this.setState({
@@ -40,27 +40,27 @@ export class Efficiency extends React.Component {
     })
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.props.isActive) {
       this.initTimerInterval()
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.clearTimerInterval()
   }
 
-  clearTimerInterval() {
+  clearTimerInterval () {
     clearInterval(this.state.timerInterval)
     this.setState({timerInterval: null})
   }
 
-  initTimerInterval() {
+  initTimerInterval () {
     let timerInterval = setInterval(this.tick, 1000)
     this.setState({timerInterval})
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.isActive !== this.props.isActive) {
       if (nextProps.isActive) {
         this.initTimerInterval()
@@ -74,7 +74,7 @@ export class Efficiency extends React.Component {
     }
   }
 
-  render() {
+  render () {
     return (
       <div>
         <h3>Efficiency</h3>

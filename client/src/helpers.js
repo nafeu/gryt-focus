@@ -57,8 +57,7 @@ export function calculateFocus (timeInMs, interruptions, notableInterruption, no
     else {
       out = 0
     }
-  }
-  else {
+  } else {
     out = 0
   }
 

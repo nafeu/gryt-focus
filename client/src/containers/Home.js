@@ -5,7 +5,7 @@ import Efficiency from '../app/efficiency/Efficiency'
 import Interaction from '../components/Interaction'
 
 class Home extends React.Component {
-  render() {
+  render () {
     return (
       <div>
         <Interaction />
