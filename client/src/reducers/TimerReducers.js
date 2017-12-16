@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment'
 import {
   START_TIMER,
   STOP_TIMER,
@@ -6,35 +6,42 @@ import {
   TOGGLE_MODE,
   SET_SESSION_LENGTH,
   ACTIVATE_ALARM,
-  DEACTIVATE_ALARM
+  DEACTIVATE_ALARM,
+  TICK_TIMER
 } from '../constants/actionTypes'
 import * as modes from '../constants/TimerConstants'
 import { getNextIndex, getMsByMins } from '../helpers'
 
-const initialState = {
+const BLANK_STATE = {
   startTime: null,
   endTime: null,
   isActive: false,
+  elapsedTime: 0,
   accumulatedTime: 0,
   mode: modes.ALARM,
   sessionLength: getMsByMins(25),
   alarm: false
 }
 
-export default (state = initialState, action) => {
+export default (state = BLANK_STATE, action) => {
   const now = moment.now()
   switch (action.type) {
     case START_TIMER:
       if (state.isActive) {
         return state
-      }
-      else {
+      } else {
         return {
           ...state,
           startTime: now,
           endTime: null,
           isActive: true
         }
+      }
+
+    case TICK_TIMER:
+      return {
+        ...state,
+        elapsedTime: state.elapsedTime + 1
       }
 
     case STOP_TIMER:
@@ -55,6 +62,7 @@ export default (state = initialState, action) => {
         startTime: null,
         endTime: null,
         isActive: false,
+        elapsedTime: 0,
         accumulatedTime: 0
       }
 

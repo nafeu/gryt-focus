@@ -1,4 +1,5 @@
 export const START_TIMER = 'timer/START_TIMER'
+export const TICK_TIMER = 'timer/TICK_TIMER'
 export const STOP_TIMER = 'timer/STOP_TIMER'
 export const RESET_TIMER = 'timer/RESET_TIMER'
 export const ACTIVATE_ALARM = 'timer/ACTIVATE_ALARM'

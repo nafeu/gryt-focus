@@ -1,5 +1,6 @@
 import {
   START_TIMER,
+  TICK_TIMER,
   STOP_TIMER,
   RESET_TIMER,
   TOGGLE_MODE,
@@ -26,6 +27,14 @@ export const startTimer = () => {
   return dispatch => {
     dispatch({
       type: START_TIMER
+    })
+  }
+}
+
+export const tick = () => {
+  return dispatch => {
+    dispatch({
+      type: TICK_TIMER
     })
   }
 }
@@ -61,7 +70,7 @@ export const setSessionLength = (sessionLength) => {
   return dispatch => {
     dispatch({
       type: SET_SESSION_LENGTH,
-      payload: {sessionLength}
+      payload: { sessionLength }
     })
   }
 }

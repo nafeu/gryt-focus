@@ -1,32 +1,32 @@
 import moment from 'moment'
 import * as d3 from 'd3'
 
-export function getNextIndex(index, length) {
+export function getNextIndex (index, length) {
   if (length) return (index === (--length)) ? 0 : ++index
   return 0
 }
 
-export function getMsByMins(minutes) {
+export function getMsByMins (minutes) {
   return minutes * 60 * 1000
 }
 
-export function getMinsByMs(milliseconds) {
+export function getMinsByMs (milliseconds) {
   return Math.round(milliseconds / 60 / 1000)
 }
 
-export function getMsBySecs(minutes) {
+export function getMsBySecs (minutes) {
   return minutes * 1000
 }
 
-export function getDisplayTime(time) {
-  return moment.utc(time).format("HH:mm:ss")
+export function getDisplayTime (time) {
+  return moment.utc(time).format('HH:mm:ss')
 }
 
-export function getTimeSinceStart(startTime) {
+export function getTimeSinceStart (startTime) {
   return moment.now() - startTime
 }
 
-export function getElapsedTime(start, end, accumulation) {
+export function getElapsedTime (start, end, accumulation) {
   if (start && end) {
     return accumulation
   } else if (start) {
@@ -35,8 +35,8 @@ export function getElapsedTime(start, end, accumulation) {
   return accumulation
 }
 
-export function calculateFocus(timeInMs, interruptions, notableInterruption, now) {
-  let out;
+export function calculateFocus (timeInMs, interruptions, notableInterruption, now) {
+  let out
   const oneMinInMs = 60000
   const timeInMins = ((timeInMs * 0.001) / 60)
   const interruptionsOverTime = interruptions / timeInMins
@@ -70,16 +70,16 @@ export function calculateFocus(timeInMs, interruptions, notableInterruption, now
   return out.toFixed(5)
 }
 
-export function updateGraphData(graph, dataPoint) {
+export function updateGraphData (graph, dataPoint) {
   const out = [...graph]
   out.shift()
-  out.push({y: dataPoint.toString()})
+  out.push({ y: dataPoint.toString() })
   return out
 }
 
-export function initGraphData(range) {
+export function initGraphData (range) {
   const defaultDataPoint = 0
   return d3.range(range).map((d) => {
-    return {y: defaultDataPoint.toFixed(5)}
+    return { y: defaultDataPoint.toFixed(5) }
   })
 }
