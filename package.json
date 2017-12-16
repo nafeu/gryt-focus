@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "rpi compatible work focus timer app",
   "main": "server.js",
+  "repository": "https://github.com/nafeu/gryt-focus/",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec",
-    "start": "node server.js"
+    "start": "PORT=3001 nodemon server.js"
   },
   "keywords": [
     "raspberry-pi",
@@ -26,18 +27,42 @@
     "socketio": "^1.0.0"
   },
   "devDependencies": {
+    "@types/jest": "^21.1.8",
+    "@types/supertest": "^2.0.4",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.12.1",
     "eslint-config-react-app": "^2.0.1",
-    "eslint-config-standard": "^11.0.0-beta.0",
-    "eslint-plugin-react-app": "^1.0.2",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-flowtype": "^2.40.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-standard": "^3.0.1",
-    "redux-devtools-extension": "^2.13.2",
+    "jest": "^21.2.1",
+    "nodemon": "^1.12.1",
     "standard": "^10.0.3",
+    "stylelint": "^8.3.1",
+    "stylelint-config-standard": "^18.0.0",
     "supertest": "^3.0.0"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
   },
   "eslintConfig": {
     "extends": [
-      "standard",
-      "react-app"
-    ]
+      "react-app",
+      "standard"
+    ],
+    "env": {
+      "jest": true
+    }
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard"
   }
 }
