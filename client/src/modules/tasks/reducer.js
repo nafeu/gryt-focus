@@ -1,11 +1,11 @@
 import { SET_TASK, SET_ALERT } from './action-types'
 
-const BLANK_STATE = {
+const initialState = {
   name: '',
   alert: ''
 }
 
-export default (state = BLANK_STATE, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case SET_TASK:
       return {

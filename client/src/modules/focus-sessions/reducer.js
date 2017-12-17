@@ -15,7 +15,7 @@ import {
 } from './action-types'
 import { getNextIndex, getMsByMins } from '../../helpers'
 
-const BLANK_STATE = {
+const initialState = {
   startTime: null,
   endTime: null,
   isActive: false,
@@ -26,7 +26,7 @@ const BLANK_STATE = {
   alarm: false
 }
 
-function reducer (state = BLANK_STATE, action) {
+function reducer (state = initialState, action) {
   const now = moment.now()
   switch (action.type) {
     case START_TIMER:

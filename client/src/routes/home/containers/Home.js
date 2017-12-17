@@ -1,5 +1,5 @@
 import React from 'react'
-import Interaction from '../../interactions/components/Interaction'
+import Interaction from '../../interactions/containers/Interaction'
 import Timer from '../../interactions/components/Timer'
 import Task from '../../task-tracking/components/Task'
 
