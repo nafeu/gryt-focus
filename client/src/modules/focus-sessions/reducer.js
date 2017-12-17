@@ -22,6 +22,7 @@ const initialState = {
   // isActive: false,
   // elapsedTime: null,
   // accumulatedTime: 0,
+  focusIntervals: [],
   mode: ALARM,
   sessionLength: getMsByMins(25),
   alarm: false
