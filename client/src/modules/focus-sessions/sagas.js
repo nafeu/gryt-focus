@@ -1,7 +1,7 @@
 import { actionChannel, call, take, put, race } from 'redux-saga/effects'
 import {
-  START_TIMER,
-  STOP_TIMER
+  START_SESSION,
+  END_SESSION
 } from './action-types'
 import { tick } from './actions'
 
@@ -13,12 +13,12 @@ const wait = ms => (
 )
 
 function * runTimer () {
-  const channel = yield actionChannel(START_TIMER)
+  const channel = yield actionChannel(START_SESSION)
 
   while (yield take(channel)) {
     while (true) {
       const winner = yield race({
-        stopped: take(STOP_TIMER),
+        stopped: take(END_SESSION),
         tick: call(wait, 1000)
       })
 

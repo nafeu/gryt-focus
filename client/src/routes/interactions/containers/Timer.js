@@ -54,7 +54,7 @@ export class TimerContainer extends Component {
   //   const elapsedTime = this.props.accumulatedTime + getTimeSinceStart(this.props.startTime)
   //   if ((this.props.mode === modes.ALARM) &&
   //     (elapsedTime >= this.props.sessionLength)) {
-  //     this.props.stopTimer()
+  //     this.props.endSession()
   //     this.props.activateAlarm()
   //   } else {
   //     this.setState({ elapsedTime })

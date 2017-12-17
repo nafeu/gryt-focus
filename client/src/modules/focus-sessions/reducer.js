@@ -4,14 +4,14 @@ import {
   DISPLAY_NAMES
 } from './constants'
 import {
-  START_TIMER,
-  STOP_TIMER,
-  RESET_TIMER,
+  START_SESSION,
+  END_SESSION,
+  CLEAR_SESSION,
   TOGGLE_MODE,
-  SET_SESSION_LENGTH,
+  UPDATE_SESSION_LENGTH,
   ACTIVATE_ALARM,
   DEACTIVATE_ALARM,
-  TICK_TIMER
+  TICK
 } from './action-types'
 import { getNextIndex, getMsByMins } from '../../helpers'
 
@@ -29,7 +29,7 @@ const initialState = {
 function reducer (state = initialState, action) {
   const now = moment.now()
   switch (action.type) {
-    case START_TIMER:
+    case START_SESSION:
       if (state.isActive) {
         return state
       } else {
@@ -42,13 +42,13 @@ function reducer (state = initialState, action) {
         }
       }
 
-    case TICK_TIMER:
+    case TICK:
       return {
         ...state,
         elapsedTime: now - state.startTime
       }
 
-    case STOP_TIMER:
+    case END_SESSION:
       if (state.isActive) {
         return {
           ...state,
@@ -60,7 +60,7 @@ function reducer (state = initialState, action) {
         return state
       }
 
-    case RESET_TIMER:
+    case CLEAR_SESSION:
       return {
         ...state,
         startTime: null,
@@ -76,7 +76,7 @@ function reducer (state = initialState, action) {
         mode: getNextIndex(state.mode, DISPLAY_NAMES.length)
       }
 
-    case SET_SESSION_LENGTH:
+    case UPDATE_SESSION_LENGTH:
       return {
         ...state,
         sessionLength: getMsByMins(action.payload.sessionLength)

@@ -1,19 +1,24 @@
-import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as focusSessions from '../../../modules/focus-sessions'
 import Interaction from '../components/Interaction'
 
-class InteractionContainer extends Component {
-  render () {
-    return (
-      <Interaction state={this.props.state} actions={this.props.actions}/>
-    )
+function mapStateToProps (state) {
+  return {
+    isActive: state.focusSessions.isActive,
+    mode: state.focusSessions.mode,
+    alarm: state.focusSessions.alarm
   }
 }
 
-const mapStateToProps = state => ({ state: state.focusSessions })
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(focusSessions.actions, dispatch) })
+function mapDispatchToProps (dispatch) {
+  return bindActionCreators({
+    startSession: focusSessions.actions.startSession,
+    endSession: focusSessions.actions.endSession,
+    clearSession: focusSessions.actions.clearSession,
+    deactivateAlarm: focusSessions.actions.deactivateAlarm
+  }, dispatch)
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(InteractionContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(Interaction)

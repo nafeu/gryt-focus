@@ -105,9 +105,9 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  startTimer: focusSessions.actions.startTimer,
-  stopTimer: focusSessions.actions.stopTimer,
-  setSessionLength: focusSessions.actions.setSessionLength,
+  startTimer: focusSessions.actions.startSession,
+  stopTimer: focusSessions.actions.endSession,
+  setSessionLength: focusSessions.actions.updateSessionLength,
   setTask: tasks.actions.setTask,
   setAlert: tasks.actions.setAlert
 }, dispatch)
