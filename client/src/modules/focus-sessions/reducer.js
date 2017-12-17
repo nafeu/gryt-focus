@@ -19,7 +19,6 @@ import { getNextIndex, getMsByMins } from '../../helpers'
 const initialState = {
   // startTime: null,
   // endTime: null,
-  // isActive: false,
   // elapsedTime: null,
   // accumulatedTime: 0,
   focusIntervals: [],

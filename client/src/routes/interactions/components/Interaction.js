@@ -3,7 +3,17 @@ import PropTypes from 'prop-types'
 
 import * as focusSessions from '../../../modules/focus-sessions'
 
-const Interaction = ({ isActive, mode, alarm, startSession, endSession, clearSession, deactivateAlarm }) => {
+const Interaction = (props) => {
+  const {
+    isFocusSessionActive,
+    mode,
+    alarm,
+    startSession,
+    endSession,
+    clearSession,
+    deactivateAlarm
+  } = props
+
   const alarmButton = (
     <button className="alarm-button" onClick={deactivateAlarm}>ALARM ACTIVE! CLICK TO SNOOZE</button>
   )
@@ -12,8 +22,8 @@ const Interaction = ({ isActive, mode, alarm, startSession, endSession, clearSes
     <div>
       <h3>Interaction</h3>
       <p>
-        <button className="toggle-button" onClick={() => isActive ? endSession() : startSession()}>
-          {isActive ? 'End' : 'Start'}
+        <button className="toggle-button" onClick={() => isFocusSessionActive ? endSession() : startSession()}>
+          {isFocusSessionActive ? 'End' : 'Start'}
         </button>
         <button onClick={clearSession}>Clear</button>
         <button>
@@ -27,7 +37,7 @@ const Interaction = ({ isActive, mode, alarm, startSession, endSession, clearSes
 }
 
 Interaction.propTypes = {
-  isActive: PropTypes.bool.isRequired,
+  isFocusSessionActive: PropTypes.bool.isRequired,
   mode: PropTypes.number.isRequired,
   alarm: PropTypes.bool.isRequired,
   startSession: PropTypes.func.isRequired,
