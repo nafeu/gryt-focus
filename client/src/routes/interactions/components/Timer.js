@@ -1,20 +1,26 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { getDisplayTime } from '../../../helpers'
 
-function Timer (props) {
+const Timer = (props) => {
   const {
-    isActive,
-    elapsedTime
+    isFocusSessionActive,
+    focusSessionElapsedDuration
   } = props
 
   return (
     <div>
-      <h3>{isActive ? 'Active' : 'Inactive'}</h3>
-      <p>Elapsed: {getDisplayTime(elapsedTime)}</p>
+      <h3>Focus Session is {isFocusSessionActive ? 'Active' : 'Inactive'}</h3>
+      <p>Elapsed: {getDisplayTime(focusSessionElapsedDuration)}</p>
       <hr/>
     </div>
   )
+}
+
+Timer.propTypes = {
+  isFocusSessionActive: PropTypes.bool.isRequired,
+  focusSessionElapsedDuration: PropTypes.number.isRequired
 }
 
 export default Timer
