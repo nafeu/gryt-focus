@@ -63,7 +63,9 @@ export class TimerContainer extends Component {
 
   render () {
     return (
-      <Timer state={this.props.state}/>
+      <Timer
+        { ...this.props.state }
+      />
     )
   }
 }

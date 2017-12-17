@@ -2,11 +2,11 @@ import React from 'react'
 
 import { getDisplayTime } from '../../../helpers'
 
-function Timer ({ state }) {
+function Timer (props) {
   const {
     isActive,
     elapsedTime
-  } = state
+  } = props
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -6,7 +6,7 @@ import { getMinsByMs } from '../../../helpers'
 import * as tasks from '../../../modules/tasks'
 import * as focusSessions from '../../../modules/focus-sessions'
 
-class Task extends React.Component {
+class Task extends Component {
   constructor (props) {
     super(props)
 
