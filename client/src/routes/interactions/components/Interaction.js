@@ -1,36 +1,12 @@
-import React from 'react'
+import moment from 'moment'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {
-  toggleTimer,
-  resetTimer,
-  toggleMode,
-  stopTimer,
-  deactivateAlarm
-} from '../modules/timer/actions'
-import * as modes from '../modules/timer/constants'
-import moment from 'moment'
-import { getElapsedTime, calculateFocus } from '../helpers'
 
-const mapStateToProps = state => ({
-  isActive: state.timer.isActive,
-  mode: state.timer.mode,
-  alarm: state.timer.alarm,
-  name: state.task.name,
-  accumulatedTime: state.timer.accumulatedTime,
-  startTime: state.timer.startTime,
-  endTime: state.timer.endTime
-})
+import { getElapsedTime } from '../../../helpers'
+import * as focusSessions from '../../../modules/focus-sessions'
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  toggleTimer,
-  resetTimer,
-  toggleMode,
-  deactivateAlarm,
-  stopTimer
-}, dispatch)
-
-export class Interaction extends React.Component {
+class Interaction extends Component {
   constructor (props) {
     super(props)
 
@@ -39,13 +15,11 @@ export class Interaction extends React.Component {
 
   saveSession () {
     const length = getElapsedTime(this.props.startTime, this.props.endTime, this.props.accumulatedTime)
-    const focus = calculateFocus(length, this.props.interruptions)
     const sessionInfo = {
       name: this.props.name,
       datetime: moment().format('LLLL'),
       interruptions: this.props.interruptions,
-      length,
-      focus
+      length
     }
     this.props.saveSession(sessionInfo)
   }
@@ -66,7 +40,8 @@ export class Interaction extends React.Component {
           </button>
           <button onClick={this.saveSession}>Save</button>
           <button onClick={this.props.resetTimer}>Reset</button>
-          <button onClick={this.props.toggleMode}>Mode: {modes.DISPLAY_NAMES[this.props.mode]}</button>
+          <button
+            onClick={this.props.toggleMode}>Mode: {focusSessions.constants.DISPLAY_NAMES[this.props.mode]}</button>
           {this.props.alarm ? alarmButton : ''}
         </p>
         <hr/>
@@ -75,7 +50,21 @@ export class Interaction extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Interaction)
+const mapStateToProps = state => ({
+  isActive: state.focusSessions.isActive,
+  mode: state.focusSessions.mode,
+  alarm: state.focusSessions.alarm,
+  accumulatedTime: state.focusSessions.accumulatedTime,
+  startTime: state.focusSessions.startTime,
+  endTime: state.focusSessions.endTime,
+  name: state.tasks.name
+})
+const mapDispatchToProps = dispatch => bindActionCreators({
+  toggleTimer: focusSessions.actions.toggleTimer,
+  resetTimer: focusSessions.actions.resetTimer,
+  toggleMode: focusSessions.actions.toggleMode,
+  deactivateAlarm: focusSessions.actions.deactivateAlarm,
+  stopTimer: focusSessions.actions.stopTimer
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Interaction)

@@ -1,28 +1,12 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { setTask, setAlert } from '../actions'
-import { startTimer, stopTimer, setSessionLength } from '../../timer/actions'
-import * as modes from '../../timer/constants'
+
 import { getMinsByMs } from '../../../helpers'
+import * as tasks from '../../../modules/tasks'
+import * as focusSessions from '../../../modules/focus-sessions'
 
-const mapStateToProps = state => ({
-  name: state.task.name,
-  alert: state.task.alert,
-  isActive: state.timer.isActive,
-  mode: state.timer.mode,
-  sessionLength: state.timer.sessionLength
-})
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-  setTask,
-  startTimer,
-  stopTimer,
-  setSessionLength,
-  setAlert
-}, dispatch)
-
-export class Task extends React.Component {
+class Task extends React.Component {
   constructor (props) {
     super(props)
 
@@ -103,7 +87,7 @@ export class Task extends React.Component {
     return (
       <div>
         <h3>Task</h3>
-        {this.props.mode === modes.ALARM ? sessionLengthInput : ''}
+        {this.props.mode === focusSessions.constants.ALARM ? sessionLengthInput : ''}
         {taskInput}
         {this.props.alert ? alertMessage : ''}
         <hr/>
@@ -112,7 +96,20 @@ export class Task extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Task)
+const mapStateToProps = state => ({
+  name: state.tasks.name,
+  alert: state.tasks.alert,
+  isActive: state.focusSessions.isActive,
+  mode: state.focusSessions.mode,
+  sessionLength: state.focusSessions.sessionLength
+})
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  startTimer: focusSessions.actions.startTimer,
+  stopTimer: focusSessions.actions.stopTimer,
+  setSessionLength: focusSessions.actions.setSessionLength,
+  setTask: tasks.actions.setTask,
+  setAlert: tasks.actions.setAlert
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Task)

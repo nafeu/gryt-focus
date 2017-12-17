@@ -1,5 +1,9 @@
 import moment from 'moment'
 import {
+  ALARM,
+  DISPLAY_NAMES
+} from './constants'
+import {
   START_TIMER,
   STOP_TIMER,
   RESET_TIMER,
@@ -8,8 +12,7 @@ import {
   ACTIVATE_ALARM,
   DEACTIVATE_ALARM,
   TICK_TIMER
-} from '../../constants/action-types'
-import * as modes from './constants'
+} from './action-types'
 import { getNextIndex, getMsByMins } from '../../helpers'
 
 const BLANK_STATE = {
@@ -18,12 +21,12 @@ const BLANK_STATE = {
   isActive: false,
   elapsedTime: null,
   accumulatedTime: 0,
-  mode: modes.ALARM,
+  mode: ALARM,
   sessionLength: getMsByMins(25),
   alarm: false
 }
 
-export default (state = BLANK_STATE, action) => {
+function reducer (state = BLANK_STATE, action) {
   const now = moment.now()
   switch (action.type) {
     case START_TIMER:
@@ -70,7 +73,7 @@ export default (state = BLANK_STATE, action) => {
     case TOGGLE_MODE:
       return {
         ...state,
-        mode: getNextIndex(state.mode, modes.DISPLAY_NAMES.length)
+        mode: getNextIndex(state.mode, DISPLAY_NAMES.length)
       }
 
     case SET_SESSION_LENGTH:
@@ -95,3 +98,5 @@ export default (state = BLANK_STATE, action) => {
       return state
   }
 }
+
+export default reducer

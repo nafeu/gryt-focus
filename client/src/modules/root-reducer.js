@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
-import timer from './timer/reducers'
-import task from './task/reducers'
+import * as focusSessions from './focus-sessions'
+import * as tasks from './tasks'
 
 export default combineReducers({
   routing: routerReducer,
-  timer,
-  task
+  focusSessions: focusSessions.reducer,
+  tasks: tasks.reducer
 })

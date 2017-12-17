@@ -5,7 +5,7 @@ import createSagaMiddleware from 'redux-saga'
 import createHistory from 'history/createBrowserHistory'
 
 import rootReducer from './modules/root-reducer'
-import TimerSaga from './modules/timer/saga'
+import * as focusSessions from './modules/focus-sessions'
 
 const sagaMiddleware = createSagaMiddleware()
 export const history = createHistory()
@@ -37,6 +37,6 @@ const store = createStore(
   composedEnhancers
 )
 
-sagaMiddleware.run(TimerSaga)
+sagaMiddleware.run(focusSessions.sagas.runTimer)
 
 export default store

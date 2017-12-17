@@ -4,4 +4,3 @@ export const DISPLAY_NAMES = [
   'stopwatch',
   'alarm'
 ]
-export default DISPLAY_NAMES

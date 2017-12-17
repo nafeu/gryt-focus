@@ -7,7 +7,7 @@ import {
   SET_SESSION_LENGTH,
   ACTIVATE_ALARM,
   DEACTIVATE_ALARM
-} from '../../constants/action-types'
+} from './action-types'
 
 export const toggleTimer = (isActive) => {
   return dispatch => {

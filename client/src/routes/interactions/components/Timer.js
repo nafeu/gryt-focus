@@ -1,9 +1,9 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+
 import { getDisplayTime, getTimeSinceStart, getElapsedTime } from '../../../helpers'
-import { stopTimer, activateAlarm } from '../actions'
-import * as modes from '../constants'
+import * as focusSessions from '../../../modules/focus-sessions'
 
 export class Timer extends React.Component {
   // constructor (props) {
@@ -73,14 +73,17 @@ export class Timer extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  startTime: state.timer.startTime,
-  endTime: state.timer.endTime,
-  isActive: state.timer.isActive,
-  elapsedTime: state.timer.elapsedTime,
-  accumulatedTime: state.timer.accumulatedTime,
-  sessionLength: state.timer.sessionLength,
-  mode: state.timer.mode
+  startTime: state.focusSessions.startTime,
+  endTime: state.focusSessions.endTime,
+  isActive: state.focusSessions.isActive,
+  elapsedTime: state.focusSessions.elapsedTime,
+  accumulatedTime: state.focusSessions.accumulatedTime,
+  sessionLength: state.focusSessions.sessionLength,
+  mode: state.focusSessions.mode
 })
-const mapDispatchToProps = (dispatch) => bindActionCreators({ stopTimer, activateAlarm }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  stopTimer: focusSessions.actions.stopTimer,
+  activateAlarm: focusSessions.actions.activateAlarm
+}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timer)

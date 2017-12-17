@@ -2,7 +2,7 @@ import { actionChannel, call, take, put, race } from 'redux-saga/effects'
 import {
   START_TIMER,
   STOP_TIMER
-} from '../../constants/action-types'
+} from './action-types'
 import { tick } from './actions'
 
 // wait :: Number -> Promise
@@ -31,4 +31,4 @@ function * runTimer () {
   }
 }
 
-export default runTimer
+export { runTimer }

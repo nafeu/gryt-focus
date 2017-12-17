@@ -1,5 +1,5 @@
 import React from 'react'
-import ConnectedInteraction, { Interaction } from '../../components/Interaction'
+import ConnectedInteraction, { Interaction } from '../../routes/interactions/components/Interaction'
 import { shallow, mount} from 'enzyme'
 import configureStore from 'redux-mock-store'
 import renderer from 'react-test-renderer'
