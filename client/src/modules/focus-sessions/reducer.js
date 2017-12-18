@@ -51,15 +51,12 @@ function reducer (state = initialState, action) {
         isActive: false,
         focusIntervals: state.focusIntervals
       }
-    // case CLEAR_SESSION:
-    //   return {
-    //     ...state,
-    //     startTime: null,
-    //     endTime: null,
-    //     isActive: false,
-    //     elapsedTime: 0,
-    //     accumulatedTime: 0
-    //   }
+    case CLEAR_SESSION:
+      return {
+        ...state,
+        focusIntervals: [],
+        elapsedDuration: 0
+      }
     //
     // case TOGGLE_MODE:
     //   return {

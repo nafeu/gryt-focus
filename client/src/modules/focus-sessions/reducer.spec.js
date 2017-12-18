@@ -53,11 +53,12 @@ describe('reducer', () => {
 
   it('clears the session by resetting it to the beginning', () => {
     Date.now = jest.fn(() => now)
-    const tickSessionAction = actions.tickSession()
-    const previousState = { focusIntervals: [{ startTime: now - 7 }] }
+    const clearSessionAction = actions.clearSession()
+    const previousState = { focusIntervals: [{ startTime: 998, endTime: 999 }] }
 
-    const nextState = reducer(previousState, tickSessionAction)
+    const nextState = reducer(previousState, clearSessionAction)
 
-    expect(nextState).toHaveProperty('elapsedDuration', 7)
+    expect(nextState).toHaveProperty('focusIntervals', [])
+    expect(nextState).toHaveProperty('elapsedDuration', 0)
   })
 })

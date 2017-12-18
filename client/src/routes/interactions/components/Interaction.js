@@ -22,10 +22,10 @@ const Interaction = (props) => {
     <div>
       <h3>Interaction</h3>
       <p>
-        <button className="toggle-button" onClick={() => isFocusSessionActive ? endSession() : startSession()}>
+        <button onClick={() => isFocusSessionActive ? endSession() : startSession()}>
           {isFocusSessionActive ? 'End' : 'Start'}
         </button>
-        <button disabled={true} onClick={clearSession}>Clear</button>
+        <button disabled={isFocusSessionActive} onClick={clearSession}>Clear</button>
         <button>
           Mode: {focusSessions.constants.DISPLAY_NAMES[mode]}
         </button>
