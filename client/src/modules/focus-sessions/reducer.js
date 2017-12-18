@@ -1,7 +1,7 @@
 import moment from 'moment'
 import {
   ALARM,
-  DISPLAY_NAMES
+  MODES
 } from './constants'
 import {
   START_SESSION,
@@ -13,13 +13,13 @@ import {
   ACTIVATE_ALARM,
   DEACTIVATE_ALARM
 } from './action-types'
-import { getNextIndex, getMsByMins } from '../../helpers'
+import { getMsByMins, getNextElement } from '../../helpers'
 
 const initialState = {
   isActive: false,
   focusIntervals: [],
   elapsedDuration: 0,
-  mode: ALARM,
+  timerMode: ALARM,
   sessionLength: getMsByMins(25),
   alarm: false
 }
@@ -57,13 +57,13 @@ function reducer (state = initialState, action) {
         focusIntervals: [],
         elapsedDuration: 0
       }
-    //
-    // case TOGGLE_MODE:
-    //   return {
-    //     ...state,
-    //     mode: getNextIndex(state.mode, DISPLAY_NAMES.length)
-    //   }
-    //
+
+    case TOGGLE_MODE:
+      return {
+        ...state,
+        timerMode: getNextElement(state.timerMode, MODES)
+      }
+
     // case UPDATE_SESSION_LENGTH:
     //   return {
     //     ...state,

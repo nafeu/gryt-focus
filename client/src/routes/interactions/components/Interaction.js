@@ -27,7 +27,7 @@ const Interaction = (props) => {
         </button>
         <button disabled={isFocusSessionActive} onClick={clearSession}>Clear</button>
         <button>
-          Mode: {focusSessions.constants.DISPLAY_NAMES[mode]}
+          Mode: {focusSessions.constants.MODE_DISPLAYS[mode]}
         </button>
         {alarm ? <AlarmSnoozeButton/> : ''}
       </p>

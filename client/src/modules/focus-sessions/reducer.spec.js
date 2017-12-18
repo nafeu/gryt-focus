@@ -1,6 +1,6 @@
 import * as actions from './actions'
 import reducer from './reducer'
-import { ALARM } from './constants'
+import { ALARM, STOPWATCH } from './constants'
 
 describe('reducer', () => {
   const now = 999
@@ -13,7 +13,7 @@ describe('reducer', () => {
     expect(nextState).toHaveProperty('isActive', false)
     expect(nextState).toHaveProperty('focusIntervals', [])
     expect(nextState).toHaveProperty('elapsedDuration', 0)
-    expect(nextState).toHaveProperty('mode', ALARM)
+    expect(nextState).toHaveProperty('timerMode', ALARM)
     expect(nextState).toHaveProperty('sessionLength', 25 * 60 * 1000)
     expect(nextState).toHaveProperty('alarm', false)
   })
@@ -60,5 +60,14 @@ describe('reducer', () => {
 
     expect(nextState).toHaveProperty('focusIntervals', [])
     expect(nextState).toHaveProperty('elapsedDuration', 0)
+  })
+
+  it('toggles the alarm modes', () => {
+    const toggleModeAction = actions.toggleMode()
+    const previousState = { timerMode: ALARM }
+
+    const nextState = reducer(previousState, toggleModeAction)
+
+    expect(nextState).toHaveProperty('timerMode', STOPWATCH)
   })
 })

@@ -1,5 +1,9 @@
 import moment from 'moment'
 
+export function getNextElement (currentElement, array) {
+  return array[getNextIndex(array.indexOf(currentElement), array.length)]
+}
+
 export function getNextIndex (index, length) {
   if (length) return (index === (--length)) ? 0 : ++index
   return 0
