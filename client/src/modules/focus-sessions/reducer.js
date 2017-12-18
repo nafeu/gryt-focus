@@ -1,27 +1,23 @@
 import moment from 'moment'
-import _ from 'lodash'
 import {
   ALARM,
   DISPLAY_NAMES
 } from './constants'
 import {
   START_SESSION,
+  TICK,
   END_SESSION,
   CLEAR_SESSION,
   TOGGLE_MODE,
   UPDATE_SESSION_LENGTH,
   ACTIVATE_ALARM,
-  DEACTIVATE_ALARM,
-  TICK
+  DEACTIVATE_ALARM
 } from './action-types'
 import { getNextIndex, getMsByMins } from '../../helpers'
 
 const initialState = {
-  // startTime: null,
-  // endTime: null,
-  // elapsedTime: null,
-  // accumulatedTime: 0,
   focusIntervals: [],
+  elapsedDuration: 0,
   mode: ALARM,
   sessionLength: getMsByMins(25),
   alarm: false
@@ -39,23 +35,19 @@ function reducer (state = initialState, action) {
           }
         ]
       }
-    // }
-    //
-    // case TICK:
-    //   return {
-    //     ...state,
-    //     elapsedTime: now - state.startTime
-    //   }
-    //
+    case TICK:
+      const firstFocusInterval = state.focusIntervals[0]
+      return {
+        ...state,
+        elapsedDuration: now - firstFocusInterval.startTime
+      }
     case END_SESSION:
-      // if (state.isActive) {
       const lastFocusInterval = state.focusIntervals.slice(-1)[0]
       lastFocusInterval.endTime = now
       return {
         ...state,
         focusIntervals: state.focusIntervals
       }
-    //
     // case CLEAR_SESSION:
     //   return {
     //     ...state,
