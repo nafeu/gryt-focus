@@ -10,6 +10,7 @@ describe('reducer', () => {
 
     const nextState = reducer(undefined, someAction)
 
+    expect(nextState).toHaveProperty('isActive', false)
     expect(nextState).toHaveProperty('focusIntervals', [])
     expect(nextState).toHaveProperty('elapsedDuration', 0)
     expect(nextState).toHaveProperty('mode', ALARM)
@@ -17,12 +18,13 @@ describe('reducer', () => {
     expect(nextState).toHaveProperty('alarm', false)
   })
 
-  it('starts a session', () => {
+  it('starts the session', () => {
     Date.now = jest.fn(() => now)
     const startSessionAction = actions.startSession()
 
     const nextState = reducer(undefined, startSessionAction)
 
+    expect(nextState).toHaveProperty('isActive', true)
     expect(nextState).toHaveProperty('focusIntervals')
     expect(nextState.focusIntervals[0]).toHaveProperty('startTime', now)
   })
@@ -37,14 +39,25 @@ describe('reducer', () => {
     expect(nextState).toHaveProperty('elapsedDuration', 7)
   })
 
-  it('ends a session', () => {
+  it('ends the session', () => {
     Date.now = jest.fn(() => now)
     const endSessionAction = actions.endSession()
     const previousState = { focusIntervals: [{ startTime: now - 999 }] }
 
     const nextState = reducer(previousState, endSessionAction)
 
+    expect(nextState).toHaveProperty('isActive', false)
     expect(nextState).toHaveProperty('focusIntervals')
     expect(nextState.focusIntervals.slice(-1)[0]).toHaveProperty('endTime', now)
+  })
+
+  it('clears the session by resetting it to the beginning', () => {
+    Date.now = jest.fn(() => now)
+    const tickSessionAction = actions.tickSession()
+    const previousState = { focusIntervals: [{ startTime: now - 7 }] }
+
+    const nextState = reducer(previousState, tickSessionAction)
+
+    expect(nextState).toHaveProperty('elapsedDuration', 7)
   })
 })

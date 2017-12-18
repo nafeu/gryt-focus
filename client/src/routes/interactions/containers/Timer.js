@@ -1,11 +1,10 @@
 import { connect } from 'react-redux'
 
-import * as focusSessions from '../../../modules/focus-sessions'
 import Timer from '../components/Timer'
 
 function mapStateToProps (state) {
   return {
-    isFocusSessionActive: focusSessions.selectors.getIsFocusSessionActive(state),
+    isFocusSessionActive: state.focusSessions.isActive,
     focusSessionElapsedDuration: state.focusSessions.elapsedDuration
   }
 }

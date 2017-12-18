@@ -6,7 +6,7 @@ import Interaction from '../components/Interaction'
 
 function mapStateToProps (state) {
   return {
-    isFocusSessionActive: focusSessions.selectors.getIsFocusSessionActive(state),
+    isFocusSessionActive: state.focusSessions.isActive,
     mode: state.focusSessions.mode,
     alarm: state.focusSessions.alarm
   }

@@ -14,7 +14,7 @@ const Interaction = (props) => {
     deactivateAlarm
   } = props
 
-  const alarmButton = (
+  const AlarmSnoozeButton = () => (
     <button className="alarm-button" onClick={deactivateAlarm}>ALARM ACTIVE! CLICK TO SNOOZE</button>
   )
 
@@ -25,11 +25,11 @@ const Interaction = (props) => {
         <button className="toggle-button" onClick={() => isFocusSessionActive ? endSession() : startSession()}>
           {isFocusSessionActive ? 'End' : 'Start'}
         </button>
-        <button onClick={clearSession}>Clear</button>
+        <button disabled={true} onClick={clearSession}>Clear</button>
         <button>
           Mode: {focusSessions.constants.DISPLAY_NAMES[mode]}
         </button>
-        {alarm ? alarmButton : ''}
+        {alarm ? <AlarmSnoozeButton/> : ''}
       </p>
       <hr/>
     </div>
