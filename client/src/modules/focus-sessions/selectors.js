@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 
-const getCurrentFocusIntervals = (state) => state.focusSessions.focusIntervals
+const getCurrentFocusIntervals = (state) => state.focusIntervals
 
 export const getIsFocusSessionActive = createSelector(
   getCurrentFocusIntervals,
