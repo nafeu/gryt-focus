@@ -1,7 +1,7 @@
 import moment from 'moment'
 import {
   ALARM,
-  MODES
+  TIMER_MODES
 } from './constants'
 import {
   START_SESSION,
@@ -9,11 +9,11 @@ import {
   END_SESSION,
   CLEAR_SESSION,
   UPDATE_SESSION_LENGTH,
-  TOGGLE_MODE,
+  TOGGLE_TIMER_MODE,
   ACTIVATE_ALARM,
   DEACTIVATE_ALARM
 } from './action-types'
-import { getMsByMins, getNextElement } from '../../helpers'
+import { getMsByMins, getNextElement } from '../helpers'
 
 const initialState = {
   isActive: false,
@@ -58,10 +58,10 @@ function reducer (state = initialState, action) {
         elapsedDuration: 0
       }
 
-    case TOGGLE_MODE:
+    case TOGGLE_TIMER_MODE:
       return {
         ...state,
-        timerMode: getNextElement(state.timerMode, MODES)
+        timerMode: getNextElement(state.timerMode, TIMER_MODES)
       }
 
     // case UPDATE_SESSION_LENGTH:

@@ -63,7 +63,7 @@ describe('reducer', () => {
   })
 
   it('toggles the alarm modes', () => {
-    const toggleModeAction = actions.toggleMode()
+    const toggleModeAction = actions.toggleTimerMode()
     const previousState = { timerMode: ALARM }
 
     const nextState = reducer(previousState, toggleModeAction)

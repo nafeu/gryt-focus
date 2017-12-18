@@ -6,7 +6,7 @@ import {
   END_SESSION,
   CLEAR_SESSION,
   UPDATE_SESSION_LENGTH,
-  TOGGLE_MODE,
+  TOGGLE_TIMER_MODE,
   ACTIVATE_ALARM,
   DEACTIVATE_ALARM
 } from './action-types'
@@ -22,6 +22,6 @@ export const updateSessionLength = (sessionLength) => ({
   payload: { sessionLength }
 })
 
-export const toggleMode = () => ({ type: TOGGLE_MODE })
+export const toggleTimerMode = () => ({ type: TOGGLE_TIMER_MODE })
 export const activateAlarm = () => ({ type: ACTIVATE_ALARM })
 export const deactivateAlarm = () => ({ type: DEACTIVATE_ALARM })

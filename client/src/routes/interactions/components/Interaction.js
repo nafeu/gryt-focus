@@ -6,12 +6,13 @@ import * as focusSessions from '../../../modules/focus-sessions'
 const Interaction = (props) => {
   const {
     isFocusSessionActive,
-    mode,
+    timerMode,
     alarm,
     startSession,
     endSession,
     clearSession,
-    deactivateAlarm
+    deactivateAlarm,
+    toggleTimerMode
   } = props
 
   const AlarmSnoozeButton = () => (
@@ -26,8 +27,8 @@ const Interaction = (props) => {
           {isFocusSessionActive ? 'End' : 'Start'}
         </button>
         <button disabled={isFocusSessionActive} onClick={clearSession}>Clear</button>
-        <button>
-          Mode: {focusSessions.constants.MODE_DISPLAYS[mode]}
+        <button onClick={toggleTimerMode}>
+          Mode: {focusSessions.constants.TIMER_MODE_DISPLAYS[timerMode]}
         </button>
         {alarm ? <AlarmSnoozeButton/> : ''}
       </p>
@@ -38,12 +39,13 @@ const Interaction = (props) => {
 
 Interaction.propTypes = {
   isFocusSessionActive: PropTypes.bool.isRequired,
-  mode: PropTypes.number.isRequired,
+  timerMode: PropTypes.number.isRequired,
   alarm: PropTypes.bool.isRequired,
   startSession: PropTypes.func.isRequired,
   endSession: PropTypes.func.isRequired,
   clearSession: PropTypes.func.isRequired,
-  deactivateAlarm: PropTypes.func.isRequired
+  deactivateAlarm: PropTypes.func.isRequired,
+  toggleTimerMode: PropTypes.func.isRequired
 }
 
 export default Interaction

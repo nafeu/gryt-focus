@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { getMinsByMs } from '../../../helpers'
+import { getMinsByMs } from '../../../modules/helpers'
 import * as tasks from '../../../modules/tasks'
 import * as focusSessions from '../../../modules/focus-sessions'
 

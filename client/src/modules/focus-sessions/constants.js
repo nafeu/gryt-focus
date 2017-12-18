@@ -1,10 +1,10 @@
 export const STOPWATCH = 'stopwatch'
 export const ALARM = 'alarm'
-export const MODES = [
+export const TIMER_MODES = [
   ALARM,
   STOPWATCH
 ]
-export const MODE_DISPLAYS = {
+export const TIMER_MODE_DISPLAYS = {
   [ALARM]: 'Alarm',
   [STOPWATCH]: 'Stopwatch'
 }

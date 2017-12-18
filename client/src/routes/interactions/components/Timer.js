@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { getDisplayTime } from '../../../helpers'
+import { getDisplayTime } from '../../../modules/helpers'
 
 const Timer = (props) => {
   const {

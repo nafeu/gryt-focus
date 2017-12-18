@@ -8,4 +8,4 @@ export const UPDATE_SESSION_LENGTH = 'focus-sessions/UPDATE_SESSION_LENGTH'
 
 export const ACTIVATE_ALARM = 'focus-sessions/ACTIVATE_ALARM'
 export const DEACTIVATE_ALARM = 'focus-sessions/DEACTIVATE_ALARM'
-export const TOGGLE_MODE = 'focus-sessions/TOGGLE_MODE'
+export const TOGGLE_TIMER_MODE = 'focus-sessions/TOGGLE_TIMER_MODE'

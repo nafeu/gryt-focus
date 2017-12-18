@@ -7,7 +7,7 @@ import Interaction from '../components/Interaction'
 function mapStateToProps (state) {
   return {
     isFocusSessionActive: state.focusSessions.isActive,
-    mode: state.focusSessions.mode,
+    timerMode: state.focusSessions.timerMode,
     alarm: state.focusSessions.alarm
   }
 }
@@ -17,6 +17,7 @@ function mapDispatchToProps (dispatch) {
     startSession: focusSessions.actions.startSession,
     endSession: focusSessions.actions.endSession,
     clearSession: focusSessions.actions.clearSession,
+    toggleTimerMode: focusSessions.actions.toggleTimerMode,
     deactivateAlarm: focusSessions.actions.deactivateAlarm
   }, dispatch)
 }
