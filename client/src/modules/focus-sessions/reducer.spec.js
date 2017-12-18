@@ -27,6 +27,16 @@ describe('reducer', () => {
     expect(nextState.focusIntervals[0]).toHaveProperty('startTime', now)
   })
 
+  it('updates the elapsed duration', () => {
+    Date.now = jest.fn(() => now)
+    const tickSessionAction = actions.tickSession()
+    const previousState = { focusIntervals: [{ startTime: now - 7 }] }
+
+    const nextState = reducer(previousState, tickSessionAction)
+
+    expect(nextState).toHaveProperty('elapsedDuration', 7)
+  })
+
   it('ends a session', () => {
     Date.now = jest.fn(() => now)
     const endSessionAction = actions.endSession()
@@ -36,15 +46,5 @@ describe('reducer', () => {
 
     expect(nextState).toHaveProperty('focusIntervals')
     expect(nextState.focusIntervals.slice(-1)[0]).toHaveProperty('endTime', now)
-  })
-
-  it('updates the elapsed duration', () => {
-    Date.now = jest.fn(() => now)
-    const tickSessionAction = actions.tickSession()
-    const previousState = { focusIntervals: [{ startTime: now - 7 }] }
-
-    const nextState = reducer(previousState, tickSessionAction)
-
-    expect(nextState).toHaveProperty('elapsedDuration', 7)
   })
 })
