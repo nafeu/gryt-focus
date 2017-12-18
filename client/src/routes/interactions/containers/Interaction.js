@@ -15,6 +15,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     startSession: focusSessions.actions.startSession,
+    pauseSession: focusSessions.actions.pauseSession,
+    resumeSession: focusSessions.actions.resumeSession,
     endSession: focusSessions.actions.endSession,
     clearSession: focusSessions.actions.clearSession,
     toggleTimerMode: focusSessions.actions.toggleTimerMode,

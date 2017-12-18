@@ -30,10 +30,10 @@ describe('getIsFocusSessionActive', () => {
 
     expect(isFocusSessionActive).toEqual(false)
   })
-
-  function previousFocusSessionState (state) {
-    return {
-      focusSessions: state
-    }
-  }
 })
+
+function previousFocusSessionState (state) {
+  return {
+    focusSessions: state
+  }
+}

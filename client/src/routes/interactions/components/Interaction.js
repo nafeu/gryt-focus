@@ -9,6 +9,8 @@ const Interaction = (props) => {
     timerMode,
     alarm,
     startSession,
+    pauseSession,
+    resumeSession,
     endSession,
     clearSession,
     deactivateAlarm,
@@ -16,7 +18,7 @@ const Interaction = (props) => {
   } = props
 
   const AlarmSnoozeButton = () => (
-    <button className="alarm-button" onClick={deactivateAlarm}>ALARM ACTIVE! CLICK TO SNOOZE</button>
+    alarm ? (<button className="alarm-button" onClick={deactivateAlarm}>ALARM ACTIVE! CLICK TO SNOOZE</button>) : ''
   )
 
   return (
@@ -26,11 +28,17 @@ const Interaction = (props) => {
         <button onClick={() => isFocusSessionActive ? endSession() : startSession()}>
           {isFocusSessionActive ? 'End' : 'Start'}
         </button>
+        <button
+          disabled={!isFocusSessionActive}
+          onClick={() => isFocusSessionActive ? pauseSession() : resumeSession()}
+        >
+          {isFocusSessionActive ? 'Pause' : 'Resume'}
+        </button>
         <button disabled={isFocusSessionActive} onClick={clearSession}>Clear</button>
         <button onClick={toggleTimerMode}>
           Mode: {focusSessions.constants.TIMER_MODE_DISPLAYS[timerMode]}
         </button>
-        {alarm ? <AlarmSnoozeButton/> : ''}
+        <AlarmSnoozeButton/>
       </p>
       <hr/>
     </div>
@@ -42,6 +50,8 @@ Interaction.propTypes = {
   timerMode: PropTypes.number.isRequired,
   alarm: PropTypes.bool.isRequired,
   startSession: PropTypes.func.isRequired,
+  pauseSession: PropTypes.func.isRequired,
+  resumeSession: PropTypes.func.isRequired,
   endSession: PropTypes.func.isRequired,
   clearSession: PropTypes.func.isRequired,
   deactivateAlarm: PropTypes.func.isRequired,
