@@ -5,7 +5,7 @@
   "main": "server.js",
   "repository": "https://github.com/nafeu/gryt-focus/",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec",
+    "test": "./node_modules/.bin/jest",
     "start": "PORT=3001 nodemon server.js"
   },
   "keywords": [
