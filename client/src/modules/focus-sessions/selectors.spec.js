@@ -2,9 +2,9 @@ import * as selectors from './selectors'
 
 describe('getIsFocusSessionActive', () => {
   it('is false if there aren\'t any focus intervals in the current focus session', () => {
-    const previousState = {
+    const previousState = previousFocusSessionState({
       focusIntervals: []
-    }
+    })
 
     const isFocusSessionActive = selectors.getIsFocusSessionActive(previousState)
 
@@ -12,9 +12,9 @@ describe('getIsFocusSessionActive', () => {
   })
 
   it('is true if there are active focus intervals in the current focus session', () => {
-    const previousState = {
+    const previousState = previousFocusSessionState({
       focusIntervals: [{ startTime: 999 }]
-    }
+    })
 
     const isFocusSessionActive = selectors.getIsFocusSessionActive(previousState)
 
@@ -22,12 +22,18 @@ describe('getIsFocusSessionActive', () => {
   })
 
   it('is false if the last focus interval is closed', () => {
-    const previousState = {
+    const previousState = previousFocusSessionState({
       focusIntervals: [{ startTime: 998, endTime: 999 }]
-    }
+    })
 
     const isFocusSessionActive = selectors.getIsFocusSessionActive(previousState)
 
     expect(isFocusSessionActive).toEqual(false)
   })
+
+  function previousFocusSessionState (state) {
+    return {
+      focusSessions: state
+    }
+  }
 })

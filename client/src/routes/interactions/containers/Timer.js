@@ -5,7 +5,7 @@ import Timer from '../components/Timer'
 
 function mapStateToProps (state) {
   return {
-    isFocusSessionActive: focusSessions.selectors.getIsFocusSessionActive(state.focusSessions),
+    isFocusSessionActive: focusSessions.selectors.getIsFocusSessionActive(state),
     focusSessionElapsedDuration: state.focusSessions.elapsedDuration
   }
 }
