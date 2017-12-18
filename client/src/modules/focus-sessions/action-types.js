@@ -1,5 +1,5 @@
 export const START_SESSION = 'focus-sessions/START_SESSION'
-export const TICK = 'focus-sessions/TICK'
+export const TICK_SESSION = 'focus-sessions/TICK_SESSION'
 export const PAUSE_SESSION = 'focus-sessions/PAUSE_SESSION'
 export const RESUME_SESSION = 'focus-sessions/RESUME_SESSION'
 export const END_SESSION = 'focus-sessions/END_SESSION'

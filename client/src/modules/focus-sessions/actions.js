@@ -1,6 +1,6 @@
 import {
   START_SESSION,
-  TICK,
+  TICK_SESSION,
   END_SESSION,
   CLEAR_SESSION,
   UPDATE_SESSION_LENGTH,
@@ -9,7 +9,7 @@ import {
 } from './action-types'
 
 export const startSession = () => ({ type: START_SESSION })
-export const tick = () => ({ type: TICK })
+export const tickSession = () => ({ type: TICK_SESSION })
 export const pauseSession = () => ({ type: PAUSE_SESSION })
 export const resumeSession = () => ({ type: RESUME_SESSION })
 export const endSession = () => ({ type: END_SESSION })

@@ -3,7 +3,7 @@ import {
   START_SESSION,
   END_SESSION
 } from './action-types'
-import { tick } from './actions'
+import { tickSession } from './actions'
 
 // wait :: Number -> Promise
 const wait = ms => (
@@ -23,7 +23,7 @@ function * runTimer () {
       })
 
       if (!winner.stopped) {
-        yield put(tick())
+        yield put(tickSession())
       } else {
         break
       }

@@ -5,7 +5,7 @@ import {
 } from './constants'
 import {
   START_SESSION,
-  TICK,
+  TICK_SESSION,
   END_SESSION,
   CLEAR_SESSION,
   TOGGLE_MODE,
@@ -35,7 +35,7 @@ function reducer (state = initialState, action) {
           }
         ]
       }
-    case TICK:
+    case TICK_SESSION:
       const firstFocusInterval = state.focusIntervals[0]
       return {
         ...state,

@@ -40,10 +40,10 @@ describe('reducer', () => {
 
   it('updates the elapsed duration', () => {
     Date.now = jest.fn(() => now)
-    const tickAction = actions.tick()
+    const tickSessionAction = actions.tickSession()
     const previousState = { focusIntervals: [{ startTime: now - 7 }] }
 
-    const nextState = reducer(previousState, tickAction)
+    const nextState = reducer(previousState, tickSessionAction)
 
     expect(nextState).toHaveProperty('elapsedDuration', 7)
   })

@@ -21,7 +21,7 @@ export default connect(mapStateToProps)(Timer)
 //     elapsedTime: getElapsedTime(this.props.startTime, this.props.endTime, this.props.accumulatedTime)
 //   }
 //
-//   this.tick = this.tick.bind(this)
+//   this.tickSession = this.tickSession.bind(this)
 // }
 
 // componentDidMount () {
@@ -40,7 +40,7 @@ export default connect(mapStateToProps)(Timer)
 // }
 //
 // initTimerInterval () {
-//   let timerInterval = setInterval(this.tick, 1000)
+//   let timerInterval = setInterval(this.tickSession, 1000)
 //   this.setState({ timerInterval })
 // }
 //
@@ -57,7 +57,7 @@ export default connect(mapStateToProps)(Timer)
 //   }
 // }
 //
-// tick () {
+// tickSession () {
 //   const elapsedTime = this.props.accumulatedTime + getTimeSinceStart(this.props.startTime)
 //   if ((this.props.mode === modes.ALARM) &&
 //     (elapsedTime >= this.props.sessionLength)) {
