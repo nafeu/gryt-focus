@@ -29,7 +29,7 @@ describe('InteractionContainer', () => {
     Container = wrapper.find(InteractionContainer)
     Component = Container.find(Interaction)
 
-    expect(Container.length).toBeTruthy()
-    expect(Component.length).toBeTruthy()
+    expect(Container.length).toEqual(1)
+    expect(Component.length).toEqual(1)
   })
 })
