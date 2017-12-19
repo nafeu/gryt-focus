@@ -30,14 +30,20 @@ describe('reducer', () => {
     expect(nextState.focusIntervals[0]).toHaveProperty('startTime', now)
   })
 
-  it('updates the elapsed duration', () => {
+  it('updates the elapsed duration upon tick', () => {
+    const now = 8
     Date.now = jest.fn(() => now)
     const tickSessionAction = actions.tickSession()
-    const previousState = { focusIntervals: [{ startTime: now - 7 }] }
+    const previousState = {
+      focusIntervals: [
+        { startTime: 3, endTime: 4 },
+        { startTime: 7 }
+      ]
+    }
 
     const nextState = reducer(previousState, tickSessionAction)
 
-    expect(nextState).toHaveProperty('elapsedDuration', 7)
+    expect(nextState).toHaveProperty('elapsedDuration', 2)
   })
 
   it('pauses the session', () => {

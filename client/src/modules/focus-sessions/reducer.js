@@ -38,10 +38,14 @@ function reducer (state = initialState, action) {
       }
     }
     case TICK_SESSION: {
-      const firstFocusInterval = state.focusIntervals[0]
+      const focusIntervals = state.focusIntervals
+      focusIntervals.slice(-1)[0].endTime = now
+      const elapsedDuration = focusIntervals
+        .map((focusInterval) => focusInterval.endTime - focusInterval.startTime)
+        .reduce((accumulator, currentValue) => accumulator + currentValue)
       return {
         ...state,
-        elapsedDuration: now - firstFocusInterval.startTime
+        elapsedDuration
       }
     }
     case PAUSE_SESSION: {
