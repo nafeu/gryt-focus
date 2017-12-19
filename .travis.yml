@@ -2,6 +2,6 @@ language: node_js
 node_js:
 - 9.2.1
 env:
-  - TEST_DIR=./client
   - TEST_DIR=./
+  - TEST_DIR=./client
 script: cd $TEST_DIR && npm install && npm test
