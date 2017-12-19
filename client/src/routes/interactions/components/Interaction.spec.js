@@ -10,9 +10,7 @@ describe('Interaction Component', () => {
   it('renders', () => {
     const props = mergedIntoDefaults({})
 
-    Component = shallow(
-      <Interaction {...props} />
-    )
+    Component = render(props)
 
     expect(Component.length).toBeTruthy()
   })
@@ -24,14 +22,11 @@ describe('Interaction Component', () => {
       startSession: startSessionAction
     })
 
-    Component = shallow(
-      <Interaction {...props} />
-    )
+    Component = render(props)
+    const startButton = Component.find('#start-end-button')
+    startButton.simulate('click')
 
-    expect(Component.find('#start-end-button').text()).toEqual('Start')
-
-    Component.find('#start-end-button').simulate('click')
-
+    expect(startButton.text()).toEqual('Start')
     expect(startSessionAction).toHaveBeenCalled()
   })
 })
@@ -53,4 +48,10 @@ function mergedIntoDefaults (props) {
     ...defaultProps,
     ...props
   }
+}
+
+function render (props) {
+  return shallow(
+    <Interaction {...props} />
+  )
 }
