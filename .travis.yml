@@ -1,5 +1,9 @@
 language: node_js
 node_js:
 - 9.2.1
-install: npm install
-script: npm test
+install:
+  - npm install
+  - cd client && npm install
+script:
+  - npm test
+  - cd client && npm test
