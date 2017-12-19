@@ -47,7 +47,7 @@ const Interaction = (props) => {
 
 Interaction.propTypes = {
   isFocusSessionActive: PropTypes.bool.isRequired,
-  timerMode: PropTypes.number.isRequired,
+  timerMode: PropTypes.string.isRequired,
   alarm: PropTypes.bool.isRequired,
   startSession: PropTypes.func.isRequired,
   pauseSession: PropTypes.func.isRequired,
