@@ -35,6 +35,6 @@ const store = createStore(
   composedEnhancers
 )
 
-sagaMiddleware.run(focusSessions.sagas.runTimer)
+sagaMiddleware.run(focusSessions.sagas.runFocusSession)
 
 export default store

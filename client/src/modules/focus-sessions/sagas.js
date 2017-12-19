@@ -2,6 +2,7 @@ import { actionChannel, call, take, put, race } from 'redux-saga/effects'
 import {
   START_SESSION,
   PAUSE_SESSION,
+  RESUME_SESSION,
   END_SESSION
 } from './action-types'
 import { tickSession } from './actions'
@@ -13,10 +14,13 @@ const wait = ms => (
   })
 )
 
-function * runTimer () {
-  const channel = yield actionChannel(START_SESSION)
+function * runFocusSession () {
+  // const channel = yield actionChannel()
 
-  while (yield take(channel)) {
+  while (yield race({
+    start: take(START_SESSION),
+    resume: take(RESUME_SESSION)
+  })) {
     while (true) {
       const winner = yield race({
         paused: take(PAUSE_SESSION),
@@ -24,7 +28,7 @@ function * runTimer () {
         tick: call(wait, 1000)
       })
 
-      if (!winner.stopped && !winner.paused) {
+      if (!(winner.stopped || winner.paused)) {
         yield put(tickSession())
       } else {
         break
@@ -33,4 +37,4 @@ function * runTimer () {
   }
 }
 
-export { runTimer }
+export { runFocusSession }
