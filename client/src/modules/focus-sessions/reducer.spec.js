@@ -72,6 +72,7 @@ describe('reducer', () => {
     const nextState = reducer(previousState, endSessionAction)
 
     expect(nextState).toHaveProperty('isActive', false)
+    expect(nextState).toHaveProperty('isPaused', false)
     expect(nextState).toHaveProperty('focusIntervals')
     expect(nextState.focusIntervals.slice(-1)[0]).toHaveProperty('endTime', now)
   })

@@ -66,6 +66,7 @@ function reducer (state = initialState, action) {
       return {
         ...state,
         isActive: false,
+        isPaused: false,
         focusIntervals: state.focusIntervals
       }
     }
