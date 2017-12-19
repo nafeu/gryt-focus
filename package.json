@@ -53,8 +53,8 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "standard"
+      "standard",
+      "react-app"
     ],
     "env": {
       "jest": true
