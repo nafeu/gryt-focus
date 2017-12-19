@@ -7,7 +7,7 @@ import InteractionContainer from './Interaction'
 import Interaction from '../components/Interaction'
 import * as focusSessions from '../../../modules/focus-sessions'
 
-describe('InteractionContainer', () => {
+describe('Interaction Container', () => {
   const store = storeFake({
     focusSessions: {
       isActive: false,
@@ -29,7 +29,7 @@ describe('InteractionContainer', () => {
     Container = wrapper.find(InteractionContainer)
     Component = Container.find(Interaction)
 
-    expect(Container.length).toEqual(1)
-    expect(Component.length).toEqual(1)
+    expect(Container.length).toBeTruthy()
+    expect(Component.length).toBeTruthy()
   })
 })
