@@ -6,6 +6,8 @@ import {
 import {
   START_SESSION,
   TICK_SESSION,
+  PAUSE_SESSION,
+  RESUME_SESSION,
   END_SESSION,
   CLEAR_SESSION,
   UPDATE_SESSION_LENGTH,
@@ -27,23 +29,35 @@ const initialState = {
 function reducer (state = initialState, action) {
   const now = moment.now()
   switch (action.type) {
-    case START_SESSION:
+    case START_SESSION: {
       return {
         ...state,
         isActive: true,
-        focusIntervals: [
-          {
-            startTime: now
-          }
-        ]
+        focusIntervals: [{ startTime: now }]
       }
-    case TICK_SESSION:
+    }
+    case TICK_SESSION: {
       const firstFocusInterval = state.focusIntervals[0]
       return {
         ...state,
         elapsedDuration: now - firstFocusInterval.startTime
       }
-    case END_SESSION:
+    }
+    case PAUSE_SESSION: {
+      const lastFocusInterval = state.focusIntervals.slice(-1)[0]
+      lastFocusInterval.endTime = now
+      return {
+        ...state,
+        focusIntervals: state.focusIntervals
+      }
+    }
+    case RESUME_SESSION: {
+      return {
+        ...state,
+        focusIntervals: state.focusIntervals.concat([{ startTime: now }])
+      }
+    }
+    case END_SESSION: {
       const lastFocusInterval = state.focusIntervals.slice(-1)[0]
       lastFocusInterval.endTime = now
       return {
@@ -51,19 +65,20 @@ function reducer (state = initialState, action) {
         isActive: false,
         focusIntervals: state.focusIntervals
       }
-    case CLEAR_SESSION:
+    }
+    case CLEAR_SESSION: {
       return {
         ...state,
         focusIntervals: [],
         elapsedDuration: 0
       }
-
-    case TOGGLE_TIMER_MODE:
+    }
+    case TOGGLE_TIMER_MODE: {
       return {
         ...state,
         timerMode: getNextElement(state.timerMode, TIMER_MODES)
       }
-
+    }
     // case UPDATE_SESSION_LENGTH:
     //   return {
     //     ...state,
@@ -82,8 +97,9 @@ function reducer (state = initialState, action) {
     //     alarm: false
     //   }
 
-    default:
+    default: {
       return state
+    }
   }
 }
 
