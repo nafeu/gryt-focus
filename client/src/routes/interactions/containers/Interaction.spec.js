@@ -19,7 +19,7 @@ describe('Interaction Container', () => {
   let Container
   let Component
 
-  it('should render', () => {
+  it('renders', () => {
     const wrapper = mount(
       <Provider store={store}>
         <InteractionContainer/>

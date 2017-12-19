@@ -25,10 +25,14 @@ const Interaction = (props) => {
     <div>
       <h3>Interaction</h3>
       <p>
-        <button onClick={() => isFocusSessionActive ? endSession() : startSession()}>
+        <button
+          id='start-end-button'
+          onClick={() => isFocusSessionActive ? endSession() : startSession()}
+        >
           {isFocusSessionActive ? 'End' : 'Start'}
         </button>
         <button
+          id='pause-resume-button'
           disabled={!isFocusSessionActive}
           onClick={() => isFocusSessionActive ? pauseSession() : resumeSession()}
         >
