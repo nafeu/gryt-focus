@@ -19,6 +19,7 @@ import { getMsByMins, getNextElement } from '../helpers'
 
 const initialState = {
   isActive: false,
+  isPaused: false,
   focusIntervals: [],
   elapsedDuration: 0,
   timerMode: ALARM,
@@ -48,12 +49,14 @@ function reducer (state = initialState, action) {
       lastFocusInterval.endTime = now
       return {
         ...state,
+        isPaused: true,
         focusIntervals: state.focusIntervals
       }
     }
     case RESUME_SESSION: {
       return {
         ...state,
+        isPaused: false,
         focusIntervals: state.focusIntervals.concat([{ startTime: now }])
       }
     }

@@ -6,6 +6,7 @@ import * as focusSessions from '../../../modules/focus-sessions'
 const Interaction = (props) => {
   const {
     isFocusSessionActive,
+    isFocusSessionPaused,
     timerMode,
     alarm,
     startSession,
@@ -34,9 +35,9 @@ const Interaction = (props) => {
         <button
           id='pause-resume-button'
           disabled={!isFocusSessionActive}
-          onClick={() => isFocusSessionActive ? pauseSession() : resumeSession()}
+          onClick={() => isFocusSessionPaused ? resumeSession() : pauseSession()}
         >
-          {isFocusSessionActive ? 'Pause' : 'Resume'}
+          {isFocusSessionPaused ? 'Resume' : 'Pause'}
         </button>
         <button disabled={isFocusSessionActive} onClick={clearSession}>Clear</button>
         <button onClick={toggleTimerMode}>
@@ -51,6 +52,7 @@ const Interaction = (props) => {
 
 Interaction.propTypes = {
   isFocusSessionActive: PropTypes.bool.isRequired,
+  isFocusSessionPaused: PropTypes.bool.isRequired,
   timerMode: PropTypes.string.isRequired,
   alarm: PropTypes.bool.isRequired,
   startSession: PropTypes.func.isRequired,

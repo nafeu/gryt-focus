@@ -11,6 +11,7 @@ describe('Interaction Container', () => {
   const store = storeFake({
     focusSessions: {
       isActive: false,
+      isPaused: false,
       timerMode: focusSessions.constants.ALARM,
       alarm: false
     }

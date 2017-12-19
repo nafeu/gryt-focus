@@ -11,6 +11,7 @@ describe('reducer', () => {
     const nextState = reducer(undefined, someAction)
 
     expect(nextState).toHaveProperty('isActive', false)
+    expect(nextState).toHaveProperty('isPaused', false)
     expect(nextState).toHaveProperty('focusIntervals', [])
     expect(nextState).toHaveProperty('elapsedDuration', 0)
     expect(nextState).toHaveProperty('timerMode', ALARM)
@@ -46,6 +47,7 @@ describe('reducer', () => {
 
     const nextState = reducer(previousState, pauseSessionAction)
 
+    expect(nextState).toHaveProperty('isPaused', true)
     expect(nextState).toHaveProperty('focusIntervals')
     expect(nextState.focusIntervals[0]).toHaveProperty('endTime', now)
   })
@@ -57,6 +59,7 @@ describe('reducer', () => {
 
     const nextState = reducer(previousState, resumeSessionAction)
 
+    expect(nextState).toHaveProperty('isPaused', false)
     expect(nextState).toHaveProperty('focusIntervals')
     expect(nextState.focusIntervals.slice(-1)[0]).toHaveProperty('startTime', now)
   })

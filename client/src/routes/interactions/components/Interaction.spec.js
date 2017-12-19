@@ -44,11 +44,42 @@ describe('Interaction Component', () => {
     expect(endButton.text()).toEqual('End')
     expect(endSessionAction).toHaveBeenCalled()
   })
+
+  it('has the pause button if focus session is not paused', () => {
+    const pauseSessionAction = jest.fn()
+    const props = mergedIntoDefaults({
+      isFocusSessionPaused: false,
+      pauseSession: pauseSessionAction
+    })
+
+    Component = render(props)
+    const pauseButton = Component.find('#pause-resume-button')
+    pauseButton.simulate('click')
+
+    expect(pauseButton.text()).toEqual('Pause')
+    expect(pauseSessionAction).toHaveBeenCalled()
+  })
+
+  it('has the resume button if focus session is paused', () => {
+    const resumeSessionAction = jest.fn()
+    const props = mergedIntoDefaults({
+      isFocusSessionPaused: true,
+      resumeSession: resumeSessionAction
+    })
+
+    Component = render(props)
+    const resumeButton = Component.find('#pause-resume-button')
+    resumeButton.simulate('click')
+
+    expect(resumeButton.text()).toEqual('Resume')
+    expect(resumeSessionAction).toHaveBeenCalled()
+  })
 })
 
 function mergedIntoDefaults (props) {
   const defaultProps = {
     isFocusSessionActive: false,
+    isFocusSessionPaused: false,
     timerMode: focusSessions.constants.ALARM,
     alarm: false,
     startSession: jest.fn(),
