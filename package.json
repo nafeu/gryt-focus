@@ -62,5 +62,11 @@
   },
   "stylelint": {
     "extends": "stylelint-config-standard"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "<rootDir>/client/",
+      "<rootDir>/tmp/"
+    ]
   }
 }
