@@ -29,6 +29,21 @@ describe('Interaction Component', () => {
     expect(startButton.text()).toEqual('Start')
     expect(startSessionAction).toHaveBeenCalled()
   })
+
+  it('has the end button if focus session is active', () => {
+    const endSessionAction = jest.fn()
+    const props = mergedIntoDefaults({
+      isFocusSessionActive: true,
+      endSession: endSessionAction
+    })
+
+    Component = render(props)
+    const endButton = Component.find('#start-end-button')
+    endButton.simulate('click')
+
+    expect(endButton.text()).toEqual('End')
+    expect(endSessionAction).toHaveBeenCalled()
+  })
 })
 
 function mergedIntoDefaults (props) {
