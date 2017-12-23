@@ -1,0 +1,11 @@
+export const START_SESSION = 'focus-sessions/START_SESSION'
+export const TICK_SESSION = 'focus-sessions/TICK_SESSION'
+export const PAUSE_SESSION = 'focus-sessions/PAUSE_SESSION'
+export const RESUME_SESSION = 'focus-sessions/RESUME_SESSION'
+export const END_SESSION = 'focus-sessions/END_SESSION'
+export const CLEAR_SESSION = 'focus-sessions/CLEAR_SESSION'
+export const UPDATE_SESSION_LENGTH = 'focus-sessions/UPDATE_SESSION_LENGTH'
+
+export const ACTIVATE_ALARM = 'focus-sessions/ACTIVATE_ALARM'
+export const DEACTIVATE_ALARM = 'focus-sessions/DEACTIVATE_ALARM'
+export const TOGGLE_TIMER_MODE = 'focus-sessions/TOGGLE_TIMER_MODE'

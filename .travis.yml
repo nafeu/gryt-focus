@@ -1,5 +1,7 @@
 language: node_js
 node_js:
-- 7
-install: npm install
-script: npm test
+- 9.2.1
+env:
+  - TEST_DIR=./
+  - TEST_DIR=./client
+script: cd $TEST_DIR && npm install && npm test

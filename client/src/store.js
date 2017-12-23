@@ -1,15 +1,18 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { routerMiddleware } from 'react-router-redux'
-import thunk from 'redux-thunk'
+import createSagaMiddleware from 'redux-saga'
 import createHistory from 'history/createBrowserHistory'
-import rootReducer from './reducers/rootReducer'
 
+import rootReducer from './modules/root-reducer'
+import * as focusSessions from './modules/focus-sessions'
+
+const sagaMiddleware = createSagaMiddleware()
 export const history = createHistory()
 
 const initialState = {}
 const enhancers = []
 const middleware = [
-  thunk,
+  sagaMiddleware,
   routerMiddleware(history)
 ]
 
@@ -31,5 +34,7 @@ const store = createStore(
   initialState,
   composedEnhancers
 )
+
+sagaMiddleware.run(focusSessions.sagas.runFocusSession)
 
 export default store
